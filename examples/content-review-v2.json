@@ -1,0 +1,37 @@
+{
+  "draft": {
+    "id": "L-content-v2",
+    "revision": 1,
+    "owner": "author-a",
+    "model_version": "strata/0.2-content-mediation-experimental",
+    "baseline": "R0@1",
+    "intent": "Explain the booking hold lifecycle.",
+    "changes": [
+      {
+        "op": "set_item",
+        "block": "booking.hold",
+        "path": "description",
+        "expected": {
+          "kind": "value",
+          "value": {
+            "format": "plain-text/1",
+            "text": ""
+          }
+        },
+        "value": {
+          "format": "plain-text/1",
+          "text": "Background: a hold reserves one resource until its expiry; requirements and acceptance define the normative behavior."
+        }
+      }
+    ],
+    "requires_layers": [],
+    "read_set": [],
+    "assumptions": [],
+    "acceptance": [],
+    "resolution_proposals": [],
+    "derived_from": null
+  },
+  "expected_digest": "23a48f4d0faa4fc7b542c1aaae6b1addeb351e58422544e22c5a4ab591ba1795",
+  "accepted": true,
+  "rationale": "Reviewed exact intent-authoring/1 draft: explanatory prose, preserved normative obligations and no implementation or normative asset payload."
+}

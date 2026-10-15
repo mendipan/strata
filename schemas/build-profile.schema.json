@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]{0,255}$"
+    },
+    "revision": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 64
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80
+    },
+    "contract_ref": {
+      "type": "string",
+      "maxLength": 512,
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "contract_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "choices": {
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-z0-9][a-z0-9._-]*$"
+        },
+        "framework": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-z0-9][a-z0-9._-]*$"
+        },
+        "runtime": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-z0-9][a-z0-9._-]*$"
+        }
+      },
+      "required": [
+        "language",
+        "framework",
+        "runtime"
+      ],
+      "additionalProperties": false
+    },
+    "materializer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z0-9_.-]+\\/[1-9][0-9]*$"
+        },
+        "archive_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "id",
+        "archive_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "format": {
+      "type": "string",
+      "const": "strata-build-profile/1"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]{0,255}$"
+    },
+    "repository_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]{0,255}$"
+    },
+    "previous": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "ref": {
+              "type": "string",
+              "maxLength": 512,
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "ref",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "author": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]{0,255}$"
+    },
+    "auth_receipt": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 512,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "derived_from": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "ref": {
+              "type": "string",
+              "maxLength": 512,
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "ref",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "revision",
+    "name",
+    "contract_ref",
+    "contract_sha256",
+    "choices",
+    "materializer",
+    "format",
+    "project_id",
+    "repository_id",
+    "previous",
+    "author",
+    "auth_receipt",
+    "derived_from"
+  ],
+  "additionalProperties": false
+}

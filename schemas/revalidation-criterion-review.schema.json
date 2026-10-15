@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "revalidation-criterion-review/1"
+    },
+    "model_version": {
+      "type": "string",
+      "const": "strata/0.1-facets-experimental"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "repo_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "attempt_id": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+    },
+    "bridge_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "record_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "candidate_fingerprint": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "snapshot_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "record_sha256",
+        "candidate_fingerprint",
+        "snapshot_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "observation_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "checker": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "fixture_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "oracle_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "sha256",
+        "fixture_sha256",
+        "oracle_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "assertions": {
+      "minItems": 1,
+      "maxItems": 256,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "criterion_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "accepted": {
+            "type": "boolean",
+            "const": true
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "required": [
+          "criterion_ref",
+          "accepted",
+          "rationale"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "reviewer": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "auth": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "format",
+    "model_version",
+    "project_id",
+    "repo_id",
+    "attempt_id",
+    "bridge_sha256",
+    "target",
+    "observation_sha256",
+    "checker",
+    "assertions",
+    "reviewer",
+    "auth"
+  ],
+  "additionalProperties": false
+}

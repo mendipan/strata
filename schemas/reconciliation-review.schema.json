@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "reconciliation-review/1"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "repo_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "proposal_ref": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "proposal_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "report_ref": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "report_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "binding_ref": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "binding_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "approve_plan",
+        "request_changes",
+        "reject",
+        "defer"
+      ]
+    },
+    "responsible_scope": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "reviewer": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "policy_version": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "trust": {
+      "type": "string",
+      "const": "local-fixture"
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "questions": {
+      "maxItems": 256,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4096
+      }
+    },
+    "fresh_observation_sha256": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "approved_plan",
+        "changes_requested",
+        "rejected",
+        "deferred"
+      ]
+    }
+  },
+  "required": [
+    "format",
+    "project_id",
+    "repo_id",
+    "proposal_ref",
+    "proposal_sha256",
+    "report_ref",
+    "report_sha256",
+    "binding_ref",
+    "binding_sha256",
+    "decision",
+    "responsible_scope",
+    "reviewer",
+    "policy_version",
+    "trust",
+    "rationale",
+    "questions",
+    "fresh_observation_sha256",
+    "state"
+  ],
+  "additionalProperties": false
+}

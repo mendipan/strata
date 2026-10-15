@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "interaction-report/3"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "model_version": {
+      "type": "string",
+      "const": "strata/0.3-block-lifecycle-experimental"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "composition": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "candidate": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "principal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1
+    },
+    "affected_items": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "contributors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+      }
+    },
+    "signature_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "auth_receipt": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    }
+  },
+  "required": [
+    "format",
+    "project_id",
+    "model_version",
+    "id",
+    "composition",
+    "candidate",
+    "principal",
+    "message",
+    "affected_items",
+    "contributors",
+    "evidence_refs",
+    "signature_sha256",
+    "auth_receipt"
+  ],
+  "additionalProperties": false
+}

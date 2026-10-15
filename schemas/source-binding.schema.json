@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "source-binding/1"
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "const": "source-binding-payload/1"
+        },
+        "project_id": {
+          "type": "string",
+          "maxLength": 120,
+          "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+        },
+        "repo_id": {
+          "type": "string",
+          "maxLength": 120,
+          "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+        },
+        "intent": {
+          "type": "object",
+          "properties": {
+            "release_ref": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "release_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "snapshot_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "model_version": {
+              "type": "string",
+              "const": "strata/0.1-facets-experimental"
+            }
+          },
+          "required": [
+            "release_ref",
+            "release_sha256",
+            "snapshot_sha256",
+            "model_version"
+          ],
+          "additionalProperties": false
+        },
+        "source_ref": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "previous_binding_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "completion_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "basis": {
+          "type": "string",
+          "enum": [
+            "owner-accepted-bootstrap-association",
+            "validated-release-association"
+          ]
+        },
+        "acceptance_evidence_refs": {
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+          }
+        },
+        "limitations": {
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        }
+      },
+      "required": [
+        "format",
+        "project_id",
+        "repo_id",
+        "intent",
+        "source_ref",
+        "source_sha256",
+        "previous_binding_ref",
+        "completion_ref",
+        "basis",
+        "acceptance_evidence_refs",
+        "limitations"
+      ],
+      "additionalProperties": false
+    },
+    "payload_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "acceptance": {
+      "type": "object",
+      "properties": {
+        "principal": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "trust": {
+          "type": "string",
+          "const": "local-fixture"
+        },
+        "responsible_scope": {
+          "type": "string",
+          "maxLength": 120,
+          "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "accepted": {
+          "type": "boolean",
+          "const": true
+        },
+        "review_refs": {
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+          }
+        }
+      },
+      "required": [
+        "principal",
+        "trust",
+        "responsible_scope",
+        "rationale",
+        "accepted",
+        "review_refs"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "format",
+    "payload",
+    "payload_sha256",
+    "acceptance"
+  ],
+  "additionalProperties": false
+}

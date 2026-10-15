@@ -1,0 +1,293 @@
+{
+  "id": "R0",
+  "revision": 1,
+  "model_version": "strata/0.2-content-mediation-experimental",
+  "root": "app",
+  "blocks": {
+    "app": {
+      "id": "app",
+      "parent": null,
+      "purpose": "A command-driven booking demonstration.",
+      "requirements": {},
+      "acceptance": {
+        "review": {
+          "statement": "Verify intent.review for app.",
+          "method": "review",
+          "check": "intent.review",
+          "version": "1",
+          "fixture": "app",
+          "subjects": [
+            "app/purpose"
+          ]
+        }
+      },
+      "relationships": {},
+      "contract": {
+        "inputs": {},
+        "outputs": {},
+        "failures": {}
+      },
+      "description": {
+        "format": "plain-text/1",
+        "text": ""
+      },
+      "asset_refs": {}
+    },
+    "booking": {
+      "id": "booking",
+      "parent": "app",
+      "purpose": "Coordinate exclusive holds and reminders.",
+      "requirements": {},
+      "acceptance": {
+        "review": {
+          "statement": "Verify intent.review for booking.",
+          "method": "review",
+          "check": "intent.review",
+          "version": "1",
+          "fixture": "booking",
+          "subjects": [
+            "booking/purpose"
+          ]
+        }
+      },
+      "relationships": {},
+      "contract": {
+        "inputs": {},
+        "outputs": {},
+        "failures": {}
+      },
+      "description": {
+        "format": "plain-text/1",
+        "text": ""
+      },
+      "asset_refs": {}
+    },
+    "booking.hold": {
+      "id": "booking.hold",
+      "parent": "booking",
+      "purpose": "Hold one resource until a fixed expiry.",
+      "requirements": {
+        "expiry": {
+          "statement": "A hold expires exactly 600 seconds after it starts.",
+          "kind": "rule",
+          "facets": [
+            "behavior",
+            "data"
+          ],
+          "acceptance": [
+            "expiry"
+          ],
+          "parameters": {
+            "seconds": 600
+          }
+        },
+        "exclusive": {
+          "statement": "Only one active hold may exist for a resource.",
+          "kind": "invariant",
+          "facets": [
+            "behavior",
+            "data",
+            "safety"
+          ],
+          "acceptance": [
+            "exclusive"
+          ],
+          "parameters": {
+            "exclusive": true
+          }
+        }
+      },
+      "acceptance": {
+        "review": {
+          "statement": "Verify intent.review for booking.hold.",
+          "method": "review",
+          "check": "intent.review",
+          "version": "1",
+          "fixture": "booking.hold",
+          "subjects": [
+            "booking.hold/purpose"
+          ]
+        },
+        "expiry": {
+          "statement": "Verify booking.expiry for expiry.",
+          "method": "mechanical",
+          "check": "booking.expiry",
+          "version": "1",
+          "fixture": "expiry",
+          "subjects": [
+            "booking.hold/contract.outputs.state",
+            "booking.hold/requirements.expiry"
+          ]
+        },
+        "exclusive": {
+          "statement": "Verify booking.exclusive for exclusive.",
+          "method": "mechanical",
+          "check": "booking.exclusive",
+          "version": "1",
+          "fixture": "exclusive",
+          "subjects": [
+            "booking.hold/contract.failures.occupied",
+            "booking.hold/contract.inputs.hold",
+            "booking.hold/requirements.exclusive"
+          ]
+        },
+        "lifecycle": {
+          "statement": "Verify booking.lifecycle for lifecycle.",
+          "method": "mechanical",
+          "check": "booking.lifecycle",
+          "version": "1",
+          "fixture": "lifecycle",
+          "subjects": [
+            "booking.hold/requirements.expiry"
+          ]
+        }
+      },
+      "relationships": {},
+      "contract": {
+        "inputs": {
+          "hold": {
+            "statement": "A hold request identifies one resource and one owner.",
+            "acceptance": [
+              "exclusive"
+            ]
+          }
+        },
+        "outputs": {
+          "state": {
+            "statement": "State exposes active holds and their expiry.",
+            "acceptance": [
+              "expiry"
+            ]
+          }
+        },
+        "failures": {
+          "occupied": {
+            "statement": "An occupied resource rejects another hold.",
+            "acceptance": [
+              "exclusive"
+            ]
+          }
+        }
+      },
+      "description": {
+        "format": "plain-text/1",
+        "text": ""
+      },
+      "asset_refs": {}
+    },
+    "booking.reminder": {
+      "id": "booking.reminder",
+      "parent": "booking",
+      "purpose": "Remind a holder once shortly before expiry.",
+      "requirements": {
+        "timing": {
+          "statement": "Reminders are disabled.",
+          "kind": "rule",
+          "facets": [
+            "behavior"
+          ],
+          "acceptance": [
+            "once",
+            "timing"
+          ],
+          "parameters": {
+            "enabled": false,
+            "lead_seconds": 60
+          }
+        }
+      },
+      "acceptance": {
+        "review": {
+          "statement": "Verify intent.review for booking.reminder.",
+          "method": "review",
+          "check": "intent.review",
+          "version": "1",
+          "fixture": "booking.reminder",
+          "subjects": [
+            "booking.reminder/purpose"
+          ]
+        },
+        "timing": {
+          "statement": "Verify booking.reminder for timing.",
+          "method": "mechanical",
+          "check": "booking.reminder",
+          "version": "1",
+          "fixture": "timing",
+          "subjects": [
+            "booking.reminder/relationships.hold",
+            "booking.reminder/requirements.timing"
+          ]
+        },
+        "once": {
+          "statement": "Verify booking.once for once.",
+          "method": "mechanical",
+          "check": "booking.once",
+          "version": "1",
+          "fixture": "once",
+          "subjects": [
+            "booking.reminder/requirements.timing"
+          ]
+        }
+      },
+      "relationships": {
+        "hold": {
+          "target": "booking.hold",
+          "statement": "Reminder timing consumes the hold duration.",
+          "acceptance": [
+            "timing"
+          ]
+        }
+      },
+      "contract": {
+        "inputs": {},
+        "outputs": {},
+        "failures": {}
+      },
+      "description": {
+        "format": "plain-text/1",
+        "text": ""
+      },
+      "asset_refs": {}
+    }
+  },
+  "authorities": {
+    "scopes": [
+      {
+        "block": "app",
+        "selectors": [
+          "scope-selector"
+        ]
+      },
+      {
+        "block": "booking",
+        "selectors": [
+          "scope-selector"
+        ]
+      },
+      {
+        "block": "booking.hold",
+        "selectors": [
+          "scope-selector"
+        ]
+      },
+      {
+        "block": "booking.reminder",
+        "selectors": [
+          "scope-selector"
+        ]
+      }
+    ],
+    "release": [
+      "release-manager"
+    ],
+    "guardians": [
+      {
+        "item": "booking.hold/requirements.exclusive",
+        "principal": "safety-guardian"
+      }
+    ]
+  },
+  "deleted_ids": [
+    "deleted-demo"
+  ]
+}

@@ -1,0 +1,966 @@
+{
+  "format": "strata-claude-transcripts/1",
+  "pinned": {
+    "sdk_package": "@anthropic-ai/claude-agent-sdk",
+    "sdk_version": "0.3.296",
+    "sdk_registry_shasum": "255c4d284de2262fa8447a94a06d2541c0f5d20c",
+    "sdk_registry_integrity": "sha512-Y+cZ2BT8X94mQ9GJOVyIqhjC/nWGvwozUVLjdkzX7aSt+zuo5tgk7Hdv9V7tEUQ9fKnEuiL6moYNWDeHqCD4Lw==",
+    "sdk_engines_node": ">=18.0.0",
+    "sdk_peer_dependencies": {
+      "zod": "^4.0.0",
+      "@anthropic-ai/sdk": ">=0.93.0",
+      "@modelcontextprotocol/sdk": "^1.29.0"
+    },
+    "interface_file": "sdk.d.ts",
+    "interface_mirror": "https://unpkg.com/@anthropic-ai/claude-agent-sdk@0.3.296/sdk.d.ts",
+    "interface_read_date": "2026-10-12",
+    "interface_content_sha256": "fc2866dfe2c01468edb19b1d94f26156bfacecdf1e7f1452b276ed2f8cc0b08f",
+    "github_tag": "v0.3.296",
+    "upstream_commit": "85d8f8e0772199ec7965a0c2e874ac88343f2a01",
+    "repo_commit_contains_sdk_source": false,
+    "bundled_claude_code_version": "2.1.296",
+    "platform_binary_optional_dependencies": [
+      "@anthropic-ai/claude-agent-sdk-linux-x64",
+      "@anthropic-ai/claude-agent-sdk-linux-arm64",
+      "@anthropic-ai/claude-agent-sdk-linux-x64-musl",
+      "@anthropic-ai/claude-agent-sdk-linux-arm64-musl",
+      "@anthropic-ai/claude-agent-sdk-darwin-x64",
+      "@anthropic-ai/claude-agent-sdk-darwin-arm64",
+      "@anthropic-ai/claude-agent-sdk-win32-x64",
+      "@anthropic-ai/claude-agent-sdk-win32-arm64"
+    ],
+    "claude_code_package": "@anthropic-ai/claude-code",
+    "claude_code_registry_shasum": "c07c326b6fdff6f1c20c8a1b863a9af7fa395ba5",
+    "claude_code_bin": {
+      "claude": "bin/claude.exe"
+    },
+    "docs_read": [
+      {
+        "url": "https://code.claude.com/docs/en/agent-sdk/typescript",
+        "date": "2026-10-12"
+      },
+      {
+        "url": "https://code.claude.com/docs/en/agent-sdk/overview",
+        "date": "2026-10-12"
+      },
+      {
+        "url": "https://code.claude.com/docs/en/agent-sdk/quickstart",
+        "date": "2026-10-12"
+      },
+      {
+        "url": "https://code.claude.com/docs/en/agent-sdk/session-storage",
+        "date": "2026-10-12"
+      },
+      {
+        "url": "https://code.claude.com/docs/en/agent-sdk/cost-tracking",
+        "date": "2026-10-12"
+      }
+    ],
+    "interface_fingerprint_provenance": "Versioned unpkg text mirror; not publisher attestation or installed-interface verification"
+  },
+  "normalization": [
+    "Every native item is a hand-authored projection, not a wire capture. Keys marked $synthetic represent non-serializable AsyncIterable input and unqualified SandboxSettings, canUseTool and SessionStore configuration. The success result text field is result: string in the pinned mirror.",
+    "Session identity is observed from the message stream and bound in the adapter's private journal; the documented sessionId option selects a host-derived UUID that is distinct from the Strata task UUID and supplies no native deduplication or exactly-once guarantee.",
+    "Request, result and artifact digests, snapshot sequences and terminal immutability are bridge-owned Strata execution/1 facts recomputed here with the shared helpers; the native interface supplies no equivalent guarantee.",
+    "resume, forkSession and continue are never used by status or result: the session-storage documentation states resume re-spawns the agent and passes the ID to the subprocess, so resume creates new work rather than a read-only observation or loss recovery.",
+    "query.interrupt is cooperative and only available in streaming input mode; an interrupt receipt listing cancelled items is not proof that this task stopped, and completion may still win the race, as scenario five illustrates.",
+    "Every error after adapter invocation carries dispatch unknown; only a guard refusal before invocation could be not_dispatched, and none is illustrated. No native message text, environment, stack or credential enters a persisted error.",
+    "Session metadata/history contain no terminal SDKResultMessage guarantee. Known-session recovery assumes a separately retained, attributable completion from the original query stream; history alone cannot establish success. Mirror writes are best-effort and history may be compacted.",
+    "query.interrupt may resolve undefined; its receipt contains still_queued, not cancelled, because this method never sends cancel_queued. Receipt projections are method return values, not SDKMessage events."
+  ],
+  "scenarios": [
+    {
+      "id": "submit-succeed-result",
+      "summary": "Streaming query completes with a success result; the bridge freezes the normalized result, binds its canonical digest in a succeeded snapshot and later re-serves the same immutable result.",
+      "adapter_invoked": true,
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-claude-fixture-01",
+        "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345671",
+        "binding": {
+          "project_id": "proj-synthetic-booking",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "repo-synthetic-strata"
+        },
+        "repository_revision": "1f2e3d4c5b6a79880f1e2d3c4b5a69788f0e1d2c",
+        "instruction": "Synthetic instruction A: propose a bounded text edit for the synthetic booking profile and return a short diff.",
+        "limits": {
+          "runtime_ms": 600000,
+          "output_bytes": 16384
+        }
+      },
+      "steps": [
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "reserve-key",
+          "detail": {
+            "connection_id": "conn-claude-fixture-01",
+            "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345671",
+            "request_sha256": "97bb948c2ffde5c7a817916d99c6db6f6de97277c180d2873fc002a2de7ff666"
+          }
+        },
+        {
+          "kind": "sdk-call",
+          "op": "submit",
+          "call": 1,
+          "method": "query",
+          "detail": {
+            "prompt": {
+              "$synthetic": "AsyncIterable<SDKUserMessage>: one input, kept open until completion",
+              "messages": [
+                {
+                  "type": "user",
+                  "message": {
+                    "role": "user",
+                    "content": "Synthetic instruction A: propose a bounded text edit for the synthetic booking profile and return a short diff."
+                  },
+                  "parent_tool_use_id": null,
+                  "uuid": "7a1b2c3d-4e5f-4678-9abc-def012345672"
+                }
+              ]
+            },
+            "streaming_input": true,
+            "options": {
+              "cwd": "/srv/agent-workspaces/synthetic-conn-claude-fixture-01",
+              "sandbox": {
+                "$synthetic": "SandboxSettings projection; field shape not pinned in this review"
+              },
+              "permissionMode": "dontAsk",
+              "canUseTool": {
+                "$synthetic": "operator fail-closed permission callback"
+              },
+              "persistSession": true,
+              "sessionStore": {
+                "$synthetic": "append/load transcript mirror"
+              },
+              "sessionId": "7a1b2c3d-4e5f-4678-9abc-def012345672",
+              "maxTurns": 12,
+              "maxBudgetUsd": 2.5,
+              "abortController": true
+            }
+          }
+        },
+        {
+          "kind": "sdk-event",
+          "event": {
+            "type": "system",
+            "subtype": "init",
+            "session_id": "7a1b2c3d-4e5f-4678-9abc-def012345672"
+          }
+        },
+        {
+          "kind": "sdk-event",
+          "event": {
+            "type": "assistant",
+            "session_id": "7a1b2c3d-4e5f-4678-9abc-def012345672",
+            "message": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Synthetic assistant progress note."
+                }
+              ]
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "bind-session",
+          "detail": {
+            "session_id": "7a1b2c3d-4e5f-4678-9abc-def012345672"
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-claude-fixture-01",
+                "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345671",
+                "binding": {
+                  "project_id": "proj-synthetic-booking",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "repo-synthetic-strata"
+                },
+                "repository_revision": "1f2e3d4c5b6a79880f1e2d3c4b5a69788f0e1d2c",
+                "request_sha256": "97bb948c2ffde5c7a817916d99c6db6f6de97277c180d2873fc002a2de7ff666"
+              },
+              "sequence": 1,
+              "state": "running"
+            }
+          }
+        },
+        {
+          "kind": "sdk-event",
+          "event": {
+            "type": "result",
+            "subtype": "success",
+            "session_id": "7a1b2c3d-4e5f-4678-9abc-def012345672",
+            "duration_api_ms": 4200,
+            "total_cost_usd": 0.42,
+            "usage": {
+              "input_tokens": 900,
+              "output_tokens": 400
+            },
+            "result": "Synthetic normalized summary A: one bounded profile edit proposed as a diff."
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "action": "freeze-result",
+          "detail": {
+            "result_sha256": "8d7f034c7c0336dbf0c318e1749585c04faaa888b31df1ca01ad004af92ce05b",
+            "artifact_ids": [
+              "change-001"
+            ]
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-claude-fixture-01",
+                "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345671",
+                "binding": {
+                  "project_id": "proj-synthetic-booking",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "repo-synthetic-strata"
+                },
+                "repository_revision": "1f2e3d4c5b6a79880f1e2d3c4b5a69788f0e1d2c",
+                "request_sha256": "97bb948c2ffde5c7a817916d99c6db6f6de97277c180d2873fc002a2de7ff666"
+              },
+              "sequence": 2,
+              "state": "succeeded",
+              "result_sha256": "8d7f034c7c0336dbf0c318e1749585c04faaa888b31df1ca01ad004af92ce05b"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "result",
+          "action": "emit-result",
+          "detail": {
+            "result": {
+              "format": "strata-agent-task-result/1",
+              "task": {
+                "connection_id": "conn-claude-fixture-01",
+                "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345671",
+                "binding": {
+                  "project_id": "proj-synthetic-booking",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "repo-synthetic-strata"
+                },
+                "repository_revision": "1f2e3d4c5b6a79880f1e2d3c4b5a69788f0e1d2c",
+                "request_sha256": "97bb948c2ffde5c7a817916d99c6db6f6de97277c180d2873fc002a2de7ff666"
+              },
+              "summary": "Synthetic normalized summary A: one bounded profile edit proposed as a diff.",
+              "artifacts": [
+                {
+                  "id": "change-001",
+                  "sha256": "cdef1e0153e9701cb0d49adea8b76316b4703aac3f7327a3f036297d705938b5",
+                  "bytes": 127,
+                  "media_type": "text/x-diff"
+                }
+              ],
+              "trust": "agent-output"
+            },
+            "artifact_contents": {
+              "change-001": "--- a/synthetic/booking-profile.json\n+++ b/synthetic/booking-profile.json\n@@ -1 +1 @@\n-\"status\": \"draft\"\n+\"status\": \"reviewed\"\n"
+            }
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "succeeded",
+        "result_available": true,
+        "intermediate_states": [
+          "running"
+        ]
+      }
+    },
+    {
+      "id": "duplicate-id-changed-digest-conflict",
+      "summary": "A second submit reuses the retained task key with a changed request; the reservation refuses the replacement and the conflict is surfaced with dispatch unknown.",
+      "adapter_invoked": true,
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-claude-fixture-01",
+        "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345671",
+        "binding": {
+          "project_id": "proj-synthetic-booking",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "repo-synthetic-strata"
+        },
+        "repository_revision": "1f2e3d4c5b6a79880f1e2d3c4b5a69788f0e1d2c",
+        "instruction": "Synthetic instruction B: a different changed request that reuses the original task key.",
+        "limits": {
+          "runtime_ms": 600000,
+          "output_bytes": 16384
+        }
+      },
+      "conflicting_task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-claude-fixture-01",
+        "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345671",
+        "binding": {
+          "project_id": "proj-synthetic-booking",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "repo-synthetic-strata"
+        },
+        "repository_revision": "1f2e3d4c5b6a79880f1e2d3c4b5a69788f0e1d2c",
+        "instruction": "Synthetic instruction A: propose a bounded text edit for the synthetic booking profile and return a short diff.",
+        "limits": {
+          "runtime_ms": 600000,
+          "output_bytes": 16384
+        }
+      },
+      "steps": [
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "reserve-key",
+          "detail": {
+            "connection_id": "conn-claude-fixture-01",
+            "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345671",
+            "request_sha256": "a99d0fb8b9739b12ce6edca8294b42a4333d8ee0566d022e23463ff6ce4108e3",
+            "existing_request_sha256": "97bb948c2ffde5c7a817916d99c6db6f6de97277c180d2873fc002a2de7ff666"
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "emit-error",
+          "detail": {
+            "error": {
+              "code": "EXECUTION_CONFLICT",
+              "dispatch": "unknown"
+            }
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "error",
+        "error": {
+          "code": "EXECUTION_CONFLICT",
+          "dispatch": "unknown"
+        },
+        "result_available": false
+      }
+    },
+    {
+      "id": "known-session-observation-after-lost-reply",
+      "summary": "Recovery assumes a completion separately retained from the original query stream and bound to this request. Session history alone cannot prove terminal success.",
+      "adapter_invoked": true,
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-claude-fixture-01",
+        "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345673",
+        "binding": {
+          "project_id": "proj-synthetic-booking",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "repo-synthetic-strata"
+        },
+        "repository_revision": "1f2e3d4c5b6a79880f1e2d3c4b5a69788f0e1d2c",
+        "instruction": "Synthetic instruction C: summarize the synthetic profile change and attach the diff.",
+        "limits": {
+          "runtime_ms": 600000,
+          "output_bytes": 16384
+        }
+      },
+      "steps": [
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "reserve-key",
+          "detail": {
+            "connection_id": "conn-claude-fixture-01",
+            "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345673",
+            "request_sha256": "f99eaa9964978f426dce1467300f2fb282dfdf6b40fac9f9fefcff285a78abbc"
+          }
+        },
+        {
+          "kind": "sdk-call",
+          "op": "submit",
+          "call": 1,
+          "method": "query",
+          "detail": {
+            "prompt": {
+              "$synthetic": "AsyncIterable<SDKUserMessage>: one input, kept open until completion",
+              "messages": [
+                {
+                  "type": "user",
+                  "message": {
+                    "role": "user",
+                    "content": "Synthetic instruction C: summarize the synthetic profile change and attach the diff."
+                  },
+                  "parent_tool_use_id": null,
+                  "uuid": "7a1b2c3d-4e5f-4678-9abc-def012345674"
+                }
+              ]
+            },
+            "streaming_input": true,
+            "options": {
+              "cwd": "/srv/agent-workspaces/synthetic-conn-claude-fixture-01",
+              "sandbox": {
+                "$synthetic": "SandboxSettings projection; field shape not pinned in this review"
+              },
+              "permissionMode": "dontAsk",
+              "canUseTool": {
+                "$synthetic": "operator fail-closed permission callback"
+              },
+              "persistSession": true,
+              "sessionStore": {
+                "$synthetic": "append/load transcript mirror"
+              },
+              "sessionId": "7a1b2c3d-4e5f-4678-9abc-def012345674",
+              "maxTurns": 12,
+              "maxBudgetUsd": 2.5,
+              "abortController": true
+            }
+          }
+        },
+        {
+          "kind": "sdk-event",
+          "event": {
+            "type": "system",
+            "subtype": "init",
+            "session_id": "7a1b2c3d-4e5f-4678-9abc-def012345674"
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "bind-session",
+          "detail": {
+            "session_id": "7a1b2c3d-4e5f-4678-9abc-def012345674"
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "emit-error",
+          "detail": {
+            "error": {
+              "code": "EXECUTION_UNAVAILABLE",
+              "dispatch": "unknown"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "retain-uncertain-admission",
+          "detail": {
+            "reason": "submit outcome unknown after the stream was lost; the bound session identity is retained for reconciliation"
+          }
+        },
+        {
+          "kind": "sdk-call",
+          "op": "status",
+          "call": 2,
+          "method": "getSessionInfo",
+          "detail": {
+            "session_id": "7a1b2c3d-4e5f-4678-9abc-def012345674"
+          }
+        },
+        {
+          "kind": "sdk-call",
+          "op": "status",
+          "call": 3,
+          "method": "getSessionMessages",
+          "detail": {
+            "session_id": "7a1b2c3d-4e5f-4678-9abc-def012345674"
+          }
+        },
+        {
+          "kind": "session-history",
+          "event": {
+            "type": "assistant",
+            "session_id": "7a1b2c3d-4e5f-4678-9abc-def012345674",
+            "message": {
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Synthetic assistant progress note from the retained transcript."
+                }
+              ]
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "action": "read-retained-completion",
+          "detail": {
+            "source": "original-query-stream",
+            "request_sha256": "f99eaa9964978f426dce1467300f2fb282dfdf6b40fac9f9fefcff285a78abbc",
+            "session_id": "7a1b2c3d-4e5f-4678-9abc-def012345674",
+            "completion": {
+              "type": "result",
+              "subtype": "success",
+              "session_id": "7a1b2c3d-4e5f-4678-9abc-def012345674",
+              "duration_api_ms": 5100,
+              "total_cost_usd": 0.31,
+              "usage": {
+                "input_tokens": 700,
+                "output_tokens": 250
+              },
+              "result": "Synthetic normalized summary C: retained-transcript completion reconciled by the bound session identity."
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "action": "freeze-result",
+          "detail": {
+            "result_sha256": "be44cbc1b6ec8e4c4e6ba85febf0c92d9c8c6a25dccc1e6ebb75392ce5ac62e6",
+            "artifact_ids": [
+              "change-002"
+            ]
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-claude-fixture-01",
+                "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345673",
+                "binding": {
+                  "project_id": "proj-synthetic-booking",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "repo-synthetic-strata"
+                },
+                "repository_revision": "1f2e3d4c5b6a79880f1e2d3c4b5a69788f0e1d2c",
+                "request_sha256": "f99eaa9964978f426dce1467300f2fb282dfdf6b40fac9f9fefcff285a78abbc"
+              },
+              "sequence": 5,
+              "state": "succeeded",
+              "result_sha256": "be44cbc1b6ec8e4c4e6ba85febf0c92d9c8c6a25dccc1e6ebb75392ce5ac62e6"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "result",
+          "action": "emit-result",
+          "detail": {
+            "result": {
+              "format": "strata-agent-task-result/1",
+              "task": {
+                "connection_id": "conn-claude-fixture-01",
+                "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345673",
+                "binding": {
+                  "project_id": "proj-synthetic-booking",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "repo-synthetic-strata"
+                },
+                "repository_revision": "1f2e3d4c5b6a79880f1e2d3c4b5a69788f0e1d2c",
+                "request_sha256": "f99eaa9964978f426dce1467300f2fb282dfdf6b40fac9f9fefcff285a78abbc"
+              },
+              "summary": "Synthetic normalized summary C: retained-transcript completion reconciled by the bound session identity.",
+              "artifacts": [
+                {
+                  "id": "change-002",
+                  "sha256": "9a14ad61869ee51c1cb1e37710f347f801471f3c659d16c9fa08d3d6f7495944",
+                  "bytes": 121,
+                  "media_type": "text/x-diff"
+                }
+              ],
+              "trust": "agent-output"
+            },
+            "artifact_contents": {
+              "change-002": "--- a/synthetic/booking-profile.json\n+++ b/synthetic/booking-profile.json\n@@ -2 +2 @@\n-\"label\": \"alpha\"\n+\"label\": \"beta\"\n"
+            }
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "succeeded",
+        "result_available": true,
+        "surfaced_error": {
+          "code": "EXECUTION_UNAVAILABLE"
+        }
+      }
+    },
+    {
+      "id": "unknown-session-remains-uncertain",
+      "summary": "The submit outcome is unknown and no native identity was observed; the admission stays uncertain, every second start is blocked, and a later status lookup without a retained identity is an observation error, never permission to resubmit.",
+      "adapter_invoked": true,
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-claude-fixture-01",
+        "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345675",
+        "binding": {
+          "project_id": "proj-synthetic-booking",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "repo-synthetic-strata"
+        },
+        "repository_revision": "1f2e3d4c5b6a79880f1e2d3c4b5a69788f0e1d2c",
+        "instruction": "Synthetic instruction D: an admission whose native reply is lost before any identity is observed.",
+        "limits": {
+          "runtime_ms": 600000,
+          "output_bytes": 16384
+        }
+      },
+      "steps": [
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "reserve-key",
+          "detail": {
+            "connection_id": "conn-claude-fixture-01",
+            "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345675",
+            "request_sha256": "c303d4e4a4f63ddcca12b3603291afe5381207d2a19c1e366e738505461fc7ce"
+          }
+        },
+        {
+          "kind": "sdk-call",
+          "op": "submit",
+          "call": 1,
+          "method": "query",
+          "detail": {
+            "prompt": {
+              "$synthetic": "AsyncIterable<SDKUserMessage>: one input, kept open until completion",
+              "messages": [
+                {
+                  "type": "user",
+                  "message": {
+                    "role": "user",
+                    "content": "Synthetic instruction D: an admission whose native reply is lost before any identity is observed."
+                  },
+                  "parent_tool_use_id": null,
+                  "uuid": "7a1b2c3d-4e5f-4678-9abc-def012345676"
+                }
+              ]
+            },
+            "streaming_input": true,
+            "options": {
+              "cwd": "/srv/agent-workspaces/synthetic-conn-claude-fixture-01",
+              "sandbox": {
+                "$synthetic": "SandboxSettings projection; field shape not pinned in this review"
+              },
+              "permissionMode": "dontAsk",
+              "canUseTool": {
+                "$synthetic": "operator fail-closed permission callback"
+              },
+              "persistSession": true,
+              "sessionStore": {
+                "$synthetic": "append/load transcript mirror"
+              },
+              "sessionId": "7a1b2c3d-4e5f-4678-9abc-def012345676",
+              "maxTurns": 12,
+              "maxBudgetUsd": 2.5,
+              "abortController": true
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "emit-error",
+          "detail": {
+            "error": {
+              "code": "EXECUTION_UNAVAILABLE",
+              "dispatch": "unknown"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "retain-uncertain-admission",
+          "detail": {
+            "reason": "submit outcome unknown and no native identity observed; no lookup key exists"
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "block-second-start",
+          "detail": {
+            "reason": "every second start stays blocked until native work is disproved under current authorization"
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "detail": {
+            "session_id": null,
+            "note": "no retained native identity; the lookup key is unavailable"
+          },
+          "action": "lookup-bound-session"
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "action": "emit-error",
+          "detail": {
+            "error": {
+              "code": "EXECUTION_NOT_FOUND",
+              "dispatch": "unknown"
+            }
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "error",
+        "error": {
+          "code": "EXECUTION_NOT_FOUND",
+          "dispatch": "unknown"
+        },
+        "result_available": false,
+        "surfaced_error": {
+          "code": "EXECUTION_UNAVAILABLE"
+        }
+      }
+    },
+    {
+      "id": "cancel-completion-race-success-wins",
+      "summary": "A cooperative interrupt is acknowledged while the turn races to completion; cancel_requested is emitted, the observed native success result decides the terminal state, and the frozen result is still digest-bound.",
+      "adapter_invoked": true,
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-claude-fixture-01",
+        "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345677",
+        "binding": {
+          "project_id": "proj-synthetic-booking",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "repo-synthetic-strata"
+        },
+        "repository_revision": "1f2e3d4c5b6a79880f1e2d3c4b5a69788f0e1d2c",
+        "instruction": "Synthetic instruction E: a short task whose cancellation races with completion.",
+        "limits": {
+          "runtime_ms": 600000,
+          "output_bytes": 16384
+        }
+      },
+      "steps": [
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "reserve-key",
+          "detail": {
+            "connection_id": "conn-claude-fixture-01",
+            "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345677",
+            "request_sha256": "122a7b2ca96c5cb570cb58e6ef1ec9ddd458a2c43f7937ad420ba93961459b13"
+          }
+        },
+        {
+          "kind": "sdk-call",
+          "op": "submit",
+          "call": 1,
+          "method": "query",
+          "detail": {
+            "prompt": {
+              "$synthetic": "AsyncIterable<SDKUserMessage>: one input, kept open until completion",
+              "messages": [
+                {
+                  "type": "user",
+                  "message": {
+                    "role": "user",
+                    "content": "Synthetic instruction E: a short task whose cancellation races with completion."
+                  },
+                  "parent_tool_use_id": null,
+                  "uuid": "7a1b2c3d-4e5f-4678-9abc-def012345678"
+                }
+              ]
+            },
+            "streaming_input": true,
+            "options": {
+              "cwd": "/srv/agent-workspaces/synthetic-conn-claude-fixture-01",
+              "sandbox": {
+                "$synthetic": "SandboxSettings projection; field shape not pinned in this review"
+              },
+              "permissionMode": "dontAsk",
+              "canUseTool": {
+                "$synthetic": "operator fail-closed permission callback"
+              },
+              "persistSession": true,
+              "sessionStore": {
+                "$synthetic": "append/load transcript mirror"
+              },
+              "sessionId": "7a1b2c3d-4e5f-4678-9abc-def012345678",
+              "maxTurns": 12,
+              "maxBudgetUsd": 2.5,
+              "abortController": true
+            }
+          }
+        },
+        {
+          "kind": "sdk-event",
+          "event": {
+            "type": "system",
+            "subtype": "init",
+            "session_id": "7a1b2c3d-4e5f-4678-9abc-def012345678"
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "bind-session",
+          "detail": {
+            "session_id": "7a1b2c3d-4e5f-4678-9abc-def012345678"
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-claude-fixture-01",
+                "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345677",
+                "binding": {
+                  "project_id": "proj-synthetic-booking",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "repo-synthetic-strata"
+                },
+                "repository_revision": "1f2e3d4c5b6a79880f1e2d3c4b5a69788f0e1d2c",
+                "request_sha256": "122a7b2ca96c5cb570cb58e6ef1ec9ddd458a2c43f7937ad420ba93961459b13"
+              },
+              "sequence": 1,
+              "state": "running"
+            }
+          }
+        },
+        {
+          "kind": "sdk-call",
+          "op": "cancel",
+          "call": 2,
+          "method": "query.interrupt",
+          "detail": {
+            "call": 1
+          }
+        },
+        {
+          "kind": "sdk-return",
+          "call": 2,
+          "value": {
+            "still_queued": []
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "cancel",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-claude-fixture-01",
+                "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345677",
+                "binding": {
+                  "project_id": "proj-synthetic-booking",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "repo-synthetic-strata"
+                },
+                "repository_revision": "1f2e3d4c5b6a79880f1e2d3c4b5a69788f0e1d2c",
+                "request_sha256": "122a7b2ca96c5cb570cb58e6ef1ec9ddd458a2c43f7937ad420ba93961459b13"
+              },
+              "sequence": 2,
+              "state": "cancel_requested"
+            }
+          }
+        },
+        {
+          "kind": "sdk-event",
+          "event": {
+            "type": "result",
+            "subtype": "success",
+            "session_id": "7a1b2c3d-4e5f-4678-9abc-def012345678",
+            "duration_api_ms": 3300,
+            "total_cost_usd": 0.19,
+            "usage": {
+              "input_tokens": 500,
+              "output_tokens": 180
+            },
+            "result": "Synthetic normalized summary E: completion won the cancellation race and the observed result stands."
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "action": "freeze-result",
+          "detail": {
+            "result_sha256": "74052b4c40abef95a0cb4587e26deb703d7a90b4449bb996506c88894c7741a2",
+            "artifact_ids": []
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-claude-fixture-01",
+                "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345677",
+                "binding": {
+                  "project_id": "proj-synthetic-booking",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "repo-synthetic-strata"
+                },
+                "repository_revision": "1f2e3d4c5b6a79880f1e2d3c4b5a69788f0e1d2c",
+                "request_sha256": "122a7b2ca96c5cb570cb58e6ef1ec9ddd458a2c43f7937ad420ba93961459b13"
+              },
+              "sequence": 3,
+              "state": "succeeded",
+              "result_sha256": "74052b4c40abef95a0cb4587e26deb703d7a90b4449bb996506c88894c7741a2"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "result",
+          "action": "emit-result",
+          "detail": {
+            "result": {
+              "format": "strata-agent-task-result/1",
+              "task": {
+                "connection_id": "conn-claude-fixture-01",
+                "task_id": "0f1e2d3c-4b5a-4678-9abc-def012345677",
+                "binding": {
+                  "project_id": "proj-synthetic-booking",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "repo-synthetic-strata"
+                },
+                "repository_revision": "1f2e3d4c5b6a79880f1e2d3c4b5a69788f0e1d2c",
+                "request_sha256": "122a7b2ca96c5cb570cb58e6ef1ec9ddd458a2c43f7937ad420ba93961459b13"
+              },
+              "summary": "Synthetic normalized summary E: completion won the cancellation race and the observed result stands.",
+              "artifacts": [],
+              "trust": "agent-output"
+            },
+            "artifact_contents": {}
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "succeeded",
+        "result_available": true,
+        "intermediate_states": [
+          "running",
+          "cancel_requested"
+        ]
+      }
+    }
+  ]
+}

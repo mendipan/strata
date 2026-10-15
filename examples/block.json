@@ -1,0 +1,24 @@
+{
+  "id": "app",
+  "parent": null,
+  "purpose": "A command-driven booking demonstration.",
+  "requirements": {},
+  "acceptance": {
+    "review": {
+      "statement": "Verify intent.review for app.",
+      "method": "review",
+      "check": "intent.review",
+      "version": "1",
+      "fixture": "app",
+      "subjects": [
+        "app/purpose"
+      ]
+    }
+  },
+  "relationships": {},
+  "contract": {
+    "inputs": {},
+    "outputs": {},
+    "failures": {}
+  }
+}

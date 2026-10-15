@@ -1,0 +1,49 @@
+{
+  "layer": {
+    "id": "L-translation-expiry",
+    "revision": 1,
+    "owner": "author-a",
+    "model_version": "strata/0.1-facets-experimental",
+    "baseline": "R0@1",
+    "intent": "Extend the booking hold expiry from the exact 600-second baseline to 900 seconds, supplied from the declared local implementation experiment.",
+    "changes": [
+      {
+        "op": "set_item",
+        "block": "booking.hold",
+        "path": "requirements.expiry",
+        "expected": {
+          "kind": "value",
+          "value": {
+            "statement": "A hold expires exactly 600 seconds after it starts.",
+            "kind": "rule",
+            "facets": ["behavior", "data"],
+            "acceptance": ["expiry"],
+            "parameters": { "seconds": 600 }
+          }
+        },
+        "value": {
+          "statement": "A hold expires exactly 900 seconds after it starts.",
+          "kind": "rule",
+          "facets": ["behavior", "data"],
+          "acceptance": ["expiry"],
+          "parameters": { "seconds": 900 }
+        }
+      }
+    ],
+    "requires_layers": [],
+    "read_set": [],
+    "assumptions": [],
+    "acceptance": [],
+    "resolution_proposals": [],
+    "derived_from": null
+  },
+  "traceability": [
+    {
+      "item": "booking.hold/requirements.expiry",
+      "classification": "observed",
+      "rationale": "The declared experiment bytes change only the explicit expiry configuration of the generated booking implementation from 600 to 900 seconds; the semantic proposal was prepared by the test author, not inferred by Strata.",
+      "files": ["booking.mjs", "intent.json"]
+    }
+  ],
+  "questions": []
+}

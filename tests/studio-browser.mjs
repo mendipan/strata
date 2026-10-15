@@ -1,0 +1,47 @@
+// Synthetic fixture only. External network and model/provider fallback are denied.
+import { openStudioSection } from './studio-navigation.mjs';
+import assert from 'node:assert/strict';
+import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { startLocalBroker } from '../dist/src/local-broker.js';
+import { StudioCommands } from '../dist/src/explorer/commands.js';
+import { startExplorer } from '../dist/src/explorer/host.js';
+import { runCli } from '../dist/src/cli.js';
+const modulePath=process.env.STRATA_EXPLORER_PLAYWRIGHT_MODULE;
+const {chromium}=await import(modulePath?pathToFileURL(path.resolve(modulePath)).href:'playwright');
+const root=await mkdtemp(path.join(os.tmpdir(),'strata-studio-browser-')),broker=await startLocalBroker(path.join(root,'state'),0),config={...JSON.parse(await readFile('strata.config.json','utf8')),broker:broker.url};
+await writeFile(path.join(root,'strata.config.json'),JSON.stringify(config));
+const commands=new StudioCommands(config,'fixture-bootstrap',root,['init','layer.create','layer.revise','layer.publish']);await commands.reader.refresh();
+const host=await startExplorer(commands.reader,{assets:path.resolve('explorer'),commands}),browser=await chromium.launch({channel:process.env.STRATA_EXPLORER_BROWSER_CHANNEL??'msedge',headless:true});
+const checks=[],errors=[],external=[];const check=(name,value)=>{checks.push(name);assert.ok(value,name);};
+let context;
+try{
+  context=await browser.newContext({viewport:{width:1440,height:900},reducedMotion:'reduce'});
+  await context.route('**/*',r=>{if(new URL(r.request().url()).origin!==host.origin){external.push(r.request().url());return r.abort();}return r.continue();});
+  const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
+  const loaded=async()=>{await page.locator('main[aria-busy]').waitFor({state:'detached'});};
+  const section=async name=>{await openStudioSection(page, name);await loaded();};
+  await page.goto(host.launchUrl);await loaded();check('Studio branding and no capability URL',await page.title()==='Strata Studio'&&!page.url().includes(host.capability));
+  await section('Changes');await page.getByRole('heading',{name:'Create the initial baseline'}).waitFor();
+  await page.getByLabel('Root purpose',{exact:true}).fill('Maintain a synthetic inventory.');await page.getByLabel('Responsible scope principal').fill('scope-selector');await page.getByLabel('Release authority principal').fill('release-manager');
+  await page.getByRole('button',{name:'Create baseline',exact:true}).click();await page.getByText('Saved R-start@1',{exact:true}).waitFor();await page.getByRole('button',{name:'Reload saved view'}).click();await loaded();
+  check('bootstrap persisted through actual broker',(await runCli(['inspect','release','R-start@1','--project',root],undefined,{...process.env,STRATA_SESSION:'fixture-bootstrap'})).data.blocks.app.purpose==='Maintain a synthetic inventory.');
+  await page.getByRole('button',{name:'New change',exact:true}).click();const dialog=page.locator('dialog.proposal-dialog');await dialog.waitFor({state:'visible'});
+  await dialog.getByLabel('New Layer ID',{exact:true}).fill('L-inventory');await dialog.getByLabel('Intent',{exact:true}).fill('Clarify the inventory purpose.');await dialog.getByLabel('Proposed purpose',{exact:true}).fill('Maintain the inventory and its counted items.');
+  check('owner is server resolved',await dialog.getByLabel('Requested Layer owner').getAttribute('readonly')!==null);
+  await dialog.getByRole('button',{name:'Add item to draft'}).click();await dialog.getByRole('button',{name:'Review draft',exact:true}).click();await dialog.getByRole('heading',{name:'Review before handoff'}).waitFor();
+  await dialog.getByRole('button',{name:'Save owned draft'}).click();await dialog.getByText('Saved L-inventory@1',{exact:true}).waitFor();check('real save produces exact owned Layer',(await runCli(['inspect','layer','L-inventory@1','--project',root],undefined,{...process.env,STRATA_SESSION:'fixture-bootstrap'})).data.owner==='bootstrap');
+  await dialog.getByRole('link',{name:'Review saved proposal'}).click();await loaded();await page.getByRole('heading',{name:'Proposed intent',exact:true}).waitFor();check('proposal readable apart from baseline',(await page.locator('main').innerText()).includes('Maintain the inventory and its counted items.'));
+  await page.getByRole('button',{name:'Publish proposal',exact:true}).click();await page.getByText('Saved L-inventory@1',{exact:true}).waitFor();
+  check('publication distinct from Release',(await runCli(['inspect','release','R-start@1','--project',root],undefined,{...process.env,STRATA_SESSION:'fixture-bootstrap'})).data.blocks.app.purpose==='Maintain a synthetic inventory.');
+  await page.getByRole('button',{name:'Reload saved view'}).click();await loaded();
+  await page.setViewportSize({width:390,height:844});await page.getByRole('button',{name:'Menu',exact:true}).click();await openStudioSection(page, 'Changes', '#menu-dialog');await loaded();
+  check('mobile no page overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));await page.screenshot({path:path.join(root,'mobile.png'),fullPage:true});
+  await page.getByRole('button',{name:'New change',exact:true}).click();await dialog.waitFor({state:'visible'});await dialog.getByLabel('New Layer ID').fill('L-cancel');await page.keyboard.press('Escape');await dialog.waitFor({state:'detached'});check('cancel creates no record',(await runCli(['inspect','layer','L-cancel@1','--project',root],undefined,{...process.env,STRATA_SESSION:'fixture-bootstrap'})).ok===false);
+  check('cancel restores focus',await page.getByRole('button',{name:'New change',exact:true}).evaluate(b=>document.activeElement===b));
+  await page.setViewportSize({width:360,height:800});check('360px no page overflow',await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+  check('no browser errors',errors.length===0);check('no external access',external.length===0);
+  process.stdout.write(JSON.stringify({passed:checks.length,checks,output:root})+'\n');
+}finally{await context?.close();await browser.close();await host.close();await broker.close();}

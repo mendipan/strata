@@ -1,0 +1,8 @@
+{
+  "package": "@anthropic-ai/claude-agent-sdk",
+  "version": "0.3.296",
+  "resolved": "https://registry.npmjs.org/@anthropic-ai/claude-agent-sdk/-/claude-agent-sdk-0.3.296.tgz",
+  "integrity": "sha512-Y+cZ2BT8X94mQ9GJOVyIqhjC/nWGvwozUVLjdkzX7aSt+zuo5tgk7Hdv9V7tEUQ9fKnEuiL6moYNWDeHqCD4Lw==",
+  "license_sha256": "8ce94b9478bb9868f9641f818e06cd722fbe55d4c22e2d2ed11971b20146173a",
+  "declared_license": "SEE LICENSE IN README.md"
+}

@@ -1,0 +1,438 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+    },
+    "revision": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+    },
+    "model_version": {
+      "type": "string",
+      "const": "strata/0.3-block-lifecycle-experimental"
+    },
+    "root": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+    },
+    "blocks": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+          },
+          "parent": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1
+          },
+          "requirements": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$"
+            },
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "statement": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "rule",
+                    "invariant"
+                  ]
+                },
+                "facets": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "behavior",
+                      "design",
+                      "data",
+                      "safety"
+                    ]
+                  }
+                },
+                "acceptance": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "parameters": {
+                  "type": "object",
+                  "propertyNames": {
+                    "type": "string"
+                  },
+                  "additionalProperties": {
+                    "type": [
+                      "number",
+                      "boolean"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "statement",
+                "kind",
+                "facets",
+                "acceptance",
+                "parameters"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "acceptance": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$"
+            },
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "statement": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "method": {
+                  "type": "string",
+                  "enum": [
+                    "mechanical",
+                    "review"
+                  ]
+                },
+                "check": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+                },
+                "version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "fixture": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "subjects": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "statement",
+                "method",
+                "check",
+                "version",
+                "fixture",
+                "subjects"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "relationships": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$"
+            },
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "target": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+                },
+                "statement": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "acceptance": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "target",
+                "statement",
+                "acceptance"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "contract": {
+            "type": "object",
+            "properties": {
+              "inputs": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]+$"
+                },
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "statement": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "acceptance": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "statement",
+                    "acceptance"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "outputs": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]+$"
+                },
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "statement": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "acceptance": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "statement",
+                    "acceptance"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "failures": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]+$"
+                },
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "statement": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "acceptance": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "statement",
+                    "acceptance"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "inputs",
+              "outputs",
+              "failures"
+            ],
+            "additionalProperties": false
+          },
+          "description": {
+            "type": "object",
+            "properties": {
+              "format": {
+                "type": "string",
+                "const": "plain-text/1"
+              },
+              "text": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "format",
+              "text"
+            ],
+            "additionalProperties": false
+          },
+          "asset_refs": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+$"
+            },
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "asset_ref": {
+                  "type": "string",
+                  "pattern": "^asset@[a-f0-9]{64}$"
+                },
+                "content_sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "background",
+                    "application_resource",
+                    "normative_reference",
+                    "evidence_fixture"
+                  ]
+                },
+                "subjects": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "asset_ref",
+                "content_sha256",
+                "role",
+                "subjects"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "parent",
+          "purpose",
+          "requirements",
+          "acceptance",
+          "relationships",
+          "contract",
+          "description",
+          "asset_refs"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "authorities": {
+      "type": "object",
+      "properties": {
+        "scopes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "block": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+              },
+              "selectors": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "block",
+              "selectors"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "release": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "guardians": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "item": {
+                "type": "string"
+              },
+              "principal": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "item",
+              "principal"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "scopes",
+        "release",
+        "guardians"
+      ],
+      "additionalProperties": false
+    },
+    "deleted_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "id",
+    "revision",
+    "model_version",
+    "root",
+    "blocks",
+    "authorities",
+    "deleted_ids"
+  ],
+  "additionalProperties": false
+}

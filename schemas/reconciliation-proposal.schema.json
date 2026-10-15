@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "report_ref": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "accept_code",
+        "update_intent",
+        "restore_intent",
+        "revalidate",
+        "defer",
+        "reject"
+      ]
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "paths": {
+      "minItems": 1,
+      "maxItems": 256,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4096
+      }
+    },
+    "items": {
+      "minItems": 1,
+      "maxItems": 256,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4096
+      }
+    },
+    "layer_refs": {
+      "maxItems": 256,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+      }
+    },
+    "patch_refs": {
+      "maxItems": 256,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+      }
+    },
+    "evidence_refs": {
+      "maxItems": 256,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+      }
+    },
+    "questions": {
+      "maxItems": 256,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4096
+      }
+    },
+    "supersedes": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "format": {
+      "type": "string",
+      "const": "reconciliation-proposal/1"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "repo_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "report_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "binding_ref": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "binding_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "observation_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "intent_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "coverage_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "evidence_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "state": {
+      "type": "string",
+      "const": "proposed"
+    }
+  },
+  "required": [
+    "report_ref",
+    "action",
+    "rationale",
+    "paths",
+    "items",
+    "layer_refs",
+    "patch_refs",
+    "evidence_refs",
+    "questions",
+    "supersedes",
+    "format",
+    "project_id",
+    "repo_id",
+    "report_sha256",
+    "binding_ref",
+    "binding_sha256",
+    "owner",
+    "observation_sha256",
+    "intent_sha256",
+    "coverage_sha256",
+    "evidence_sha256",
+    "state"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "strata-build-child-receipt/1"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "repository_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "build_id": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "actor": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "command": {
+      "type": "string",
+      "enum": [
+        "realization.register",
+        "evidence.run"
+      ]
+    },
+    "child_key": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "input_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 512,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "authentication": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 512,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "format",
+    "project_id",
+    "repository_id",
+    "build_id",
+    "actor",
+    "command",
+    "child_key",
+    "input_sha256",
+    "result",
+    "authentication"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="1320" viewBox="0 0 390 1320" role="img" aria-labelledby="title desc"><title id="title">Phone first decision design</title><desc id="desc">Static phone wireframe: one-column decision with radio alternatives, explicit current reminder effects, required reason, and expandable exact records. No controls function.</desc>
+<rect width="390" height="1320" fill="#f5f2eb"/>
+<text x="16" y="32" font-family="Segoe UI,Arial,sans-serif" font-size="24" font-weight="600" fill="#201d18">Strata</text>
+<text x="250" y="30" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="600" fill="#62594d">RUN DEMO</text>
+<line x1="16" y1="49" x2="374" y2="49" stroke="#d8d0c3" stroke-width="1.5"/>
+<rect x="16" y="63" width="358" height="28" rx="4" fill="#f5f2eb" stroke="#62594d"/>
+<text x="26" y="82" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="600" fill="#62594d">DESIGN ILLUSTRATION · NOT A RUN</text>
+<text x="16" y="120" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="600" fill="#a94f13">HUMAN DECISION · FIRST PACKET</text>
+<text x="16" y="159" font-family="Georgia,serif" font-size="31" font-weight="400" fill="#201d18">Choose the</text>
+<text x="16" y="193" font-family="Georgia,serif" font-size="31" font-weight="400" fill="#201d18">hold duration.</text>
+<text x="16" y="225" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="400" fill="#62594d">The reminder requires L-hold@1.</text>
+<text x="16" y="248" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="400" fill="#62594d">It currently assumes 900 seconds.</text>
+<rect x="16" y="269" width="358" height="49" rx="8" fill="#f5f2eb" stroke="#d8d0c3"/>
+<text x="30" y="299" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="600" fill="#42654d">Connected · current packet observed</text>
+<rect x="16" y="336" width="358" height="207" rx="8" fill="#fffdf8" stroke="#d8d0c3"/>
+<circle cx="37" cy="365" r="9" fill="#fffdf8" stroke="#62594d" stroke-width="1.5"/>
+<text x="57" y="375" font-family="Georgia,serif" font-size="28" font-weight="400" fill="#201d18">15 minutes</text>
+<text x="32" y="410" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="400" fill="#62594d">600 → 900 seconds</text>
+<text x="32" y="440" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="400" fill="#201d18">L-hold@1 + L-reminder@1</text>
+<text x="32" y="465" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="400" fill="#201d18">Reminder expected at minute 14.</text>
+<text x="32" y="490" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="400" fill="#201d18">Next: materialize and measure.</text>
+<text x="32" y="519" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="600" fill="#a94f13">Not yet measured</text>
+<rect x="16" y="560" width="358" height="207" rx="8" fill="#fffdf8" stroke="#d8d0c3"/>
+<circle cx="37" cy="589" r="9" fill="#fffdf8" stroke="#62594d" stroke-width="1.5"/>
+<text x="57" y="599" font-family="Georgia,serif" font-size="28" font-weight="400" fill="#201d18">20 minutes</text>
+<text x="32" y="634" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="400" fill="#62594d">600 → 1200 seconds</text>
+<text x="32" y="664" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="400" fill="#201d18">L-alternative@1</text>
+<text x="32" y="689" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="400" fill="#201d18">This packet leaves the reminder off.</text>
+<text x="32" y="714" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="400" fill="#201d18">Next: repair, then a new review.</text>
+<text x="32" y="743" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="600" fill="#a94f13">Not yet measured</text>
+<rect x="16" y="786" width="358" height="60" rx="8" fill="#f5f2eb" stroke="#d8d0c3"/>
+<text x="30" y="811" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="600" fill="#201d18">Layers, Blocks and relationships</text>
+<text x="30" y="832" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="400" fill="#62594d">Expand the text view of exact records  +</text>
+<text x="16" y="886" font-family="Segoe UI,Arial,sans-serif" font-size="16" font-weight="600" fill="#201d18">Why this choice?</text>
+<rect x="16" y="902" width="358" height="113" rx="8" fill="#fffdf8" stroke="#d8d0c3"/>
+<text x="30" y="930" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="400" fill="#62594d">Explain the tradeoff you are accepting.</text>
+<rect x="16" y="1031" width="358" height="46" rx="5" fill="#e7e1d6" stroke="#d8d0c3"/>
+<text x="32" y="1060" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="600" fill="#62594d">Select a duration to continue</text>
+<rect x="16" y="1092" width="358" height="46" rx="8" fill="#f5f2eb" stroke="#d8d0c3"/>
+<text x="32" y="1121" font-family="Segoe UI,Arial,sans-serif" font-size="15" font-weight="600" fill="#201d18">Defer and clean up</text>
+<text x="16" y="1170" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="400" fill="#62594d">No choice is preselected.</text>
+<text x="16" y="1195" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="400" fill="#62594d">This is separate from Release approval.</text>
+<text x="16" y="1220" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="400" fill="#62594d">A changed packet needs a fresh response.</text>
+<text x="16" y="1263" font-family="Segoe UI,Arial,sans-serif" font-size="14" font-weight="400" fill="#62594d">Exact packet and evidence  →</text>
+<text x="16" y="1300" font-family="Segoe UI,Arial,sans-serif" font-size="12" font-weight="400" fill="#62594d">Static proposal · no working controls</text>
+</svg>

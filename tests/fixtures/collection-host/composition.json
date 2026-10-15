@@ -1,0 +1,23 @@
+{
+  "id": "HostCollectionCandidate",
+  "revision": 1,
+  "model_version": "strata/0.3-block-lifecycle-experimental",
+  "baseline": "HostCollectionBaseline@1",
+  "proposals": [
+    "HostCollectionExtension@1"
+  ],
+  "selected": [
+    "HostCollectionExtension@1"
+  ],
+  "alternative_groups": [],
+  "scenario": {
+    "id": "bounded-collection",
+    "checks": [
+      {
+        "id": "collection.compatibility",
+        "version": "1"
+      }
+    ]
+  },
+  "resolutions": []
+}

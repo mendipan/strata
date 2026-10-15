@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Strata Workflow snapshot viewer</title>
+  <style>
+    :root { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #122028; background: #f1f5f2; font-synthesis: none; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { width: min(1160px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 64px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-size: clamp(2rem, 5vw, 3.25rem); letter-spacing: -.045em; margin-bottom: 10px; }
+    h2 { font-size: 1.3rem; margin-bottom: 12px; }
+    h3 { font-size: 1rem; margin: 0 0 8px; }
+    .eyebrow, .label { color: #53666b; font-size: .76rem; font-weight: 750; letter-spacing: .09em; text-transform: uppercase; }
+    .intro { color: #526267; max-width: 72ch; line-height: 1.55; }
+    .source-banner { border: 1px solid #d6c888; background: #fff9de; color: #4a411f; border-radius: 14px; padding: 15px 18px; margin: 22px 0; line-height: 1.5; }
+    .source-banner strong { display: block; margin-bottom: 3px; }
+    .meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin: 18px 0; }
+    .card { background: #fff; border: 1px solid #dde6e2; border-radius: 16px; padding: 17px; box-shadow: 0 6px 20px #16251a08; }
+    .meta-value { display: block; overflow-wrap: anywhere; font-weight: 680; margin-top: 7px; }
+    .section { margin-top: 22px; }
+    .grid-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .gate { border-top: 3px solid #92b3a3; }
+    .gate.release-gate { border-top-color: #e0ae68; }
+    .gate-status { font-size: 1.1rem; font-weight: 750; margin: 5px 0 12px; }
+    .note { color: #586a6e; line-height: 1.5; font-size: .92rem; }
+    .data-list { display: grid; grid-template-columns: minmax(125px, .5fr) 1.5fr; gap: 7px 12px; margin: 12px 0 0; }
+    .data-list dt { color: #5e7074; }
+    .data-list dd { margin: 0; min-width: 0; overflow-wrap: anywhere; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .84rem; }
+    .packet { background: #122028; color: #f2f7f4; }
+    .packet .label, .packet .note { color: #bed0ca; }
+    .packet .data-list dt { color: #bed0ca; }
+    .packet .data-list dd { color: #fff; }
+    .options { display: grid; gap: 10px; margin-top: 14px; }
+    .option { border: 1px solid #405157; border-radius: 12px; padding: 12px; }
+    .option p { line-height: 1.45; margin: 7px 0 0; color: #d7e3df; }
+    .timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+    .event { display: grid; grid-template-columns: 62px minmax(0, 1fr); gap: 10px; padding: 13px; background: #fff; border: 1px solid #dde6e2; border-radius: 13px; }
+    .sequence { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; color: #3a6555; font-size: .87rem; padding-top: 2px; }
+    .event-head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; font-weight: 680; }
+    .event-meta { color: #617176; font-size: .85rem; margin-top: 5px; overflow-wrap: anywhere; }
+    code, .mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; overflow-wrap: anywhere; }
+    details { border-top: 1px solid #e3e9e6; padding: 11px 0; }
+    summary { cursor: pointer; font-weight: 650; min-height: 24px; }
+    footer { border-top: 1px solid #d9e1dd; margin-top: 28px; padding-top: 16px; color: #53666b; line-height: 1.55; }
+    .empty { color: #657579; font-style: italic; }
+    @media (max-width: 720px) { .grid-two { grid-template-columns: 1fr; } .data-list { grid-template-columns: 1fr; gap: 3px; } .data-list dd { margin-bottom: 7px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">Strata / local review</p>
+      <h1>Workflow snapshot</h1>
+      <p class="intro">A read-only view of a saved Workflow description and its exact checkpoint. This page displays imported records; it does not subscribe to a run or create a decision.</p>
+    </header>
+    <section class="source-banner" aria-live="polite">
+      <strong id="source-title">Imported JSON - origin unverified</strong>
+      <span id="source-message"></span>
+    </section>
+    <section id="metadata" class="meta-grid" aria-label="Run identity and import status"></section>
+    <section class="grid-two section" aria-label="Choice and Release gates">
+      <article class="card gate" id="choice-gate"></article>
+      <article class="card gate release-gate" id="release-gate"></article>
+    </section>
+    <section class="card packet section" id="packet-section">
+      <p class="label">Exact pending handoff</p>
+      <h2 id="packet-title">No pending handoff in this checkpoint</h2>
+      <div id="packet-content"></div>
+    </section>
+    <section class="section">
+      <p class="eyebrow">Host checkpoint trace</p>
+      <h2>Events in recorded sequence</h2>
+      <p class="note">Sequence is host-recorded order, not wall-clock duration. Event digests are shown only when the imported Workflow steps expose a one-to-one checkpoint request boundary.</p>
+      <ol id="timeline" class="timeline"></ol>
+    </section>
+    <section class="card section">
+      <h2>Workflow steps</h2>
+      <div id="steps"></div>
+    </section>
+    <footer>
+      <p><strong>Read-only boundary.</strong> There are no reply, selection, approval, or Release controls here. Continue through the existing attended CLI and reply-file flow if an operator action is required.</p>
+      <p>Host-recorded receipts and self-declared labels do not prove identity or consent. A selected product choice and the separate Release response are shown as distinct packet-bound records. A Release reference does not make this import an authorization source.</p>
+      <p>Reimport a newly saved host description after reconnecting. This page itself performs no Cloudflare, model, or network call.</p>
+    </footer>
+  </main>
+  <script type="application/json" id="snapshot-data">@@WORKFLOW_SNAPSHOT@@</script>
+  <script>
+    (() => {
+      'use strict';
+      const snapshot = JSON.parse(document.getElementById('snapshot-data').textContent);
+      const el = (tag, text, className) => { const node = document.createElement(tag); if (text !== undefined && text !== null) node.textContent = String(text); if (className) node.className = className; return node; };
+      const addMeta = (label, value) => { const card = el('div', undefined, 'card'); card.append(el('span', label, 'label'), el('span', value ?? 'Unknown', 'meta-value')); return card; };
+      document.getElementById('source-message').textContent = snapshot.message;
+      const metadata = document.getElementById('metadata');
+      metadata.append(addMeta('Completeness', snapshot.completeness), addMeta('Workflow status', snapshot.workflow_status),
+        addMeta('Execution mode', snapshot.execution_mode ?? 'Unknown from this file'), addMeta('Run ID', snapshot.run_id ?? 'Unknown'),
+        addMeta('Instance ID', snapshot.instance_id), addMeta('Checkpoint sequence', snapshot.sequence === null ? 'Unknown' : snapshot.sequence),
+        addMeta('Checkpoint digest', snapshot.checkpoint_digest ?? 'Unavailable'), addMeta('Imported at', snapshot.imported_at));
+
+      const gateCard = (id, title, kind) => {
+        const card = document.getElementById(id), decisions = snapshot.decision_receipts.filter(item => item.kind === kind);
+        const decision = decisions.at(-1);
+        const pending = snapshot.pending_packet?.kind === kind ? snapshot.pending_packet : null;
+        card.append(el('p', kind === 'selection' ? 'Human choice' : 'Release approval', 'label'), el('h2', title));
+        const status = decision ? (kind === 'selection' ? 'Choice input recorded' : 'Release-gate input recorded') :
+          pending ? 'Exact packet pending' : snapshot.completeness === 'status-only' ? 'Unknown - no complete checkpoint' : 'No receipt in this checkpoint';
+        card.append(el('p', status, 'gate-status'));
+        if (decision) {
+          for (const receipt of decisions) {
+            const rows = [['Recorded action', receipt.action], ['Packet digest', receipt.packet_digest], ['Receipt digest', receipt.receipt_digest],
+              ['Input source', receipt.source], ['Capture method', receipt.capture_method ?? 'Not recorded'], ['Received at', receipt.received_at],
+              ['Self-declared label', receipt.declared_operator_label ?? 'None']];
+            const dl = el('dl', undefined, 'data-list');
+            for (const [label, value] of rows) dl.append(el('dt', label), el('dd', value));
+            card.append(dl);
+          }
+          card.append(el('p', 'Recorded host input only. Identity and consent are not authenticated; this display does not validate an approval.', 'note'));
+        } else if (pending) {
+          card.append(el('p', 'Pending packet digest: ' + pending.digest, 'mono'));
+          card.append(el('p', 'Allowed actions are copied from the host packet. This page has no controls to submit one.', 'note'));
+        } else {
+          card.append(el('p', snapshot.phase ? 'No matching recorded choice or Release response appears in this checkpoint.' : 'A partial status does not reveal phase or decision state.', 'note'));
+        }
+        if (kind === 'endorsement' && snapshot.release_ref) card.append(el('p', 'Release reference recorded: ' + snapshot.release_ref, 'mono'));
+      };
+      gateCard('choice-gate', 'Selection packet and receipt', 'selection');
+      gateCard('release-gate', 'Separate Release packet and receipt', 'endorsement');
+
+      const packet = snapshot.pending_packet, packetTitle = document.getElementById('packet-title'), packetContent = document.getElementById('packet-content');
+      if (packet) {
+        packetTitle.textContent = packet.kind === 'selection' ? 'Selection is pending; no choice is preselected.' : 'Release response is pending separately from selection.';
+        const details = el('dl', undefined, 'data-list');
+        const rows = [['Gate', packet.kind], ['Handoff digest', packet.digest], ['Immutable packet ref', packet.packet_ref ?? 'No separate packet ref in this handoff schema'],
+          ['Packet content SHA-256', packet.content_sha256 ?? 'No separate packet content digest'], ['Allowed actions', packet.allowed_actions.join(', ')],
+          ['Considered Layers', packet.considered.join(', ') || 'None recorded'], ['Case revision', packet.case_revision ?? 'Not present'],
+          ['Business request', packet.business_request ?? 'Not present']];
+        for (const [label, value] of rows) details.append(el('dt', label), el('dd', value));
+        packetContent.append(details);
+        if (packet.options.length) {
+          const options = el('div', undefined, 'options');
+          for (const option of packet.options) {
+            const item = el('article', undefined, 'option'); item.append(el('h3', 'Option ' + option.id));
+            item.append(el('p', 'Selected: ' + (option.selected.join(', ') || 'none')),
+              el('p', 'Rejected: ' + (option.rejected.join(', ') || 'none')),
+              el('p', option.effects), el('p', 'Follow-up: ' + option.follow_up)); options.append(item);
+          }
+          packetContent.append(options);
+        }
+      } else if (snapshot.completeness === 'status-only') {
+        packetTitle.textContent = 'Decision state unknown from this status-only import.';
+        packetContent.append(el('p', 'A successful Apply checkpoint and its digest are required before decision state can be shown.', 'note'));
+      } else {
+        packetContent.append(el('p', 'This completed checkpoint has no pending packet. Recorded receipts, if any, remain listed under their separate gates.', 'note'));
+      }
+
+      const timeline = document.getElementById('timeline');
+      if (!snapshot.trace.length) timeline.append(el('li', snapshot.completeness === 'status-only' ? 'No complete trace is present in this import.' : 'No trace events are recorded.', 'empty'));
+      for (const event of snapshot.trace) {
+        const item = el('li', undefined, 'event'), body = el('div');
+        const head = el('div', undefined, 'event-head'); head.append(el('span', event.summary), el('span', event.phase));
+        const digest = event.event_digest ? 'Event digest: ' + event.event_digest : 'Event digest: not exposed by imported step history';
+        body.append(head, el('p', event.actor + ' - ' + event.outcome, 'event-meta'), el('p', digest, 'event-meta'));
+        item.append(el('span', String(event.sequence).padStart(3, '0'), 'sequence'), body); timeline.append(item);
+      }
+      const steps = document.getElementById('steps');
+      if (!snapshot.steps.length) steps.append(el('p', 'No Workflow step records in this import.', 'empty'));
+      for (const step of snapshot.steps) {
+        const row = el('details'), summary = el('summary', step.name + ' - ' + step.type + ' - ' + (step.success === null ? 'success unknown' : step.success ? 'success' : 'not successful'));
+        row.append(summary);
+        if (step.event_type) row.append(el('p', 'Event type: ' + step.event_type, 'event-meta'));
+        steps.append(row);
+      }
+    })();
+  </script>
+</body>
+</html>

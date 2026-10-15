@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "strata-repository-compatibility/1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]{0,255}$"
+    },
+    "revision": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+    },
+    "rules": {
+      "maxItems": 128,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]{0,255}$"
+          },
+          "field": {
+            "type": "string",
+            "enum": [
+              "language",
+              "framework",
+              "runtime"
+            ]
+          },
+          "allowed": {
+            "minItems": 1,
+            "maxItems": 128,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[a-z0-9][a-z0-9._-]*$"
+            }
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "required": [
+          "id",
+          "field",
+          "allowed",
+          "rationale"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "preferences": {
+      "maxItems": 128,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "language",
+              "framework",
+              "runtime"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[a-z0-9][a-z0-9._-]*$"
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "required": [
+          "field",
+          "value",
+          "rationale"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]{0,255}$"
+    },
+    "repository_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]{0,255}$"
+    },
+    "previous": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "ref": {
+              "type": "string",
+              "maxLength": 512,
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "ref",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "author": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]{0,255}$"
+    },
+    "auth_receipt": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 512,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 512,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "format",
+    "id",
+    "revision",
+    "rules",
+    "preferences",
+    "project_id",
+    "repository_id",
+    "previous",
+    "author",
+    "auth_receipt",
+    "review"
+  ],
+  "additionalProperties": false
+}

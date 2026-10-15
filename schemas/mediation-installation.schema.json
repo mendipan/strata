@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "mediation-installation/1"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "model_version": {
+      "type": "string",
+      "const": "strata/0.2-content-mediation-experimental"
+    },
+    "baseline": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "authority_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "configuration_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "access_generation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "access_binding_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "generation": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+    },
+    "policies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+      }
+    },
+    "grants": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+      }
+    }
+  },
+  "required": [
+    "format",
+    "project_id",
+    "model_version",
+    "baseline",
+    "authority_sha256",
+    "configuration_sha256",
+    "access_generation",
+    "access_binding_sha256",
+    "generation",
+    "policies",
+    "grants"
+  ],
+  "additionalProperties": false
+}

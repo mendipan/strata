@@ -1,0 +1,3098 @@
+{
+  "id": "run-0a1b2c3d4e5f6789",
+  "status": "waiting",
+  "step_count": 26,
+  "steps": [
+    {
+      "type": "step",
+      "name": "claim-run",
+      "success": true,
+      "output": {
+        "format": "strata-integrated-demo-checkpoint/1",
+        "run_id": "0a1b2c3d4e5f6789",
+        "project_id": "strata-local-demo",
+        "mode": "controlled-private",
+        "started_at": 1791158400000,
+        "expires_at": 1791160200000,
+        "phase": "new",
+        "sequence": 0,
+        "previous_digest": null,
+        "registry": {
+          "entries": {},
+          "storage": {
+            "format": "strata-artifacts-registry/1",
+            "project_id": "strata-local-demo",
+            "account": "account",
+            "namespace": "default",
+            "repository": "strata-smoke",
+            "mode": "strict-mock"
+          },
+          "asset_locators": {}
+        },
+        "heads": {},
+        "management_cleanup": {
+          "unsettled_dispatches": 0,
+          "repo_tokens_issued": 0,
+          "repo_tokens_revoked": 0,
+          "handles_open": 0
+        },
+        "counters": {
+          "events": 0,
+          "commands": 0,
+          "stage_batches": 0,
+          "artifact_reserved": 0,
+          "transfer_reserved": 0,
+          "original_reserved": 0,
+          "tools": {
+            "a": 0,
+            "b": 0,
+            "c": 0
+          }
+        },
+        "refs": {
+          "case_revision": 0
+        },
+        "pending": null,
+        "receipts": [],
+        "requests": {},
+        "trace": []
+      }
+    },
+    {
+      "type": "waitForEvent",
+      "name": "receive-1",
+      "success": true,
+      "event_type": "strata-demo-1"
+    },
+    {
+      "type": "step",
+      "name": "reserve-1",
+      "success": true,
+      "output": {
+        "reserved": true
+      }
+    },
+    {
+      "type": "step",
+      "name": "apply-1",
+      "success": true,
+      "output": {
+        "checkpoint": {
+          "format": "strata-integrated-demo-checkpoint/1",
+          "run_id": "0a1b2c3d4e5f6789",
+          "project_id": "strata-local-demo",
+          "mode": "controlled-private",
+          "started_at": 1791158400000,
+          "expires_at": 1791160200000,
+          "phase": "authors",
+          "sequence": 1,
+          "previous_digest": "3a2a544a2ca04b8efa74f89782a7ba301de4c9b2209109731a677484bc21f943",
+          "registry": {
+            "entries": {
+              "R0@1": {
+                "hash": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4",
+                "type": "release",
+                "published": true,
+                "locator": {
+                  "ref": "0fe1029264512ac8e200d9cf06bfc69ec8e78f87",
+                  "path": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4.json",
+                  "hash": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4",
+                  "size_bytes": 4340
+                }
+              },
+              "mediation-installation@0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c": {
+                "hash": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c",
+                "type": "mediation-installation",
+                "published": true,
+                "locator": {
+                  "ref": "0fe1029264512ac8e200d9cf06bfc69ec8e78f87",
+                  "path": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c.json",
+                  "hash": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c",
+                  "size_bytes": 495
+                }
+              }
+            },
+            "storage": {
+              "format": "strata-artifacts-registry/1",
+              "project_id": "strata-local-demo",
+              "account": "account",
+              "namespace": "default",
+              "repository": "strata-smoke",
+              "mode": "strict-mock"
+            },
+            "asset_locators": {}
+          },
+          "heads": {},
+          "management_cleanup": {
+            "unsettled_dispatches": 0,
+            "repo_tokens_issued": 0,
+            "repo_tokens_revoked": 0,
+            "handles_open": 0
+          },
+          "counters": {
+            "events": 1,
+            "commands": 1,
+            "stage_batches": 1,
+            "artifact_reserved": 16,
+            "transfer_reserved": 524288,
+            "original_reserved": 81920,
+            "tools": {
+              "a": 0,
+              "b": 0,
+              "c": 0
+            }
+          },
+          "refs": {
+            "case_revision": 0
+          },
+          "pending": null,
+          "receipts": [],
+          "requests": {
+            "fixture-1": {
+              "event_digest": "db37eea80fa896dcc43104ed585182925bf0fdf171ee33cd45d67e7089e33065",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "R0@1",
+                  "reused": false
+                }
+              }
+            }
+          },
+          "trace": [
+            {
+              "sequence": 1,
+              "kind": "bootstrap",
+              "source": "host",
+              "outcome": "accepted",
+              "phase": "authors"
+            }
+          ]
+        },
+        "outcome": {
+          "ok": true,
+          "data": {
+            "ref": "R0@1",
+            "reused": false
+          }
+        },
+        "reused": false
+      }
+    },
+    {
+      "type": "waitForEvent",
+      "name": "receive-2",
+      "success": true,
+      "event_type": "strata-demo-2"
+    },
+    {
+      "type": "step",
+      "name": "reserve-2",
+      "success": true,
+      "output": {
+        "reserved": true
+      }
+    },
+    {
+      "type": "step",
+      "name": "apply-2",
+      "success": true,
+      "output": {
+        "checkpoint": {
+          "format": "strata-integrated-demo-checkpoint/1",
+          "run_id": "0a1b2c3d4e5f6789",
+          "project_id": "strata-local-demo",
+          "mode": "controlled-private",
+          "started_at": 1791158400000,
+          "expires_at": 1791160200000,
+          "phase": "authors",
+          "sequence": 2,
+          "previous_digest": "ed8963a2c79397797b129598c79aa0789b5e0acf606e1ecea10798fd033309af",
+          "registry": {
+            "entries": {
+              "R0@1": {
+                "hash": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4",
+                "type": "release",
+                "published": true,
+                "locator": {
+                  "ref": "0fe1029264512ac8e200d9cf06bfc69ec8e78f87",
+                  "path": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4.json",
+                  "hash": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4",
+                  "size_bytes": 4340
+                }
+              },
+              "mediation-installation@0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c": {
+                "hash": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c",
+                "type": "mediation-installation",
+                "published": true,
+                "locator": {
+                  "ref": "0fe1029264512ac8e200d9cf06bfc69ec8e78f87",
+                  "path": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c.json",
+                  "hash": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c",
+                  "size_bytes": 495
+                }
+              },
+              "L-hold@1": {
+                "hash": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1",
+                "type": "layer",
+                "published": false,
+                "locator": {
+                  "ref": "5cc7d8692bf4126cd17ccc70ab2928cf3e84197a",
+                  "path": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1.json",
+                  "hash": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1",
+                  "size_bytes": 711
+                }
+              }
+            },
+            "storage": {
+              "format": "strata-artifacts-registry/1",
+              "project_id": "strata-local-demo",
+              "account": "account",
+              "namespace": "default",
+              "repository": "strata-smoke",
+              "mode": "strict-mock"
+            },
+            "asset_locators": {}
+          },
+          "heads": {
+            "L-hold": {
+              "owner": "author-a",
+              "head": 1
+            }
+          },
+          "management_cleanup": {
+            "unsettled_dispatches": 0,
+            "repo_tokens_issued": 0,
+            "repo_tokens_revoked": 0,
+            "handles_open": 0
+          },
+          "counters": {
+            "events": 2,
+            "commands": 2,
+            "stage_batches": 2,
+            "artifact_reserved": 38,
+            "transfer_reserved": 1053411,
+            "original_reserved": 98304,
+            "tools": {
+              "a": 1,
+              "b": 0,
+              "c": 0
+            }
+          },
+          "refs": {
+            "case_revision": 0
+          },
+          "pending": null,
+          "receipts": [],
+          "requests": {
+            "fixture-1": {
+              "event_digest": "db37eea80fa896dcc43104ed585182925bf0fdf171ee33cd45d67e7089e33065",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "R0@1",
+                  "reused": false
+                }
+              }
+            },
+            "fixture-2": {
+              "event_digest": "48c6fb93855068139f0c19842b5726da2e8d18a7173a12e9dc59e3b4513c1026",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-hold@1",
+                  "published": false
+                }
+              }
+            }
+          },
+          "trace": [
+            {
+              "sequence": 1,
+              "kind": "bootstrap",
+              "source": "host",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 2,
+              "kind": "actor",
+              "source": "actor:a",
+              "outcome": "accepted",
+              "phase": "authors"
+            }
+          ]
+        },
+        "outcome": {
+          "ok": true,
+          "data": {
+            "ref": "L-hold@1",
+            "published": false
+          }
+        },
+        "reused": false
+      }
+    },
+    {
+      "type": "waitForEvent",
+      "name": "receive-3",
+      "success": true,
+      "event_type": "strata-demo-3"
+    },
+    {
+      "type": "step",
+      "name": "reserve-3",
+      "success": true,
+      "output": {
+        "reserved": true
+      }
+    },
+    {
+      "type": "step",
+      "name": "apply-3",
+      "success": true,
+      "output": {
+        "checkpoint": {
+          "format": "strata-integrated-demo-checkpoint/1",
+          "run_id": "0a1b2c3d4e5f6789",
+          "project_id": "strata-local-demo",
+          "mode": "controlled-private",
+          "started_at": 1791158400000,
+          "expires_at": 1791160200000,
+          "phase": "authors",
+          "sequence": 3,
+          "previous_digest": "d4b770a1ea185b06493c9cf8cbec2d03bb1a62be97320c8eb53ea7179c2e71b2",
+          "registry": {
+            "entries": {
+              "R0@1": {
+                "hash": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4",
+                "type": "release",
+                "published": true,
+                "locator": {
+                  "ref": "0fe1029264512ac8e200d9cf06bfc69ec8e78f87",
+                  "path": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4.json",
+                  "hash": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4",
+                  "size_bytes": 4340
+                }
+              },
+              "mediation-installation@0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c": {
+                "hash": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c",
+                "type": "mediation-installation",
+                "published": true,
+                "locator": {
+                  "ref": "0fe1029264512ac8e200d9cf06bfc69ec8e78f87",
+                  "path": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c.json",
+                  "hash": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c",
+                  "size_bytes": 495
+                }
+              },
+              "L-hold@1": {
+                "hash": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1",
+                "type": "layer",
+                "published": true,
+                "locator": {
+                  "ref": "5cc7d8692bf4126cd17ccc70ab2928cf3e84197a",
+                  "path": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1.json",
+                  "hash": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1",
+                  "size_bytes": 711
+                }
+              },
+              "authoring-review@0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256": {
+                "hash": "0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256",
+                "type": "authoring-review",
+                "published": true,
+                "locator": {
+                  "ref": "78e5eacd1f4509b1ba8b5e84362509952cc3029b",
+                  "path": "0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256.json",
+                  "hash": "0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256",
+                  "size_bytes": 434
+                }
+              }
+            },
+            "storage": {
+              "format": "strata-artifacts-registry/1",
+              "project_id": "strata-local-demo",
+              "account": "account",
+              "namespace": "default",
+              "repository": "strata-smoke",
+              "mode": "strict-mock"
+            },
+            "asset_locators": {}
+          },
+          "heads": {
+            "L-hold": {
+              "owner": "author-a",
+              "head": 1
+            }
+          },
+          "management_cleanup": {
+            "unsettled_dispatches": 0,
+            "repo_tokens_issued": 0,
+            "repo_tokens_revoked": 0,
+            "handles_open": 0
+          },
+          "counters": {
+            "events": 3,
+            "commands": 4,
+            "stage_batches": 3,
+            "artifact_reserved": 63,
+            "transfer_reserved": 1583245,
+            "original_reserved": 114688,
+            "tools": {
+              "a": 2,
+              "b": 0,
+              "c": 0
+            }
+          },
+          "refs": {
+            "case_revision": 0
+          },
+          "pending": null,
+          "receipts": [],
+          "requests": {
+            "fixture-1": {
+              "event_digest": "db37eea80fa896dcc43104ed585182925bf0fdf171ee33cd45d67e7089e33065",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "R0@1",
+                  "reused": false
+                }
+              }
+            },
+            "fixture-2": {
+              "event_digest": "48c6fb93855068139f0c19842b5726da2e8d18a7173a12e9dc59e3b4513c1026",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-hold@1",
+                  "published": false
+                }
+              }
+            },
+            "fixture-3": {
+              "event_digest": "31f73ae2b891751f60ea525df35ef22f653cf7940d96530f84ceb6ea7b6b9967",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-hold@1",
+                  "published": true
+                }
+              }
+            }
+          },
+          "trace": [
+            {
+              "sequence": 1,
+              "kind": "bootstrap",
+              "source": "host",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 2,
+              "kind": "actor",
+              "source": "actor:a",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 3,
+              "kind": "actor",
+              "source": "actor:a",
+              "outcome": "accepted",
+              "phase": "authors"
+            }
+          ]
+        },
+        "outcome": {
+          "ok": true,
+          "data": {
+            "ref": "L-hold@1",
+            "published": true
+          }
+        },
+        "reused": false
+      }
+    },
+    {
+      "type": "waitForEvent",
+      "name": "receive-4",
+      "success": true,
+      "event_type": "strata-demo-4"
+    },
+    {
+      "type": "step",
+      "name": "reserve-4",
+      "success": true,
+      "output": {
+        "reserved": true
+      }
+    },
+    {
+      "type": "step",
+      "name": "apply-4",
+      "success": true,
+      "output": {
+        "checkpoint": {
+          "format": "strata-integrated-demo-checkpoint/1",
+          "run_id": "0a1b2c3d4e5f6789",
+          "project_id": "strata-local-demo",
+          "mode": "controlled-private",
+          "started_at": 1791158400000,
+          "expires_at": 1791160200000,
+          "phase": "authors",
+          "sequence": 4,
+          "previous_digest": "edc9f2c733b1520c2b1666c316386e825f367f3a2e8f67d12ebe20d9924b0d6a",
+          "registry": {
+            "entries": {
+              "R0@1": {
+                "hash": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4",
+                "type": "release",
+                "published": true,
+                "locator": {
+                  "ref": "0fe1029264512ac8e200d9cf06bfc69ec8e78f87",
+                  "path": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4.json",
+                  "hash": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4",
+                  "size_bytes": 4340
+                }
+              },
+              "mediation-installation@0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c": {
+                "hash": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c",
+                "type": "mediation-installation",
+                "published": true,
+                "locator": {
+                  "ref": "0fe1029264512ac8e200d9cf06bfc69ec8e78f87",
+                  "path": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c.json",
+                  "hash": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c",
+                  "size_bytes": 495
+                }
+              },
+              "L-hold@1": {
+                "hash": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1",
+                "type": "layer",
+                "published": true,
+                "locator": {
+                  "ref": "5cc7d8692bf4126cd17ccc70ab2928cf3e84197a",
+                  "path": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1.json",
+                  "hash": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1",
+                  "size_bytes": 711
+                }
+              },
+              "authoring-review@0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256": {
+                "hash": "0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256",
+                "type": "authoring-review",
+                "published": true,
+                "locator": {
+                  "ref": "78e5eacd1f4509b1ba8b5e84362509952cc3029b",
+                  "path": "0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256.json",
+                  "hash": "0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256",
+                  "size_bytes": 434
+                }
+              },
+              "L-alternative@1": {
+                "hash": "5a561d40208deaff1c12b383b9ad5b9198d2529a0add2d016bf7f05d054670f9",
+                "type": "layer",
+                "published": false,
+                "locator": {
+                  "ref": "889bacca778ed3123bbdb5ea8d4697b0fbb1c663",
+                  "path": "5a561d40208deaff1c12b383b9ad5b9198d2529a0add2d016bf7f05d054670f9.json",
+                  "hash": "5a561d40208deaff1c12b383b9ad5b9198d2529a0add2d016bf7f05d054670f9",
+                  "size_bytes": 727
+                }
+              }
+            },
+            "storage": {
+              "format": "strata-artifacts-registry/1",
+              "project_id": "strata-local-demo",
+              "account": "account",
+              "namespace": "default",
+              "repository": "strata-smoke",
+              "mode": "strict-mock"
+            },
+            "asset_locators": {}
+          },
+          "heads": {
+            "L-hold": {
+              "owner": "author-a",
+              "head": 1
+            },
+            "L-alternative": {
+              "owner": "author-c",
+              "head": 1
+            }
+          },
+          "management_cleanup": {
+            "unsettled_dispatches": 0,
+            "repo_tokens_issued": 0,
+            "repo_tokens_revoked": 0,
+            "handles_open": 0
+          },
+          "counters": {
+            "events": 4,
+            "commands": 5,
+            "stage_batches": 4,
+            "artifact_reserved": 91,
+            "transfer_reserved": 2113513,
+            "original_reserved": 131072,
+            "tools": {
+              "a": 2,
+              "b": 0,
+              "c": 1
+            }
+          },
+          "refs": {
+            "case_revision": 0
+          },
+          "pending": null,
+          "receipts": [],
+          "requests": {
+            "fixture-1": {
+              "event_digest": "db37eea80fa896dcc43104ed585182925bf0fdf171ee33cd45d67e7089e33065",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "R0@1",
+                  "reused": false
+                }
+              }
+            },
+            "fixture-2": {
+              "event_digest": "48c6fb93855068139f0c19842b5726da2e8d18a7173a12e9dc59e3b4513c1026",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-hold@1",
+                  "published": false
+                }
+              }
+            },
+            "fixture-3": {
+              "event_digest": "31f73ae2b891751f60ea525df35ef22f653cf7940d96530f84ceb6ea7b6b9967",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-hold@1",
+                  "published": true
+                }
+              }
+            },
+            "fixture-4": {
+              "event_digest": "02592c600348def1ed3e8e9a7410880a5dbb0205ec7b3b3129e4c6c1337208e7",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-alternative@1",
+                  "published": false
+                }
+              }
+            }
+          },
+          "trace": [
+            {
+              "sequence": 1,
+              "kind": "bootstrap",
+              "source": "host",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 2,
+              "kind": "actor",
+              "source": "actor:a",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 3,
+              "kind": "actor",
+              "source": "actor:a",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 4,
+              "kind": "actor",
+              "source": "actor:c",
+              "outcome": "accepted",
+              "phase": "authors"
+            }
+          ]
+        },
+        "outcome": {
+          "ok": true,
+          "data": {
+            "ref": "L-alternative@1",
+            "published": false
+          }
+        },
+        "reused": false
+      }
+    },
+    {
+      "type": "waitForEvent",
+      "name": "receive-5",
+      "success": true,
+      "event_type": "strata-demo-5"
+    },
+    {
+      "type": "step",
+      "name": "reserve-5",
+      "success": true,
+      "output": {
+        "reserved": true
+      }
+    },
+    {
+      "type": "step",
+      "name": "apply-5",
+      "success": true,
+      "output": {
+        "checkpoint": {
+          "format": "strata-integrated-demo-checkpoint/1",
+          "run_id": "0a1b2c3d4e5f6789",
+          "project_id": "strata-local-demo",
+          "mode": "controlled-private",
+          "started_at": 1791158400000,
+          "expires_at": 1791160200000,
+          "phase": "authors",
+          "sequence": 5,
+          "previous_digest": "1391f5356f5eca68c6730b1d4c59416ac30f44a226f18d01d7f2393c40b3639b",
+          "registry": {
+            "entries": {
+              "R0@1": {
+                "hash": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4",
+                "type": "release",
+                "published": true,
+                "locator": {
+                  "ref": "0fe1029264512ac8e200d9cf06bfc69ec8e78f87",
+                  "path": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4.json",
+                  "hash": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4",
+                  "size_bytes": 4340
+                }
+              },
+              "mediation-installation@0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c": {
+                "hash": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c",
+                "type": "mediation-installation",
+                "published": true,
+                "locator": {
+                  "ref": "0fe1029264512ac8e200d9cf06bfc69ec8e78f87",
+                  "path": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c.json",
+                  "hash": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c",
+                  "size_bytes": 495
+                }
+              },
+              "L-hold@1": {
+                "hash": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1",
+                "type": "layer",
+                "published": true,
+                "locator": {
+                  "ref": "5cc7d8692bf4126cd17ccc70ab2928cf3e84197a",
+                  "path": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1.json",
+                  "hash": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1",
+                  "size_bytes": 711
+                }
+              },
+              "authoring-review@0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256": {
+                "hash": "0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256",
+                "type": "authoring-review",
+                "published": true,
+                "locator": {
+                  "ref": "78e5eacd1f4509b1ba8b5e84362509952cc3029b",
+                  "path": "0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256.json",
+                  "hash": "0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256",
+                  "size_bytes": 434
+                }
+              },
+              "L-alternative@1": {
+                "hash": "5a561d40208deaff1c12b383b9ad5b9198d2529a0add2d016bf7f05d054670f9",
+                "type": "layer",
+                "published": true,
+                "locator": {
+                  "ref": "889bacca778ed3123bbdb5ea8d4697b0fbb1c663",
+                  "path": "5a561d40208deaff1c12b383b9ad5b9198d2529a0add2d016bf7f05d054670f9.json",
+                  "hash": "5a561d40208deaff1c12b383b9ad5b9198d2529a0add2d016bf7f05d054670f9",
+                  "size_bytes": 727
+                }
+              },
+              "authoring-review@c84af32f51af5dbfde0f87785d771ed31980ba444de0a5b1b08bd8097428ebcf": {
+                "hash": "c84af32f51af5dbfde0f87785d771ed31980ba444de0a5b1b08bd8097428ebcf",
+                "type": "authoring-review",
+                "published": true,
+                "locator": {
+                  "ref": "3f1d07eab65810d121e4a187e43156f2bb19c9b2",
+                  "path": "c84af32f51af5dbfde0f87785d771ed31980ba444de0a5b1b08bd8097428ebcf.json",
+                  "hash": "c84af32f51af5dbfde0f87785d771ed31980ba444de0a5b1b08bd8097428ebcf",
+                  "size_bytes": 441
+                }
+              }
+            },
+            "storage": {
+              "format": "strata-artifacts-registry/1",
+              "project_id": "strata-local-demo",
+              "account": "account",
+              "namespace": "default",
+              "repository": "strata-smoke",
+              "mode": "strict-mock"
+            },
+            "asset_locators": {}
+          },
+          "heads": {
+            "L-hold": {
+              "owner": "author-a",
+              "head": 1
+            },
+            "L-alternative": {
+              "owner": "author-c",
+              "head": 1
+            }
+          },
+          "management_cleanup": {
+            "unsettled_dispatches": 0,
+            "repo_tokens_issued": 0,
+            "repo_tokens_revoked": 0,
+            "handles_open": 0
+          },
+          "counters": {
+            "events": 5,
+            "commands": 7,
+            "stage_batches": 5,
+            "artifact_reserved": 122,
+            "transfer_reserved": 2644508,
+            "original_reserved": 147456,
+            "tools": {
+              "a": 2,
+              "b": 0,
+              "c": 2
+            }
+          },
+          "refs": {
+            "case_revision": 0
+          },
+          "pending": null,
+          "receipts": [],
+          "requests": {
+            "fixture-1": {
+              "event_digest": "db37eea80fa896dcc43104ed585182925bf0fdf171ee33cd45d67e7089e33065",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "R0@1",
+                  "reused": false
+                }
+              }
+            },
+            "fixture-2": {
+              "event_digest": "48c6fb93855068139f0c19842b5726da2e8d18a7173a12e9dc59e3b4513c1026",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-hold@1",
+                  "published": false
+                }
+              }
+            },
+            "fixture-3": {
+              "event_digest": "31f73ae2b891751f60ea525df35ef22f653cf7940d96530f84ceb6ea7b6b9967",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-hold@1",
+                  "published": true
+                }
+              }
+            },
+            "fixture-4": {
+              "event_digest": "02592c600348def1ed3e8e9a7410880a5dbb0205ec7b3b3129e4c6c1337208e7",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-alternative@1",
+                  "published": false
+                }
+              }
+            },
+            "fixture-5": {
+              "event_digest": "0eac2fb087044ee2fdf3e1bacc193c144c6b410634b9c0e5522353dc3ecb5aca",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-alternative@1",
+                  "published": true
+                }
+              }
+            }
+          },
+          "trace": [
+            {
+              "sequence": 1,
+              "kind": "bootstrap",
+              "source": "host",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 2,
+              "kind": "actor",
+              "source": "actor:a",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 3,
+              "kind": "actor",
+              "source": "actor:a",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 4,
+              "kind": "actor",
+              "source": "actor:c",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 5,
+              "kind": "actor",
+              "source": "actor:c",
+              "outcome": "accepted",
+              "phase": "authors"
+            }
+          ]
+        },
+        "outcome": {
+          "ok": true,
+          "data": {
+            "ref": "L-alternative@1",
+            "published": true
+          }
+        },
+        "reused": false
+      }
+    },
+    {
+      "type": "waitForEvent",
+      "name": "receive-6",
+      "success": true,
+      "event_type": "strata-demo-6"
+    },
+    {
+      "type": "step",
+      "name": "reserve-6",
+      "success": true,
+      "output": {
+        "reserved": true
+      }
+    },
+    {
+      "type": "step",
+      "name": "apply-6",
+      "success": true,
+      "output": {
+        "checkpoint": {
+          "format": "strata-integrated-demo-checkpoint/1",
+          "run_id": "0a1b2c3d4e5f6789",
+          "project_id": "strata-local-demo",
+          "mode": "controlled-private",
+          "started_at": 1791158400000,
+          "expires_at": 1791160200000,
+          "phase": "authors",
+          "sequence": 6,
+          "previous_digest": "7a5bd309f58920593ddfb27d8e3eaac39f001249c9e769b321f7007b51f99f71",
+          "registry": {
+            "entries": {
+              "R0@1": {
+                "hash": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4",
+                "type": "release",
+                "published": true,
+                "locator": {
+                  "ref": "0fe1029264512ac8e200d9cf06bfc69ec8e78f87",
+                  "path": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4.json",
+                  "hash": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4",
+                  "size_bytes": 4340
+                }
+              },
+              "mediation-installation@0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c": {
+                "hash": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c",
+                "type": "mediation-installation",
+                "published": true,
+                "locator": {
+                  "ref": "0fe1029264512ac8e200d9cf06bfc69ec8e78f87",
+                  "path": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c.json",
+                  "hash": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c",
+                  "size_bytes": 495
+                }
+              },
+              "L-hold@1": {
+                "hash": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1",
+                "type": "layer",
+                "published": true,
+                "locator": {
+                  "ref": "5cc7d8692bf4126cd17ccc70ab2928cf3e84197a",
+                  "path": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1.json",
+                  "hash": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1",
+                  "size_bytes": 711
+                }
+              },
+              "authoring-review@0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256": {
+                "hash": "0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256",
+                "type": "authoring-review",
+                "published": true,
+                "locator": {
+                  "ref": "78e5eacd1f4509b1ba8b5e84362509952cc3029b",
+                  "path": "0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256.json",
+                  "hash": "0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256",
+                  "size_bytes": 434
+                }
+              },
+              "L-alternative@1": {
+                "hash": "5a561d40208deaff1c12b383b9ad5b9198d2529a0add2d016bf7f05d054670f9",
+                "type": "layer",
+                "published": true,
+                "locator": {
+                  "ref": "889bacca778ed3123bbdb5ea8d4697b0fbb1c663",
+                  "path": "5a561d40208deaff1c12b383b9ad5b9198d2529a0add2d016bf7f05d054670f9.json",
+                  "hash": "5a561d40208deaff1c12b383b9ad5b9198d2529a0add2d016bf7f05d054670f9",
+                  "size_bytes": 727
+                }
+              },
+              "authoring-review@c84af32f51af5dbfde0f87785d771ed31980ba444de0a5b1b08bd8097428ebcf": {
+                "hash": "c84af32f51af5dbfde0f87785d771ed31980ba444de0a5b1b08bd8097428ebcf",
+                "type": "authoring-review",
+                "published": true,
+                "locator": {
+                  "ref": "3f1d07eab65810d121e4a187e43156f2bb19c9b2",
+                  "path": "c84af32f51af5dbfde0f87785d771ed31980ba444de0a5b1b08bd8097428ebcf.json",
+                  "hash": "c84af32f51af5dbfde0f87785d771ed31980ba444de0a5b1b08bd8097428ebcf",
+                  "size_bytes": 441
+                }
+              },
+              "L-reminder@1": {
+                "hash": "855eb4e64d7b42decae4e9180562f56dfbcc1d43396fa5f75a229ff924e9115d",
+                "type": "layer",
+                "published": false,
+                "locator": {
+                  "ref": "c2ea5e80b74b4ba76b844798638d01b95b134672",
+                  "path": "855eb4e64d7b42decae4e9180562f56dfbcc1d43396fa5f75a229ff924e9115d.json",
+                  "hash": "855eb4e64d7b42decae4e9180562f56dfbcc1d43396fa5f75a229ff924e9115d",
+                  "size_bytes": 1296
+                }
+              }
+            },
+            "storage": {
+              "format": "strata-artifacts-registry/1",
+              "project_id": "strata-local-demo",
+              "account": "account",
+              "namespace": "default",
+              "repository": "strata-smoke",
+              "mode": "strict-mock"
+            },
+            "asset_locators": {}
+          },
+          "heads": {
+            "L-hold": {
+              "owner": "author-a",
+              "head": 1
+            },
+            "L-alternative": {
+              "owner": "author-c",
+              "head": 1
+            },
+            "L-reminder": {
+              "owner": "author-b",
+              "head": 1
+            }
+          },
+          "management_cleanup": {
+            "unsettled_dispatches": 0,
+            "repo_tokens_issued": 0,
+            "repo_tokens_revoked": 0,
+            "handles_open": 0
+          },
+          "counters": {
+            "events": 6,
+            "commands": 8,
+            "stage_batches": 6,
+            "artifact_reserved": 156,
+            "transfer_reserved": 3175944,
+            "original_reserved": 163840,
+            "tools": {
+              "a": 2,
+              "b": 1,
+              "c": 2
+            }
+          },
+          "refs": {
+            "case_revision": 0
+          },
+          "pending": null,
+          "receipts": [],
+          "requests": {
+            "fixture-1": {
+              "event_digest": "db37eea80fa896dcc43104ed585182925bf0fdf171ee33cd45d67e7089e33065",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "R0@1",
+                  "reused": false
+                }
+              }
+            },
+            "fixture-2": {
+              "event_digest": "48c6fb93855068139f0c19842b5726da2e8d18a7173a12e9dc59e3b4513c1026",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-hold@1",
+                  "published": false
+                }
+              }
+            },
+            "fixture-3": {
+              "event_digest": "31f73ae2b891751f60ea525df35ef22f653cf7940d96530f84ceb6ea7b6b9967",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-hold@1",
+                  "published": true
+                }
+              }
+            },
+            "fixture-4": {
+              "event_digest": "02592c600348def1ed3e8e9a7410880a5dbb0205ec7b3b3129e4c6c1337208e7",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-alternative@1",
+                  "published": false
+                }
+              }
+            },
+            "fixture-5": {
+              "event_digest": "0eac2fb087044ee2fdf3e1bacc193c144c6b410634b9c0e5522353dc3ecb5aca",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-alternative@1",
+                  "published": true
+                }
+              }
+            },
+            "fixture-6": {
+              "event_digest": "9895aafdfbdcf4d5a6e57803db8495d2f2a22724cec8a1e10a1581a710556927",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-reminder@1",
+                  "published": false
+                }
+              }
+            }
+          },
+          "trace": [
+            {
+              "sequence": 1,
+              "kind": "bootstrap",
+              "source": "host",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 2,
+              "kind": "actor",
+              "source": "actor:a",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 3,
+              "kind": "actor",
+              "source": "actor:a",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 4,
+              "kind": "actor",
+              "source": "actor:c",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 5,
+              "kind": "actor",
+              "source": "actor:c",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 6,
+              "kind": "actor",
+              "source": "actor:b",
+              "outcome": "accepted",
+              "phase": "authors"
+            }
+          ]
+        },
+        "outcome": {
+          "ok": true,
+          "data": {
+            "ref": "L-reminder@1",
+            "published": false
+          }
+        },
+        "reused": false
+      }
+    },
+    {
+      "type": "waitForEvent",
+      "name": "receive-7",
+      "success": true,
+      "event_type": "strata-demo-7"
+    },
+    {
+      "type": "step",
+      "name": "reserve-7",
+      "success": true,
+      "output": {
+        "reserved": true
+      }
+    },
+    {
+      "type": "step",
+      "name": "apply-7",
+      "success": true,
+      "output": {
+        "checkpoint": {
+          "format": "strata-integrated-demo-checkpoint/1",
+          "run_id": "0a1b2c3d4e5f6789",
+          "project_id": "strata-local-demo",
+          "mode": "controlled-private",
+          "started_at": 1791158400000,
+          "expires_at": 1791160200000,
+          "phase": "authors",
+          "sequence": 7,
+          "previous_digest": "f094fb8433a9688eede9d7899d5614c7ce58fec4be7522e6999367b128fc1881",
+          "registry": {
+            "entries": {
+              "R0@1": {
+                "hash": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4",
+                "type": "release",
+                "published": true,
+                "locator": {
+                  "ref": "0fe1029264512ac8e200d9cf06bfc69ec8e78f87",
+                  "path": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4.json",
+                  "hash": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4",
+                  "size_bytes": 4340
+                }
+              },
+              "mediation-installation@0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c": {
+                "hash": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c",
+                "type": "mediation-installation",
+                "published": true,
+                "locator": {
+                  "ref": "0fe1029264512ac8e200d9cf06bfc69ec8e78f87",
+                  "path": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c.json",
+                  "hash": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c",
+                  "size_bytes": 495
+                }
+              },
+              "L-hold@1": {
+                "hash": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1",
+                "type": "layer",
+                "published": true,
+                "locator": {
+                  "ref": "5cc7d8692bf4126cd17ccc70ab2928cf3e84197a",
+                  "path": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1.json",
+                  "hash": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1",
+                  "size_bytes": 711
+                }
+              },
+              "authoring-review@0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256": {
+                "hash": "0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256",
+                "type": "authoring-review",
+                "published": true,
+                "locator": {
+                  "ref": "78e5eacd1f4509b1ba8b5e84362509952cc3029b",
+                  "path": "0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256.json",
+                  "hash": "0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256",
+                  "size_bytes": 434
+                }
+              },
+              "L-alternative@1": {
+                "hash": "5a561d40208deaff1c12b383b9ad5b9198d2529a0add2d016bf7f05d054670f9",
+                "type": "layer",
+                "published": true,
+                "locator": {
+                  "ref": "889bacca778ed3123bbdb5ea8d4697b0fbb1c663",
+                  "path": "5a561d40208deaff1c12b383b9ad5b9198d2529a0add2d016bf7f05d054670f9.json",
+                  "hash": "5a561d40208deaff1c12b383b9ad5b9198d2529a0add2d016bf7f05d054670f9",
+                  "size_bytes": 727
+                }
+              },
+              "authoring-review@c84af32f51af5dbfde0f87785d771ed31980ba444de0a5b1b08bd8097428ebcf": {
+                "hash": "c84af32f51af5dbfde0f87785d771ed31980ba444de0a5b1b08bd8097428ebcf",
+                "type": "authoring-review",
+                "published": true,
+                "locator": {
+                  "ref": "3f1d07eab65810d121e4a187e43156f2bb19c9b2",
+                  "path": "c84af32f51af5dbfde0f87785d771ed31980ba444de0a5b1b08bd8097428ebcf.json",
+                  "hash": "c84af32f51af5dbfde0f87785d771ed31980ba444de0a5b1b08bd8097428ebcf",
+                  "size_bytes": 441
+                }
+              },
+              "L-reminder@1": {
+                "hash": "855eb4e64d7b42decae4e9180562f56dfbcc1d43396fa5f75a229ff924e9115d",
+                "type": "layer",
+                "published": true,
+                "locator": {
+                  "ref": "c2ea5e80b74b4ba76b844798638d01b95b134672",
+                  "path": "855eb4e64d7b42decae4e9180562f56dfbcc1d43396fa5f75a229ff924e9115d.json",
+                  "hash": "855eb4e64d7b42decae4e9180562f56dfbcc1d43396fa5f75a229ff924e9115d",
+                  "size_bytes": 1296
+                }
+              },
+              "authoring-review@ee70539e612032939f7be4d25c190d7f735b2b47c2bd308f031d68b076603a0f": {
+                "hash": "ee70539e612032939f7be4d25c190d7f735b2b47c2bd308f031d68b076603a0f",
+                "type": "authoring-review",
+                "published": true,
+                "locator": {
+                  "ref": "487652c52aad5da7df701f99904ae7c147cd5179",
+                  "path": "ee70539e612032939f7be4d25c190d7f735b2b47c2bd308f031d68b076603a0f.json",
+                  "hash": "ee70539e612032939f7be4d25c190d7f735b2b47c2bd308f031d68b076603a0f",
+                  "size_bytes": 438
+                }
+              }
+            },
+            "storage": {
+              "format": "strata-artifacts-registry/1",
+              "project_id": "strata-local-demo",
+              "account": "account",
+              "namespace": "default",
+              "repository": "strata-smoke",
+              "mode": "strict-mock"
+            },
+            "asset_locators": {}
+          },
+          "heads": {
+            "L-hold": {
+              "owner": "author-a",
+              "head": 1
+            },
+            "L-alternative": {
+              "owner": "author-c",
+              "head": 1
+            },
+            "L-reminder": {
+              "owner": "author-b",
+              "head": 1
+            }
+          },
+          "management_cleanup": {
+            "unsettled_dispatches": 0,
+            "repo_tokens_issued": 0,
+            "repo_tokens_revoked": 0,
+            "handles_open": 0
+          },
+          "counters": {
+            "events": 7,
+            "commands": 10,
+            "stage_batches": 7,
+            "artifact_reserved": 193,
+            "transfer_reserved": 3708676,
+            "original_reserved": 180224,
+            "tools": {
+              "a": 2,
+              "b": 2,
+              "c": 2
+            }
+          },
+          "refs": {
+            "case_revision": 0,
+            "reminder": "L-reminder@1"
+          },
+          "pending": null,
+          "receipts": [],
+          "requests": {
+            "fixture-1": {
+              "event_digest": "db37eea80fa896dcc43104ed585182925bf0fdf171ee33cd45d67e7089e33065",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "R0@1",
+                  "reused": false
+                }
+              }
+            },
+            "fixture-2": {
+              "event_digest": "48c6fb93855068139f0c19842b5726da2e8d18a7173a12e9dc59e3b4513c1026",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-hold@1",
+                  "published": false
+                }
+              }
+            },
+            "fixture-3": {
+              "event_digest": "31f73ae2b891751f60ea525df35ef22f653cf7940d96530f84ceb6ea7b6b9967",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-hold@1",
+                  "published": true
+                }
+              }
+            },
+            "fixture-4": {
+              "event_digest": "02592c600348def1ed3e8e9a7410880a5dbb0205ec7b3b3129e4c6c1337208e7",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-alternative@1",
+                  "published": false
+                }
+              }
+            },
+            "fixture-5": {
+              "event_digest": "0eac2fb087044ee2fdf3e1bacc193c144c6b410634b9c0e5522353dc3ecb5aca",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-alternative@1",
+                  "published": true
+                }
+              }
+            },
+            "fixture-6": {
+              "event_digest": "9895aafdfbdcf4d5a6e57803db8495d2f2a22724cec8a1e10a1581a710556927",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-reminder@1",
+                  "published": false
+                }
+              }
+            },
+            "fixture-7": {
+              "event_digest": "3832e6173b0b8030dfd7431bd5a05ccc1a9df11369553157d6a09ea13129ab44",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-reminder@1",
+                  "published": true
+                }
+              }
+            }
+          },
+          "trace": [
+            {
+              "sequence": 1,
+              "kind": "bootstrap",
+              "source": "host",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 2,
+              "kind": "actor",
+              "source": "actor:a",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 3,
+              "kind": "actor",
+              "source": "actor:a",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 4,
+              "kind": "actor",
+              "source": "actor:c",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 5,
+              "kind": "actor",
+              "source": "actor:c",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 6,
+              "kind": "actor",
+              "source": "actor:b",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 7,
+              "kind": "actor",
+              "source": "actor:b",
+              "outcome": "accepted",
+              "phase": "authors"
+            }
+          ]
+        },
+        "outcome": {
+          "ok": true,
+          "data": {
+            "ref": "L-reminder@1",
+            "published": true
+          }
+        },
+        "reused": false
+      }
+    },
+    {
+      "type": "waitForEvent",
+      "name": "receive-8",
+      "success": true,
+      "event_type": "strata-demo-8"
+    },
+    {
+      "type": "step",
+      "name": "reserve-8",
+      "success": true,
+      "output": {
+        "reserved": true
+      }
+    },
+    {
+      "type": "step",
+      "name": "apply-8",
+      "success": true,
+      "output": {
+        "checkpoint": {
+          "format": "strata-integrated-demo-checkpoint/1",
+          "run_id": "0a1b2c3d4e5f6789",
+          "project_id": "strata-local-demo",
+          "mode": "controlled-private",
+          "started_at": 1791158400000,
+          "expires_at": 1791160200000,
+          "phase": "selection",
+          "sequence": 8,
+          "previous_digest": "c2d96074cb696954858272e23fc69312bccc6426a1656434a679f8bdac390220",
+          "registry": {
+            "entries": {
+              "R0@1": {
+                "hash": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4",
+                "type": "release",
+                "published": true,
+                "locator": {
+                  "ref": "0fe1029264512ac8e200d9cf06bfc69ec8e78f87",
+                  "path": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4.json",
+                  "hash": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4",
+                  "size_bytes": 4340
+                }
+              },
+              "mediation-installation@0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c": {
+                "hash": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c",
+                "type": "mediation-installation",
+                "published": true,
+                "locator": {
+                  "ref": "0fe1029264512ac8e200d9cf06bfc69ec8e78f87",
+                  "path": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c.json",
+                  "hash": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c",
+                  "size_bytes": 495
+                }
+              },
+              "L-hold@1": {
+                "hash": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1",
+                "type": "layer",
+                "published": true,
+                "locator": {
+                  "ref": "5cc7d8692bf4126cd17ccc70ab2928cf3e84197a",
+                  "path": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1.json",
+                  "hash": "ab17f276ed13bc0a2f813e5b0f4484777a5cf5db6b1e186cb6b0215c33a7aaf1",
+                  "size_bytes": 711
+                }
+              },
+              "authoring-review@0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256": {
+                "hash": "0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256",
+                "type": "authoring-review",
+                "published": true,
+                "locator": {
+                  "ref": "78e5eacd1f4509b1ba8b5e84362509952cc3029b",
+                  "path": "0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256.json",
+                  "hash": "0c4b36410e4eeb41be52f7149f1c0c11423ec7756f486183c0e321813aa42256",
+                  "size_bytes": 434
+                }
+              },
+              "L-alternative@1": {
+                "hash": "5a561d40208deaff1c12b383b9ad5b9198d2529a0add2d016bf7f05d054670f9",
+                "type": "layer",
+                "published": true,
+                "locator": {
+                  "ref": "889bacca778ed3123bbdb5ea8d4697b0fbb1c663",
+                  "path": "5a561d40208deaff1c12b383b9ad5b9198d2529a0add2d016bf7f05d054670f9.json",
+                  "hash": "5a561d40208deaff1c12b383b9ad5b9198d2529a0add2d016bf7f05d054670f9",
+                  "size_bytes": 727
+                }
+              },
+              "authoring-review@c84af32f51af5dbfde0f87785d771ed31980ba444de0a5b1b08bd8097428ebcf": {
+                "hash": "c84af32f51af5dbfde0f87785d771ed31980ba444de0a5b1b08bd8097428ebcf",
+                "type": "authoring-review",
+                "published": true,
+                "locator": {
+                  "ref": "3f1d07eab65810d121e4a187e43156f2bb19c9b2",
+                  "path": "c84af32f51af5dbfde0f87785d771ed31980ba444de0a5b1b08bd8097428ebcf.json",
+                  "hash": "c84af32f51af5dbfde0f87785d771ed31980ba444de0a5b1b08bd8097428ebcf",
+                  "size_bytes": 441
+                }
+              },
+              "L-reminder@1": {
+                "hash": "855eb4e64d7b42decae4e9180562f56dfbcc1d43396fa5f75a229ff924e9115d",
+                "type": "layer",
+                "published": true,
+                "locator": {
+                  "ref": "c2ea5e80b74b4ba76b844798638d01b95b134672",
+                  "path": "855eb4e64d7b42decae4e9180562f56dfbcc1d43396fa5f75a229ff924e9115d.json",
+                  "hash": "855eb4e64d7b42decae4e9180562f56dfbcc1d43396fa5f75a229ff924e9115d",
+                  "size_bytes": 1296
+                }
+              },
+              "authoring-review@ee70539e612032939f7be4d25c190d7f735b2b47c2bd308f031d68b076603a0f": {
+                "hash": "ee70539e612032939f7be4d25c190d7f735b2b47c2bd308f031d68b076603a0f",
+                "type": "authoring-review",
+                "published": true,
+                "locator": {
+                  "ref": "487652c52aad5da7df701f99904ae7c147cd5179",
+                  "path": "ee70539e612032939f7be4d25c190d7f735b2b47c2bd308f031d68b076603a0f.json",
+                  "hash": "ee70539e612032939f7be4d25c190d7f735b2b47c2bd308f031d68b076603a0f",
+                  "size_bytes": 438
+                }
+              },
+              "C-demo-conflict-1@1": {
+                "hash": "d42dc37b53027b0a41cd21face93c1355904bacc90416b3e5e6e2d6c12dd8a8d",
+                "type": "composition",
+                "published": true,
+                "locator": {
+                  "ref": "4b8c6b15ff6118bf8e0f38ca02a05a3ce27a5e14",
+                  "path": "d42dc37b53027b0a41cd21face93c1355904bacc90416b3e5e6e2d6c12dd8a8d.json",
+                  "hash": "d42dc37b53027b0a41cd21face93c1355904bacc90416b3e5e6e2d6c12dd8a8d",
+                  "size_bytes": 436
+                }
+              },
+              "mediation-basis@8e2c74093f129708d57140ae17dd801a1beb1de7bc3db98224bd54f444d31511": {
+                "hash": "8e2c74093f129708d57140ae17dd801a1beb1de7bc3db98224bd54f444d31511",
+                "type": "mediation-basis",
+                "published": true,
+                "locator": {
+                  "ref": "4b8c6b15ff6118bf8e0f38ca02a05a3ce27a5e14",
+                  "path": "8e2c74093f129708d57140ae17dd801a1beb1de7bc3db98224bd54f444d31511.json",
+                  "hash": "8e2c74093f129708d57140ae17dd801a1beb1de7bc3db98224bd54f444d31511",
+                  "size_bytes": 1972
+                }
+              },
+              "L-demo-choice-1-1200@1": {
+                "hash": "ee4728c2556321cfdafd4116a657bd9d22a40d3d713fea893e41541eaf1601ed",
+                "type": "layer",
+                "published": true,
+                "locator": {
+                  "ref": "4b8c6b15ff6118bf8e0f38ca02a05a3ce27a5e14",
+                  "path": "ee4728c2556321cfdafd4116a657bd9d22a40d3d713fea893e41541eaf1601ed.json",
+                  "hash": "ee4728c2556321cfdafd4116a657bd9d22a40d3d713fea893e41541eaf1601ed",
+                  "size_bytes": 861
+                }
+              },
+              "L-demo-choice-1-900@1": {
+                "hash": "651b82bdfda8aad9b46752199e5291570b6b329a7bdb5554efe2c998f292b179",
+                "type": "layer",
+                "published": true,
+                "locator": {
+                  "ref": "4b8c6b15ff6118bf8e0f38ca02a05a3ce27a5e14",
+                  "path": "651b82bdfda8aad9b46752199e5291570b6b329a7bdb5554efe2c998f292b179.json",
+                  "hash": "651b82bdfda8aad9b46752199e5291570b6b329a7bdb5554efe2c998f292b179",
+                  "size_bytes": 859
+                }
+              },
+              "decision-packet@03bf6431c46be2646dd2c913ab24fa189ccc697f12730581a1b811a4cdfeb33b": {
+                "hash": "03bf6431c46be2646dd2c913ab24fa189ccc697f12730581a1b811a4cdfeb33b",
+                "type": "decision-packet",
+                "published": true,
+                "locator": {
+                  "ref": "4b8c6b15ff6118bf8e0f38ca02a05a3ce27a5e14",
+                  "path": "03bf6431c46be2646dd2c913ab24fa189ccc697f12730581a1b811a4cdfeb33b.json",
+                  "hash": "03bf6431c46be2646dd2c913ab24fa189ccc697f12730581a1b811a4cdfeb33b",
+                  "size_bytes": 9368
+                }
+              }
+            },
+            "storage": {
+              "format": "strata-artifacts-registry/1",
+              "project_id": "strata-local-demo",
+              "account": "account",
+              "namespace": "default",
+              "repository": "strata-smoke",
+              "mode": "strict-mock"
+            },
+            "asset_locators": {}
+          },
+          "heads": {
+            "L-hold": {
+              "owner": "author-a",
+              "head": 1
+            },
+            "L-alternative": {
+              "owner": "author-c",
+              "head": 1
+            },
+            "L-reminder": {
+              "owner": "author-b",
+              "head": 1
+            },
+            "L-demo-choice-1-1200": {
+              "owner": "scope-selector",
+              "head": 1
+            },
+            "L-demo-choice-1-900": {
+              "owner": "scope-selector",
+              "head": 1
+            }
+          },
+          "management_cleanup": {
+            "unsettled_dispatches": 0,
+            "repo_tokens_issued": 0,
+            "repo_tokens_revoked": 0,
+            "handles_open": 0
+          },
+          "counters": {
+            "events": 8,
+            "commands": 17,
+            "stage_batches": 8,
+            "artifact_reserved": 233,
+            "transfer_reserved": 4241846,
+            "original_reserved": 311296,
+            "tools": {
+              "a": 2,
+              "b": 2,
+              "c": 2
+            }
+          },
+          "refs": {
+            "case_revision": 1,
+            "reminder": "L-reminder@1",
+            "composition": "C-demo-conflict-1@1",
+            "basis": "mediation-basis@8e2c74093f129708d57140ae17dd801a1beb1de7bc3db98224bd54f444d31511",
+            "packet": "decision-packet@03bf6431c46be2646dd2c913ab24fa189ccc697f12730581a1b811a4cdfeb33b"
+          },
+          "pending": {
+            "kind": "selection",
+            "digest": "dcadb6965cdf251888e3691476b3345902803621b792c82f684ef6dc2407ed84",
+            "expires_at": 1791160080000
+          },
+          "receipts": [],
+          "requests": {
+            "fixture-1": {
+              "event_digest": "db37eea80fa896dcc43104ed585182925bf0fdf171ee33cd45d67e7089e33065",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "R0@1",
+                  "reused": false
+                }
+              }
+            },
+            "fixture-2": {
+              "event_digest": "48c6fb93855068139f0c19842b5726da2e8d18a7173a12e9dc59e3b4513c1026",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-hold@1",
+                  "published": false
+                }
+              }
+            },
+            "fixture-3": {
+              "event_digest": "31f73ae2b891751f60ea525df35ef22f653cf7940d96530f84ceb6ea7b6b9967",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-hold@1",
+                  "published": true
+                }
+              }
+            },
+            "fixture-4": {
+              "event_digest": "02592c600348def1ed3e8e9a7410880a5dbb0205ec7b3b3129e4c6c1337208e7",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-alternative@1",
+                  "published": false
+                }
+              }
+            },
+            "fixture-5": {
+              "event_digest": "0eac2fb087044ee2fdf3e1bacc193c144c6b410634b9c0e5522353dc3ecb5aca",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-alternative@1",
+                  "published": true
+                }
+              }
+            },
+            "fixture-6": {
+              "event_digest": "9895aafdfbdcf4d5a6e57803db8495d2f2a22724cec8a1e10a1581a710556927",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-reminder@1",
+                  "published": false
+                }
+              }
+            },
+            "fixture-7": {
+              "event_digest": "3832e6173b0b8030dfd7431bd5a05ccc1a9df11369553157d6a09ea13129ab44",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "L-reminder@1",
+                  "published": true
+                }
+              }
+            },
+            "fixture-8": {
+              "event_digest": "3a03ef80d80f037e1fdbc4033da5cb559a3ef5137dbaf3928ce7a1f47aca992c",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "kind": "selection",
+                  "business_request": "Extend the booking hold and add one reminder 60 seconds before expiry; choose 900 or 1200 seconds.",
+                  "baseline_seconds": 600,
+                  "considered": [
+                    "L-alternative@1",
+                    "L-hold@1",
+                    "L-reminder@1"
+                  ],
+                  "packet": {
+                    "ref": "decision-packet@03bf6431c46be2646dd2c913ab24fa189ccc697f12730581a1b811a4cdfeb33b",
+                    "packet_sha256": "03bf6431c46be2646dd2c913ab24fa189ccc697f12730581a1b811a4cdfeb33b",
+                    "packet": {
+                      "format": "decision-packet/1",
+                      "project_id": "strata-local-demo",
+                      "model_version": "strata/0.2-content-mediation-experimental",
+                      "basis_ref": "mediation-basis@8e2c74093f129708d57140ae17dd801a1beb1de7bc3db98224bd54f444d31511",
+                      "basis_sha256": "8e2c74093f129708d57140ae17dd801a1beb1de7bc3db98224bd54f444d31511",
+                      "case_id": "integrated-booking",
+                      "case_revision": 1,
+                      "expires_at": "2026-10-05T00:28:00.000Z",
+                      "goal": "Choose booking hold duration with exact reminder dependency and preserved acceptance.",
+                      "question": "Choose an already-authored whole-Layer selection, or defer.",
+                      "recommendation": null,
+                      "options": [
+                        {
+                          "id": "1200",
+                          "layer": "L-demo-choice-1-1200@1",
+                          "proposal_index": 0,
+                          "target": "23a044041aa1cb8a13f10d96fe8b0f48eb9f44f88ac9d410006d28d3dfcfbee8",
+                          "partition_sha256": "1347fd246103eeca9df8bc264f45b34796c06d0f43bbaee346785a37b006c7eb",
+                          "selected": [
+                            "L-alternative@1"
+                          ],
+                          "rejected": [
+                            "L-hold@1",
+                            "L-reminder@1"
+                          ],
+                          "context_sha256": "f6a972956c0a2a8c2f5b736e255e59122579e7961d0bd925b8ce47402500219b",
+                          "effects": "Intended expiry: 1200 seconds. Reminder: disabled. Exclusivity: true. All declared acceptance still requires fresh evidence; effects outside this fixture are unknown.",
+                          "follow_up": "Fresh measured realization, evidence and separate scope/guardian/Release endorsements are still required.",
+                          "executable": true
+                        },
+                        {
+                          "id": "900",
+                          "layer": "L-demo-choice-1-900@1",
+                          "proposal_index": 0,
+                          "target": "f386de12274dc805b6c53aec0ad497f68070616726c8a33f1185f53390e75952",
+                          "partition_sha256": "bb3e9587e9fc78471a10fb0dacac3d158bed05bed8428e3a8fb05cfd83f7fc84",
+                          "selected": [
+                            "L-hold@1",
+                            "L-reminder@1"
+                          ],
+                          "rejected": [
+                            "L-alternative@1"
+                          ],
+                          "context_sha256": "10085814ffbf4710ea31717a358e229e6a10e05ec799c2d415b662a588823ece",
+                          "effects": "Intended expiry: 900 seconds. Reminder: once at 840 seconds. Exclusivity: true. All declared acceptance still requires fresh evidence; effects outside this fixture are unknown.",
+                          "follow_up": "Fresh measured realization, evidence and separate scope/guardian/Release endorsements are still required.",
+                          "executable": true
+                        }
+                      ],
+                      "defer": true,
+                      "costs": "unknown; no execution permission",
+                      "required_authorities": [
+                        "scope-selector"
+                      ],
+                      "remaining_gates": [
+                        "realization",
+                        "acceptance evidence",
+                        "scope approval",
+                        "applicable guardian approval",
+                        "separate Release approval"
+                      ],
+                      "sources": {
+                        "L-alternative@1": {
+                          "acceptance": [],
+                          "assumptions": [],
+                          "baseline": "R0@1",
+                          "changes": [
+                            {
+                              "block": "booking.hold",
+                              "expected": {
+                                "kind": "value",
+                                "value": {
+                                  "acceptance": [
+                                    "expiry"
+                                  ],
+                                  "facets": [
+                                    "behavior",
+                                    "data"
+                                  ],
+                                  "kind": "rule",
+                                  "parameters": {
+                                    "seconds": 600
+                                  },
+                                  "statement": "A hold expires exactly 600 seconds after it starts."
+                                }
+                              },
+                              "op": "set_item",
+                              "path": "requirements.expiry",
+                              "value": {
+                                "acceptance": [
+                                  "expiry"
+                                ],
+                                "facets": [
+                                  "behavior",
+                                  "data"
+                                ],
+                                "kind": "rule",
+                                "parameters": {
+                                  "seconds": 1200
+                                },
+                                "statement": "A hold expires exactly 1200 seconds after it starts."
+                              }
+                            }
+                          ],
+                          "derived_from": null,
+                          "id": "L-alternative",
+                          "intent": "L-alternative",
+                          "model_version": "strata/0.2-content-mediation-experimental",
+                          "owner": "author-c",
+                          "read_set": [],
+                          "requires_layers": [],
+                          "resolution_proposals": [],
+                          "revision": 1
+                        },
+                        "L-hold@1": {
+                          "acceptance": [],
+                          "assumptions": [],
+                          "baseline": "R0@1",
+                          "changes": [
+                            {
+                              "block": "booking.hold",
+                              "expected": {
+                                "kind": "value",
+                                "value": {
+                                  "acceptance": [
+                                    "expiry"
+                                  ],
+                                  "facets": [
+                                    "behavior",
+                                    "data"
+                                  ],
+                                  "kind": "rule",
+                                  "parameters": {
+                                    "seconds": 600
+                                  },
+                                  "statement": "A hold expires exactly 600 seconds after it starts."
+                                }
+                              },
+                              "op": "set_item",
+                              "path": "requirements.expiry",
+                              "value": {
+                                "acceptance": [
+                                  "expiry"
+                                ],
+                                "facets": [
+                                  "behavior",
+                                  "data"
+                                ],
+                                "kind": "rule",
+                                "parameters": {
+                                  "seconds": 900
+                                },
+                                "statement": "A hold expires exactly 900 seconds after it starts."
+                              }
+                            }
+                          ],
+                          "derived_from": null,
+                          "id": "L-hold",
+                          "intent": "L-hold",
+                          "model_version": "strata/0.2-content-mediation-experimental",
+                          "owner": "author-a",
+                          "read_set": [],
+                          "requires_layers": [],
+                          "resolution_proposals": [],
+                          "revision": 1
+                        },
+                        "L-reminder@1": {
+                          "acceptance": [
+                            {
+                              "block": "booking.reminder",
+                              "criterion": {
+                                "check": "booking.reminder",
+                                "fixture": "layer-reminder",
+                                "method": "mechanical",
+                                "statement": "Verify booking.reminder for layer-reminder.",
+                                "subjects": [
+                                  "booking.reminder/requirements.timing"
+                                ],
+                                "version": "1"
+                              },
+                              "id": "layer-reminder"
+                            }
+                          ],
+                          "assumptions": [
+                            {
+                              "block": "booking.hold",
+                              "expected": {
+                                "kind": "value",
+                                "value": {
+                                  "acceptance": [
+                                    "expiry"
+                                  ],
+                                  "facets": [
+                                    "behavior",
+                                    "data"
+                                  ],
+                                  "kind": "rule",
+                                  "parameters": {
+                                    "seconds": 900
+                                  },
+                                  "statement": "A hold expires exactly 900 seconds after it starts."
+                                }
+                              },
+                              "path": "requirements.expiry"
+                            }
+                          ],
+                          "baseline": "R0@1",
+                          "changes": [
+                            {
+                              "block": "booking.reminder",
+                              "expected": {
+                                "kind": "value",
+                                "value": {
+                                  "acceptance": [
+                                    "once",
+                                    "timing"
+                                  ],
+                                  "facets": [
+                                    "behavior"
+                                  ],
+                                  "kind": "rule",
+                                  "parameters": {
+                                    "enabled": false,
+                                    "lead_seconds": 60
+                                  },
+                                  "statement": "Reminders are disabled."
+                                }
+                              },
+                              "op": "set_item",
+                              "path": "requirements.timing",
+                              "value": {
+                                "acceptance": [
+                                  "once",
+                                  "timing"
+                                ],
+                                "facets": [
+                                  "behavior"
+                                ],
+                                "kind": "rule",
+                                "parameters": {
+                                  "enabled": true,
+                                  "lead_seconds": 60
+                                },
+                                "statement": "Send one reminder 60 seconds before hold expiry."
+                              }
+                            }
+                          ],
+                          "derived_from": null,
+                          "id": "L-reminder",
+                          "intent": "L-reminder",
+                          "model_version": "strata/0.2-content-mediation-experimental",
+                          "owner": "author-b",
+                          "read_set": [
+                            {
+                              "layer": "L-hold@1",
+                              "mode": "required"
+                            }
+                          ],
+                          "requires_layers": [
+                            "L-hold@1"
+                          ],
+                          "resolution_proposals": [],
+                          "revision": 1
+                        },
+                        "R0@1": {
+                          "authorities": {
+                            "guardians": [
+                              {
+                                "item": "booking.hold/requirements.exclusive",
+                                "principal": "safety-guardian"
+                              }
+                            ],
+                            "release": [
+                              "release-manager"
+                            ],
+                            "scopes": [
+                              {
+                                "block": "app",
+                                "selectors": [
+                                  "scope-selector"
+                                ]
+                              },
+                              {
+                                "block": "booking",
+                                "selectors": [
+                                  "scope-selector"
+                                ]
+                              },
+                              {
+                                "block": "booking.hold",
+                                "selectors": [
+                                  "scope-selector"
+                                ]
+                              },
+                              {
+                                "block": "booking.reminder",
+                                "selectors": [
+                                  "scope-selector"
+                                ]
+                              }
+                            ]
+                          },
+                          "blocks": {
+                            "app": {
+                              "acceptance": {
+                                "review": {
+                                  "check": "intent.review",
+                                  "fixture": "app",
+                                  "method": "review",
+                                  "statement": "Verify intent.review for app.",
+                                  "subjects": [
+                                    "app/purpose"
+                                  ],
+                                  "version": "1"
+                                }
+                              },
+                              "asset_refs": {},
+                              "contract": {
+                                "failures": {},
+                                "inputs": {},
+                                "outputs": {}
+                              },
+                              "description": {
+                                "format": "plain-text/1",
+                                "text": ""
+                              },
+                              "id": "app",
+                              "parent": null,
+                              "purpose": "A command-driven booking demonstration.",
+                              "relationships": {},
+                              "requirements": {}
+                            },
+                            "booking": {
+                              "acceptance": {
+                                "review": {
+                                  "check": "intent.review",
+                                  "fixture": "booking",
+                                  "method": "review",
+                                  "statement": "Verify intent.review for booking.",
+                                  "subjects": [
+                                    "booking/purpose"
+                                  ],
+                                  "version": "1"
+                                }
+                              },
+                              "asset_refs": {},
+                              "contract": {
+                                "failures": {},
+                                "inputs": {},
+                                "outputs": {}
+                              },
+                              "description": {
+                                "format": "plain-text/1",
+                                "text": ""
+                              },
+                              "id": "booking",
+                              "parent": "app",
+                              "purpose": "Coordinate exclusive holds and reminders.",
+                              "relationships": {},
+                              "requirements": {}
+                            },
+                            "booking.hold": {
+                              "acceptance": {
+                                "exclusive": {
+                                  "check": "booking.exclusive",
+                                  "fixture": "exclusive",
+                                  "method": "mechanical",
+                                  "statement": "Verify booking.exclusive for exclusive.",
+                                  "subjects": [
+                                    "booking.hold/contract.failures.occupied",
+                                    "booking.hold/contract.inputs.hold",
+                                    "booking.hold/requirements.exclusive"
+                                  ],
+                                  "version": "1"
+                                },
+                                "expiry": {
+                                  "check": "booking.expiry",
+                                  "fixture": "expiry",
+                                  "method": "mechanical",
+                                  "statement": "Verify booking.expiry for expiry.",
+                                  "subjects": [
+                                    "booking.hold/contract.outputs.state",
+                                    "booking.hold/requirements.expiry"
+                                  ],
+                                  "version": "1"
+                                },
+                                "lifecycle": {
+                                  "check": "booking.lifecycle",
+                                  "fixture": "lifecycle",
+                                  "method": "mechanical",
+                                  "statement": "Verify booking.lifecycle for lifecycle.",
+                                  "subjects": [
+                                    "booking.hold/requirements.expiry"
+                                  ],
+                                  "version": "1"
+                                },
+                                "review": {
+                                  "check": "intent.review",
+                                  "fixture": "booking.hold",
+                                  "method": "review",
+                                  "statement": "Verify intent.review for booking.hold.",
+                                  "subjects": [
+                                    "booking.hold/purpose"
+                                  ],
+                                  "version": "1"
+                                }
+                              },
+                              "asset_refs": {},
+                              "contract": {
+                                "failures": {
+                                  "occupied": {
+                                    "acceptance": [
+                                      "exclusive"
+                                    ],
+                                    "statement": "An occupied resource rejects another hold."
+                                  }
+                                },
+                                "inputs": {
+                                  "hold": {
+                                    "acceptance": [
+                                      "exclusive"
+                                    ],
+                                    "statement": "A hold request identifies one resource and one owner."
+                                  }
+                                },
+                                "outputs": {
+                                  "state": {
+                                    "acceptance": [
+                                      "expiry"
+                                    ],
+                                    "statement": "State exposes active holds and their expiry."
+                                  }
+                                }
+                              },
+                              "description": {
+                                "format": "plain-text/1",
+                                "text": ""
+                              },
+                              "id": "booking.hold",
+                              "parent": "booking",
+                              "purpose": "Hold one resource until a fixed expiry.",
+                              "relationships": {},
+                              "requirements": {
+                                "exclusive": {
+                                  "acceptance": [
+                                    "exclusive"
+                                  ],
+                                  "facets": [
+                                    "behavior",
+                                    "data",
+                                    "safety"
+                                  ],
+                                  "kind": "invariant",
+                                  "parameters": {
+                                    "exclusive": true
+                                  },
+                                  "statement": "Only one active hold may exist for a resource."
+                                },
+                                "expiry": {
+                                  "acceptance": [
+                                    "expiry"
+                                  ],
+                                  "facets": [
+                                    "behavior",
+                                    "data"
+                                  ],
+                                  "kind": "rule",
+                                  "parameters": {
+                                    "seconds": 600
+                                  },
+                                  "statement": "A hold expires exactly 600 seconds after it starts."
+                                }
+                              }
+                            },
+                            "booking.reminder": {
+                              "acceptance": {
+                                "once": {
+                                  "check": "booking.once",
+                                  "fixture": "once",
+                                  "method": "mechanical",
+                                  "statement": "Verify booking.once for once.",
+                                  "subjects": [
+                                    "booking.reminder/requirements.timing"
+                                  ],
+                                  "version": "1"
+                                },
+                                "review": {
+                                  "check": "intent.review",
+                                  "fixture": "booking.reminder",
+                                  "method": "review",
+                                  "statement": "Verify intent.review for booking.reminder.",
+                                  "subjects": [
+                                    "booking.reminder/purpose"
+                                  ],
+                                  "version": "1"
+                                },
+                                "timing": {
+                                  "check": "booking.reminder",
+                                  "fixture": "timing",
+                                  "method": "mechanical",
+                                  "statement": "Verify booking.reminder for timing.",
+                                  "subjects": [
+                                    "booking.reminder/relationships.hold",
+                                    "booking.reminder/requirements.timing"
+                                  ],
+                                  "version": "1"
+                                }
+                              },
+                              "asset_refs": {},
+                              "contract": {
+                                "failures": {},
+                                "inputs": {},
+                                "outputs": {}
+                              },
+                              "description": {
+                                "format": "plain-text/1",
+                                "text": ""
+                              },
+                              "id": "booking.reminder",
+                              "parent": "booking",
+                              "purpose": "Remind a holder once shortly before expiry.",
+                              "relationships": {
+                                "hold": {
+                                  "acceptance": [
+                                    "timing"
+                                  ],
+                                  "statement": "Reminder timing consumes the hold duration.",
+                                  "target": "booking.hold"
+                                }
+                              },
+                              "requirements": {
+                                "timing": {
+                                  "acceptance": [
+                                    "once",
+                                    "timing"
+                                  ],
+                                  "facets": [
+                                    "behavior"
+                                  ],
+                                  "kind": "rule",
+                                  "parameters": {
+                                    "enabled": false,
+                                    "lead_seconds": 60
+                                  },
+                                  "statement": "Reminders are disabled."
+                                }
+                              }
+                            }
+                          },
+                          "deleted_ids": [
+                            "deleted-demo"
+                          ],
+                          "id": "R0",
+                          "model_version": "strata/0.2-content-mediation-experimental",
+                          "revision": 1,
+                          "root": "app"
+                        }
+                      }
+                    }
+                  },
+                  "repair_required_for_initial_1200": true,
+                  "choice_preselected": false,
+                  "validation_status": "not yet measured",
+                  "reviews": "Decision targets and authoring review are scripted; selection requires an actual human reply in a controlled run.",
+                  "packet_digest": "dcadb6965cdf251888e3691476b3345902803621b792c82f684ef6dc2407ed84"
+                }
+              }
+            }
+          },
+          "trace": [
+            {
+              "sequence": 1,
+              "kind": "bootstrap",
+              "source": "host",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 2,
+              "kind": "actor",
+              "source": "actor:a",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 3,
+              "kind": "actor",
+              "source": "actor:a",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 4,
+              "kind": "actor",
+              "source": "actor:c",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 5,
+              "kind": "actor",
+              "source": "actor:c",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 6,
+              "kind": "actor",
+              "source": "actor:b",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 7,
+              "kind": "actor",
+              "source": "actor:b",
+              "outcome": "accepted",
+              "phase": "authors"
+            },
+            {
+              "sequence": 8,
+              "kind": "prepare",
+              "source": "host",
+              "outcome": "accepted",
+              "phase": "selection"
+            }
+          ]
+        },
+        "outcome": {
+          "ok": true,
+          "data": {
+            "kind": "selection",
+            "business_request": "Extend the booking hold and add one reminder 60 seconds before expiry; choose 900 or 1200 seconds.",
+            "baseline_seconds": 600,
+            "considered": [
+              "L-alternative@1",
+              "L-hold@1",
+              "L-reminder@1"
+            ],
+            "packet": {
+              "ref": "decision-packet@03bf6431c46be2646dd2c913ab24fa189ccc697f12730581a1b811a4cdfeb33b",
+              "packet_sha256": "03bf6431c46be2646dd2c913ab24fa189ccc697f12730581a1b811a4cdfeb33b",
+              "packet": {
+                "format": "decision-packet/1",
+                "project_id": "strata-local-demo",
+                "model_version": "strata/0.2-content-mediation-experimental",
+                "basis_ref": "mediation-basis@8e2c74093f129708d57140ae17dd801a1beb1de7bc3db98224bd54f444d31511",
+                "basis_sha256": "8e2c74093f129708d57140ae17dd801a1beb1de7bc3db98224bd54f444d31511",
+                "case_id": "integrated-booking",
+                "case_revision": 1,
+                "expires_at": "2026-10-05T00:28:00.000Z",
+                "goal": "Choose booking hold duration with exact reminder dependency and preserved acceptance.",
+                "question": "Choose an already-authored whole-Layer selection, or defer.",
+                "recommendation": null,
+                "options": [
+                  {
+                    "id": "1200",
+                    "layer": "L-demo-choice-1-1200@1",
+                    "proposal_index": 0,
+                    "target": "23a044041aa1cb8a13f10d96fe8b0f48eb9f44f88ac9d410006d28d3dfcfbee8",
+                    "partition_sha256": "1347fd246103eeca9df8bc264f45b34796c06d0f43bbaee346785a37b006c7eb",
+                    "selected": [
+                      "L-alternative@1"
+                    ],
+                    "rejected": [
+                      "L-hold@1",
+                      "L-reminder@1"
+                    ],
+                    "context_sha256": "f6a972956c0a2a8c2f5b736e255e59122579e7961d0bd925b8ce47402500219b",
+                    "effects": "Intended expiry: 1200 seconds. Reminder: disabled. Exclusivity: true. All declared acceptance still requires fresh evidence; effects outside this fixture are unknown.",
+                    "follow_up": "Fresh measured realization, evidence and separate scope/guardian/Release endorsements are still required.",
+                    "executable": true
+                  },
+                  {
+                    "id": "900",
+                    "layer": "L-demo-choice-1-900@1",
+                    "proposal_index": 0,
+                    "target": "f386de12274dc805b6c53aec0ad497f68070616726c8a33f1185f53390e75952",
+                    "partition_sha256": "bb3e9587e9fc78471a10fb0dacac3d158bed05bed8428e3a8fb05cfd83f7fc84",
+                    "selected": [
+                      "L-hold@1",
+                      "L-reminder@1"
+                    ],
+                    "rejected": [
+                      "L-alternative@1"
+                    ],
+                    "context_sha256": "10085814ffbf4710ea31717a358e229e6a10e05ec799c2d415b662a588823ece",
+                    "effects": "Intended expiry: 900 seconds. Reminder: once at 840 seconds. Exclusivity: true. All declared acceptance still requires fresh evidence; effects outside this fixture are unknown.",
+                    "follow_up": "Fresh measured realization, evidence and separate scope/guardian/Release endorsements are still required.",
+                    "executable": true
+                  }
+                ],
+                "defer": true,
+                "costs": "unknown; no execution permission",
+                "required_authorities": [
+                  "scope-selector"
+                ],
+                "remaining_gates": [
+                  "realization",
+                  "acceptance evidence",
+                  "scope approval",
+                  "applicable guardian approval",
+                  "separate Release approval"
+                ],
+                "sources": {
+                  "L-alternative@1": {
+                    "acceptance": [],
+                    "assumptions": [],
+                    "baseline": "R0@1",
+                    "changes": [
+                      {
+                        "block": "booking.hold",
+                        "expected": {
+                          "kind": "value",
+                          "value": {
+                            "acceptance": [
+                              "expiry"
+                            ],
+                            "facets": [
+                              "behavior",
+                              "data"
+                            ],
+                            "kind": "rule",
+                            "parameters": {
+                              "seconds": 600
+                            },
+                            "statement": "A hold expires exactly 600 seconds after it starts."
+                          }
+                        },
+                        "op": "set_item",
+                        "path": "requirements.expiry",
+                        "value": {
+                          "acceptance": [
+                            "expiry"
+                          ],
+                          "facets": [
+                            "behavior",
+                            "data"
+                          ],
+                          "kind": "rule",
+                          "parameters": {
+                            "seconds": 1200
+                          },
+                          "statement": "A hold expires exactly 1200 seconds after it starts."
+                        }
+                      }
+                    ],
+                    "derived_from": null,
+                    "id": "L-alternative",
+                    "intent": "L-alternative",
+                    "model_version": "strata/0.2-content-mediation-experimental",
+                    "owner": "author-c",
+                    "read_set": [],
+                    "requires_layers": [],
+                    "resolution_proposals": [],
+                    "revision": 1
+                  },
+                  "L-hold@1": {
+                    "acceptance": [],
+                    "assumptions": [],
+                    "baseline": "R0@1",
+                    "changes": [
+                      {
+                        "block": "booking.hold",
+                        "expected": {
+                          "kind": "value",
+                          "value": {
+                            "acceptance": [
+                              "expiry"
+                            ],
+                            "facets": [
+                              "behavior",
+                              "data"
+                            ],
+                            "kind": "rule",
+                            "parameters": {
+                              "seconds": 600
+                            },
+                            "statement": "A hold expires exactly 600 seconds after it starts."
+                          }
+                        },
+                        "op": "set_item",
+                        "path": "requirements.expiry",
+                        "value": {
+                          "acceptance": [
+                            "expiry"
+                          ],
+                          "facets": [
+                            "behavior",
+                            "data"
+                          ],
+                          "kind": "rule",
+                          "parameters": {
+                            "seconds": 900
+                          },
+                          "statement": "A hold expires exactly 900 seconds after it starts."
+                        }
+                      }
+                    ],
+                    "derived_from": null,
+                    "id": "L-hold",
+                    "intent": "L-hold",
+                    "model_version": "strata/0.2-content-mediation-experimental",
+                    "owner": "author-a",
+                    "read_set": [],
+                    "requires_layers": [],
+                    "resolution_proposals": [],
+                    "revision": 1
+                  },
+                  "L-reminder@1": {
+                    "acceptance": [
+                      {
+                        "block": "booking.reminder",
+                        "criterion": {
+                          "check": "booking.reminder",
+                          "fixture": "layer-reminder",
+                          "method": "mechanical",
+                          "statement": "Verify booking.reminder for layer-reminder.",
+                          "subjects": [
+                            "booking.reminder/requirements.timing"
+                          ],
+                          "version": "1"
+                        },
+                        "id": "layer-reminder"
+                      }
+                    ],
+                    "assumptions": [
+                      {
+                        "block": "booking.hold",
+                        "expected": {
+                          "kind": "value",
+                          "value": {
+                            "acceptance": [
+                              "expiry"
+                            ],
+                            "facets": [
+                              "behavior",
+                              "data"
+                            ],
+                            "kind": "rule",
+                            "parameters": {
+                              "seconds": 900
+                            },
+                            "statement": "A hold expires exactly 900 seconds after it starts."
+                          }
+                        },
+                        "path": "requirements.expiry"
+                      }
+                    ],
+                    "baseline": "R0@1",
+                    "changes": [
+                      {
+                        "block": "booking.reminder",
+                        "expected": {
+                          "kind": "value",
+                          "value": {
+                            "acceptance": [
+                              "once",
+                              "timing"
+                            ],
+                            "facets": [
+                              "behavior"
+                            ],
+                            "kind": "rule",
+                            "parameters": {
+                              "enabled": false,
+                              "lead_seconds": 60
+                            },
+                            "statement": "Reminders are disabled."
+                          }
+                        },
+                        "op": "set_item",
+                        "path": "requirements.timing",
+                        "value": {
+                          "acceptance": [
+                            "once",
+                            "timing"
+                          ],
+                          "facets": [
+                            "behavior"
+                          ],
+                          "kind": "rule",
+                          "parameters": {
+                            "enabled": true,
+                            "lead_seconds": 60
+                          },
+                          "statement": "Send one reminder 60 seconds before hold expiry."
+                        }
+                      }
+                    ],
+                    "derived_from": null,
+                    "id": "L-reminder",
+                    "intent": "L-reminder",
+                    "model_version": "strata/0.2-content-mediation-experimental",
+                    "owner": "author-b",
+                    "read_set": [
+                      {
+                        "layer": "L-hold@1",
+                        "mode": "required"
+                      }
+                    ],
+                    "requires_layers": [
+                      "L-hold@1"
+                    ],
+                    "resolution_proposals": [],
+                    "revision": 1
+                  },
+                  "R0@1": {
+                    "authorities": {
+                      "guardians": [
+                        {
+                          "item": "booking.hold/requirements.exclusive",
+                          "principal": "safety-guardian"
+                        }
+                      ],
+                      "release": [
+                        "release-manager"
+                      ],
+                      "scopes": [
+                        {
+                          "block": "app",
+                          "selectors": [
+                            "scope-selector"
+                          ]
+                        },
+                        {
+                          "block": "booking",
+                          "selectors": [
+                            "scope-selector"
+                          ]
+                        },
+                        {
+                          "block": "booking.hold",
+                          "selectors": [
+                            "scope-selector"
+                          ]
+                        },
+                        {
+                          "block": "booking.reminder",
+                          "selectors": [
+                            "scope-selector"
+                          ]
+                        }
+                      ]
+                    },
+                    "blocks": {
+                      "app": {
+                        "acceptance": {
+                          "review": {
+                            "check": "intent.review",
+                            "fixture": "app",
+                            "method": "review",
+                            "statement": "Verify intent.review for app.",
+                            "subjects": [
+                              "app/purpose"
+                            ],
+                            "version": "1"
+                          }
+                        },
+                        "asset_refs": {},
+                        "contract": {
+                          "failures": {},
+                          "inputs": {},
+                          "outputs": {}
+                        },
+                        "description": {
+                          "format": "plain-text/1",
+                          "text": ""
+                        },
+                        "id": "app",
+                        "parent": null,
+                        "purpose": "A command-driven booking demonstration.",
+                        "relationships": {},
+                        "requirements": {}
+                      },
+                      "booking": {
+                        "acceptance": {
+                          "review": {
+                            "check": "intent.review",
+                            "fixture": "booking",
+                            "method": "review",
+                            "statement": "Verify intent.review for booking.",
+                            "subjects": [
+                              "booking/purpose"
+                            ],
+                            "version": "1"
+                          }
+                        },
+                        "asset_refs": {},
+                        "contract": {
+                          "failures": {},
+                          "inputs": {},
+                          "outputs": {}
+                        },
+                        "description": {
+                          "format": "plain-text/1",
+                          "text": ""
+                        },
+                        "id": "booking",
+                        "parent": "app",
+                        "purpose": "Coordinate exclusive holds and reminders.",
+                        "relationships": {},
+                        "requirements": {}
+                      },
+                      "booking.hold": {
+                        "acceptance": {
+                          "exclusive": {
+                            "check": "booking.exclusive",
+                            "fixture": "exclusive",
+                            "method": "mechanical",
+                            "statement": "Verify booking.exclusive for exclusive.",
+                            "subjects": [
+                              "booking.hold/contract.failures.occupied",
+                              "booking.hold/contract.inputs.hold",
+                              "booking.hold/requirements.exclusive"
+                            ],
+                            "version": "1"
+                          },
+                          "expiry": {
+                            "check": "booking.expiry",
+                            "fixture": "expiry",
+                            "method": "mechanical",
+                            "statement": "Verify booking.expiry for expiry.",
+                            "subjects": [
+                              "booking.hold/contract.outputs.state",
+                              "booking.hold/requirements.expiry"
+                            ],
+                            "version": "1"
+                          },
+                          "lifecycle": {
+                            "check": "booking.lifecycle",
+                            "fixture": "lifecycle",
+                            "method": "mechanical",
+                            "statement": "Verify booking.lifecycle for lifecycle.",
+                            "subjects": [
+                              "booking.hold/requirements.expiry"
+                            ],
+                            "version": "1"
+                          },
+                          "review": {
+                            "check": "intent.review",
+                            "fixture": "booking.hold",
+                            "method": "review",
+                            "statement": "Verify intent.review for booking.hold.",
+                            "subjects": [
+                              "booking.hold/purpose"
+                            ],
+                            "version": "1"
+                          }
+                        },
+                        "asset_refs": {},
+                        "contract": {
+                          "failures": {
+                            "occupied": {
+                              "acceptance": [
+                                "exclusive"
+                              ],
+                              "statement": "An occupied resource rejects another hold."
+                            }
+                          },
+                          "inputs": {
+                            "hold": {
+                              "acceptance": [
+                                "exclusive"
+                              ],
+                              "statement": "A hold request identifies one resource and one owner."
+                            }
+                          },
+                          "outputs": {
+                            "state": {
+                              "acceptance": [
+                                "expiry"
+                              ],
+                              "statement": "State exposes active holds and their expiry."
+                            }
+                          }
+                        },
+                        "description": {
+                          "format": "plain-text/1",
+                          "text": ""
+                        },
+                        "id": "booking.hold",
+                        "parent": "booking",
+                        "purpose": "Hold one resource until a fixed expiry.",
+                        "relationships": {},
+                        "requirements": {
+                          "exclusive": {
+                            "acceptance": [
+                              "exclusive"
+                            ],
+                            "facets": [
+                              "behavior",
+                              "data",
+                              "safety"
+                            ],
+                            "kind": "invariant",
+                            "parameters": {
+                              "exclusive": true
+                            },
+                            "statement": "Only one active hold may exist for a resource."
+                          },
+                          "expiry": {
+                            "acceptance": [
+                              "expiry"
+                            ],
+                            "facets": [
+                              "behavior",
+                              "data"
+                            ],
+                            "kind": "rule",
+                            "parameters": {
+                              "seconds": 600
+                            },
+                            "statement": "A hold expires exactly 600 seconds after it starts."
+                          }
+                        }
+                      },
+                      "booking.reminder": {
+                        "acceptance": {
+                          "once": {
+                            "check": "booking.once",
+                            "fixture": "once",
+                            "method": "mechanical",
+                            "statement": "Verify booking.once for once.",
+                            "subjects": [
+                              "booking.reminder/requirements.timing"
+                            ],
+                            "version": "1"
+                          },
+                          "review": {
+                            "check": "intent.review",
+                            "fixture": "booking.reminder",
+                            "method": "review",
+                            "statement": "Verify intent.review for booking.reminder.",
+                            "subjects": [
+                              "booking.reminder/purpose"
+                            ],
+                            "version": "1"
+                          },
+                          "timing": {
+                            "check": "booking.reminder",
+                            "fixture": "timing",
+                            "method": "mechanical",
+                            "statement": "Verify booking.reminder for timing.",
+                            "subjects": [
+                              "booking.reminder/relationships.hold",
+                              "booking.reminder/requirements.timing"
+                            ],
+                            "version": "1"
+                          }
+                        },
+                        "asset_refs": {},
+                        "contract": {
+                          "failures": {},
+                          "inputs": {},
+                          "outputs": {}
+                        },
+                        "description": {
+                          "format": "plain-text/1",
+                          "text": ""
+                        },
+                        "id": "booking.reminder",
+                        "parent": "booking",
+                        "purpose": "Remind a holder once shortly before expiry.",
+                        "relationships": {
+                          "hold": {
+                            "acceptance": [
+                              "timing"
+                            ],
+                            "statement": "Reminder timing consumes the hold duration.",
+                            "target": "booking.hold"
+                          }
+                        },
+                        "requirements": {
+                          "timing": {
+                            "acceptance": [
+                              "once",
+                              "timing"
+                            ],
+                            "facets": [
+                              "behavior"
+                            ],
+                            "kind": "rule",
+                            "parameters": {
+                              "enabled": false,
+                              "lead_seconds": 60
+                            },
+                            "statement": "Reminders are disabled."
+                          }
+                        }
+                      }
+                    },
+                    "deleted_ids": [
+                      "deleted-demo"
+                    ],
+                    "id": "R0",
+                    "model_version": "strata/0.2-content-mediation-experimental",
+                    "revision": 1,
+                    "root": "app"
+                  }
+                }
+              }
+            },
+            "repair_required_for_initial_1200": true,
+            "choice_preselected": false,
+            "validation_status": "not yet measured",
+            "reviews": "Decision targets and authoring review are scripted; selection requires an actual human reply in a controlled run.",
+            "packet_digest": "dcadb6965cdf251888e3691476b3345902803621b792c82f684ef6dc2407ed84"
+          }
+        },
+        "reused": false
+      }
+    },
+    {
+      "name": "wait-for-selection",
+      "type": "waitForEvent",
+      "success": false,
+      "event_type": "operator-choice"
+    }
+  ]
+}

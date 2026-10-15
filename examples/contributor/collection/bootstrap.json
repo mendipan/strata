@@ -1,0 +1,345 @@
+{
+  "id": "StarterCollection",
+  "revision": 1,
+  "model_version": "strata/0.3-block-lifecycle-experimental",
+  "root": "collection",
+  "blocks": {
+    "collection": {
+      "id": "collection",
+      "parent": null,
+      "purpose": "Compose item lifecycle and bounded input policy into an in-memory collection API.",
+      "requirements": {},
+      "relationships": {
+        "items": {
+          "target": "items",
+          "statement": "The collection delegates item lifecycle and detached reads to items.",
+          "acceptance": [
+            "lifecycle",
+            "detached"
+          ]
+        },
+        "policy": {
+          "target": "policy",
+          "statement": "The collection enforces input policy and atomic rejection of failed mutations.",
+          "acceptance": [
+            "atomic"
+          ]
+        }
+      },
+      "contract": {
+        "inputs": {
+          "operations": {
+            "statement": "Expose add(id, title), get(id), list(), complete(id), and remove(id).",
+            "acceptance": [
+              "lifecycle",
+              "atomic"
+            ]
+          }
+        },
+        "outputs": {
+          "api": {
+            "statement": "Each instance starts empty; list returns detached items in ascending ASCII ID order.",
+            "acceptance": [
+              "lifecycle",
+              "detached"
+            ]
+          }
+        },
+        "failures": {
+          "rejected": {
+            "statement": "Rejected operations return an explicit reason and leave all items unchanged.",
+            "acceptance": [
+              "atomic"
+            ]
+          }
+        }
+      },
+      "acceptance": {
+        "lifecycle": {
+          "statement": "Verify collection.lifecycle for operations.",
+          "method": "mechanical",
+          "check": "collection.lifecycle",
+          "version": "1",
+          "fixture": "operations",
+          "subjects": [
+            "collection/relationships.items",
+            "collection/contract.inputs.operations",
+            "collection/contract.outputs.api"
+          ]
+        },
+        "detached": {
+          "statement": "Verify collection.detached for copies.",
+          "method": "mechanical",
+          "check": "collection.detached",
+          "version": "1",
+          "fixture": "copies",
+          "subjects": [
+            "collection/relationships.items",
+            "collection/contract.outputs.api"
+          ]
+        },
+        "atomic": {
+          "statement": "Verify collection.atomic for rejections.",
+          "method": "mechanical",
+          "check": "collection.atomic",
+          "version": "1",
+          "fixture": "rejections",
+          "subjects": [
+            "collection/relationships.policy",
+            "collection/contract.inputs.operations",
+            "collection/contract.failures.rejected"
+          ]
+        },
+        "review": {
+          "statement": "Verify intent.review for collection.",
+          "method": "review",
+          "check": "intent.review",
+          "version": "1",
+          "fixture": "collection",
+          "subjects": [
+            "collection/purpose"
+          ]
+        }
+      },
+      "description": {
+        "format": "plain-text/1",
+        "text": "Local synthetic contributor intent; finite in-memory collection."
+      },
+      "asset_refs": {}
+    },
+    "items": {
+      "id": "items",
+      "parent": "collection",
+      "purpose": "Maintain unique items, idempotent completion, removal, and detached reads.",
+      "relationships": {},
+      "requirements": {
+        "lifecycle": {
+          "statement": "Add inserts an incomplete item; completing twice succeeds without another change; removal frees capacity.",
+          "kind": "rule",
+          "facets": [
+            "behavior"
+          ],
+          "acceptance": [
+            "lifecycle"
+          ],
+          "parameters": {}
+        },
+        "detached": {
+          "statement": "All returned items are detached copies; instance state is independent and restart begins empty.",
+          "kind": "invariant",
+          "facets": [
+            "behavior",
+            "data"
+          ],
+          "acceptance": [
+            "detached"
+          ],
+          "parameters": {}
+        }
+      },
+      "contract": {
+        "inputs": {},
+        "outputs": {
+          "item": {
+            "statement": "An item contains exactly id, title, and completed.",
+            "acceptance": [
+              "lifecycle",
+              "detached"
+            ]
+          }
+        },
+        "failures": {}
+      },
+      "acceptance": {
+        "lifecycle": {
+          "statement": "Verify collection.lifecycle for operations.",
+          "method": "mechanical",
+          "check": "collection.lifecycle",
+          "version": "1",
+          "fixture": "operations",
+          "subjects": [
+            "items/requirements.lifecycle",
+            "items/contract.outputs.item"
+          ]
+        },
+        "detached": {
+          "statement": "Verify collection.detached for copies.",
+          "method": "mechanical",
+          "check": "collection.detached",
+          "version": "1",
+          "fixture": "copies",
+          "subjects": [
+            "items/requirements.detached",
+            "items/contract.outputs.item"
+          ]
+        },
+        "review": {
+          "statement": "Verify intent.review for items.",
+          "method": "review",
+          "check": "intent.review",
+          "version": "1",
+          "fixture": "items",
+          "subjects": [
+            "items/purpose"
+          ]
+        }
+      },
+      "description": {
+        "format": "plain-text/1",
+        "text": "Local synthetic contributor intent; finite in-memory collection."
+      },
+      "asset_refs": {}
+    },
+    "policy": {
+      "id": "policy",
+      "parent": "collection",
+      "purpose": "Enforce portable IDs, nonblank bounded titles, count limits, and atomic failures.",
+      "relationships": {},
+      "requirements": {
+        "count": {
+          "statement": "At most 3 items exist per collection instance.",
+          "kind": "rule",
+          "facets": [
+            "data"
+          ],
+          "acceptance": [
+            "limits"
+          ],
+          "parameters": {
+            "max_items": 3
+          }
+        },
+        "title_length": {
+          "statement": "Titles contain at most 20 Unicode code points.",
+          "kind": "rule",
+          "facets": [
+            "data"
+          ],
+          "acceptance": [
+            "limits"
+          ],
+          "parameters": {
+            "max_title_length": 20
+          }
+        },
+        "identifiers": {
+          "statement": "IDs match [A-Za-z0-9][A-Za-z0-9_-]{0,31} exactly.",
+          "kind": "invariant",
+          "facets": [
+            "data",
+            "safety"
+          ],
+          "acceptance": [
+            "invalid"
+          ],
+          "parameters": {}
+        },
+        "titles": {
+          "statement": "A title is a string with nonblank trim(); preserve its original text without normalization.",
+          "kind": "invariant",
+          "facets": [
+            "data"
+          ],
+          "acceptance": [
+            "invalid"
+          ],
+          "parameters": {}
+        },
+        "atomic": {
+          "statement": "Invalid input, duplicate ID, missing item, and limit violations preserve the complete instance state.",
+          "kind": "invariant",
+          "facets": [
+            "behavior",
+            "safety"
+          ],
+          "acceptance": [
+            "atomic"
+          ],
+          "parameters": {}
+        }
+      },
+      "contract": {
+        "inputs": {},
+        "outputs": {},
+        "failures": {
+          "reasons": {
+            "statement": "Failure reasons are invalid, title_too_long, duplicate, missing, and limit; validate input before duplicate and capacity.",
+            "acceptance": [
+              "atomic"
+            ]
+          }
+        }
+      },
+      "acceptance": {
+        "limits": {
+          "statement": "Verify collection.limits for bounds.",
+          "method": "mechanical",
+          "check": "collection.limits",
+          "version": "1",
+          "fixture": "bounds",
+          "subjects": [
+            "policy/requirements.count",
+            "policy/requirements.title_length"
+          ]
+        },
+        "invalid": {
+          "statement": "Verify collection.invalid for inputs.",
+          "method": "mechanical",
+          "check": "collection.invalid",
+          "version": "1",
+          "fixture": "inputs",
+          "subjects": [
+            "policy/requirements.identifiers",
+            "policy/requirements.titles"
+          ]
+        },
+        "atomic": {
+          "statement": "Verify collection.atomic for rejections.",
+          "method": "mechanical",
+          "check": "collection.atomic",
+          "version": "1",
+          "fixture": "rejections",
+          "subjects": [
+            "policy/requirements.atomic",
+            "policy/contract.failures.reasons"
+          ]
+        },
+        "review": {
+          "statement": "Verify intent.review for policy.",
+          "method": "review",
+          "check": "intent.review",
+          "version": "1",
+          "fixture": "policy",
+          "subjects": [
+            "policy/purpose"
+          ]
+        }
+      },
+      "description": {
+        "format": "plain-text/1",
+        "text": "Local synthetic contributor intent; finite in-memory collection."
+      },
+      "asset_refs": {}
+    }
+  },
+  "authorities": {
+    "scopes": [
+      {
+        "block": "collection",
+        "selectors": [
+          "scope-selector"
+        ]
+      }
+    ],
+    "release": [
+      "release-manager"
+    ],
+    "guardians": [
+      {
+        "item": "policy/requirements.atomic",
+        "principal": "safety-guardian"
+      }
+    ]
+  },
+  "deleted_ids": []
+}

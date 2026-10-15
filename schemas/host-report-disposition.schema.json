@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "report-disposition/2"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "model_version": {
+      "type": "string",
+      "const": "strata/0.3-block-lifecycle-experimental"
+    },
+    "report_ref": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "selection_context_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "correction",
+        "not_applicable"
+      ]
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_refs": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+      }
+    },
+    "principal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "string"
+    },
+    "authority_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "auth_receipt": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    }
+  },
+  "required": [
+    "format",
+    "project_id",
+    "model_version",
+    "report_ref",
+    "selection_context_sha256",
+    "kind",
+    "rationale",
+    "evidence_refs",
+    "principal",
+    "scope",
+    "authority_sha256",
+    "auth_receipt"
+  ],
+  "additionalProperties": false
+}

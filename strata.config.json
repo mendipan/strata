@@ -1,0 +1,10 @@
+{
+  "schema_version": "1",
+  "model_version": "strata/0.1-facets-experimental",
+  "project_id": "strata-local-demo",
+  "broker": "http://127.0.0.1:8787",
+  "artifact_adapter": "local-persistent-fake",
+  "profiles": ["booking-node/1"],
+  "identity_policy": "trusted-local-fixture-sessions",
+  "network_policy": "loopback-only"
+}

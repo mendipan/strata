@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "asset_ref": {
+      "type": "string",
+      "pattern": "^asset@[a-f0-9]{64}$"
+    },
+    "content_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "background",
+        "application_resource",
+        "normative_reference",
+        "evidence_fixture"
+      ]
+    },
+    "subjects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "asset_ref",
+    "content_sha256",
+    "role",
+    "subjects"
+  ],
+  "additionalProperties": false
+}

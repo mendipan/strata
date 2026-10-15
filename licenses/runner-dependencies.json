@@ -1,0 +1,898 @@
+{
+  "format": "strata-runner-dependency-inventory/1",
+  "source": "deploy/studio-agent-runner/package-lock.json",
+  "bundled_in_runner": {
+    "zod": "4.6.5"
+  },
+  "sdk_installed_separately": true,
+  "packages": [
+    {
+      "location": "node_modules/@anthropic-ai/claude-agent-sdk",
+      "name": "@anthropic-ai/claude-agent-sdk",
+      "version": "0.3.296",
+      "declared_license": "SEE LICENSE IN README.md",
+      "optional": false,
+      "peer": false
+    },
+    {
+      "location": "node_modules/@anthropic-ai/claude-agent-sdk-darwin-arm64",
+      "name": "@anthropic-ai/claude-agent-sdk-darwin-arm64",
+      "version": "0.3.296",
+      "declared_license": "SEE LICENSE IN LICENSE.md",
+      "optional": true,
+      "peer": false
+    },
+    {
+      "location": "node_modules/@anthropic-ai/claude-agent-sdk-darwin-x64",
+      "name": "@anthropic-ai/claude-agent-sdk-darwin-x64",
+      "version": "0.3.296",
+      "declared_license": "SEE LICENSE IN LICENSE.md",
+      "optional": true,
+      "peer": false
+    },
+    {
+      "location": "node_modules/@anthropic-ai/claude-agent-sdk-linux-arm64",
+      "name": "@anthropic-ai/claude-agent-sdk-linux-arm64",
+      "version": "0.3.296",
+      "declared_license": "SEE LICENSE IN LICENSE.md",
+      "optional": true,
+      "peer": false
+    },
+    {
+      "location": "node_modules/@anthropic-ai/claude-agent-sdk-linux-arm64-musl",
+      "name": "@anthropic-ai/claude-agent-sdk-linux-arm64-musl",
+      "version": "0.3.296",
+      "declared_license": "SEE LICENSE IN LICENSE.md",
+      "optional": true,
+      "peer": false
+    },
+    {
+      "location": "node_modules/@anthropic-ai/claude-agent-sdk-linux-x64",
+      "name": "@anthropic-ai/claude-agent-sdk-linux-x64",
+      "version": "0.3.296",
+      "declared_license": "SEE LICENSE IN LICENSE.md",
+      "optional": true,
+      "peer": false
+    },
+    {
+      "location": "node_modules/@anthropic-ai/claude-agent-sdk-linux-x64-musl",
+      "name": "@anthropic-ai/claude-agent-sdk-linux-x64-musl",
+      "version": "0.3.296",
+      "declared_license": "SEE LICENSE IN LICENSE.md",
+      "optional": true,
+      "peer": false
+    },
+    {
+      "location": "node_modules/@anthropic-ai/claude-agent-sdk-win32-arm64",
+      "name": "@anthropic-ai/claude-agent-sdk-win32-arm64",
+      "version": "0.3.296",
+      "declared_license": "SEE LICENSE IN LICENSE.md",
+      "optional": true,
+      "peer": false
+    },
+    {
+      "location": "node_modules/@anthropic-ai/claude-agent-sdk-win32-x64",
+      "name": "@anthropic-ai/claude-agent-sdk-win32-x64",
+      "version": "0.3.296",
+      "declared_license": "SEE LICENSE IN LICENSE.md",
+      "optional": true,
+      "peer": false
+    },
+    {
+      "location": "node_modules/@anthropic-ai/sdk",
+      "name": "@anthropic-ai/sdk",
+      "version": "0.133.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/@babel/runtime",
+      "name": "@babel/runtime",
+      "version": "7.29.10",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/@hono/node-server",
+      "name": "@hono/node-server",
+      "version": "2.1.4",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/@modelcontextprotocol/sdk",
+      "name": "@modelcontextprotocol/sdk",
+      "version": "1.32.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/@stablelib/base64",
+      "name": "@stablelib/base64",
+      "version": "1.0.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/accepts",
+      "name": "accepts",
+      "version": "2.0.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/ajv",
+      "name": "ajv",
+      "version": "8.20.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/ajv-formats",
+      "name": "ajv-formats",
+      "version": "3.0.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/body-parser",
+      "name": "body-parser",
+      "version": "2.3.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/body-parser/node_modules/content-type",
+      "name": "content-type",
+      "version": "2.1.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/bytes",
+      "name": "bytes",
+      "version": "3.1.2",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/call-bind-apply-helpers",
+      "name": "call-bind-apply-helpers",
+      "version": "1.0.2",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/call-bound",
+      "name": "call-bound",
+      "version": "1.0.4",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/content-disposition",
+      "name": "content-disposition",
+      "version": "2.0.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/content-type",
+      "name": "content-type",
+      "version": "1.0.5",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/cookie",
+      "name": "cookie",
+      "version": "0.7.2",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/cookie-signature",
+      "name": "cookie-signature",
+      "version": "1.2.2",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/cors",
+      "name": "cors",
+      "version": "2.8.6",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/cross-spawn",
+      "name": "cross-spawn",
+      "version": "7.0.6",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/debug",
+      "name": "debug",
+      "version": "4.4.3",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/depd",
+      "name": "depd",
+      "version": "2.0.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/dunder-proto",
+      "name": "dunder-proto",
+      "version": "1.0.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/ee-first",
+      "name": "ee-first",
+      "version": "1.1.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/encodeurl",
+      "name": "encodeurl",
+      "version": "2.0.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/es-define-property",
+      "name": "es-define-property",
+      "version": "1.0.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/es-errors",
+      "name": "es-errors",
+      "version": "1.3.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/es-object-atoms",
+      "name": "es-object-atoms",
+      "version": "1.1.2",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/escape-html",
+      "name": "escape-html",
+      "version": "1.0.3",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/etag",
+      "name": "etag",
+      "version": "1.8.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/eventsource",
+      "name": "eventsource",
+      "version": "3.0.7",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/eventsource-parser",
+      "name": "eventsource-parser",
+      "version": "3.1.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/express",
+      "name": "express",
+      "version": "5.3.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/express-rate-limit",
+      "name": "express-rate-limit",
+      "version": "8.7.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/express/node_modules/content-type",
+      "name": "content-type",
+      "version": "2.1.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/fast-deep-equal",
+      "name": "fast-deep-equal",
+      "version": "3.1.3",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/fast-sha256",
+      "name": "fast-sha256",
+      "version": "1.3.0",
+      "declared_license": "Unlicense",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/fast-uri",
+      "name": "fast-uri",
+      "version": "3.1.8",
+      "declared_license": "BSD-3-Clause",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/finalhandler",
+      "name": "finalhandler",
+      "version": "2.1.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/forwarded",
+      "name": "forwarded",
+      "version": "0.2.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/fresh",
+      "name": "fresh",
+      "version": "2.0.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/function-bind",
+      "name": "function-bind",
+      "version": "1.1.2",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/get-intrinsic",
+      "name": "get-intrinsic",
+      "version": "1.3.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/get-proto",
+      "name": "get-proto",
+      "version": "1.0.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/gopd",
+      "name": "gopd",
+      "version": "1.2.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/has-symbols",
+      "name": "has-symbols",
+      "version": "1.1.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/hasown",
+      "name": "hasown",
+      "version": "2.0.4",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/hono",
+      "name": "hono",
+      "version": "4.13.13",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/http-errors",
+      "name": "http-errors",
+      "version": "2.0.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/iconv-lite",
+      "name": "iconv-lite",
+      "version": "0.7.3",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/inherits",
+      "name": "inherits",
+      "version": "2.0.4",
+      "declared_license": "ISC",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/ip-address",
+      "name": "ip-address",
+      "version": "10.7.4",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/ipaddr.js",
+      "name": "ipaddr.js",
+      "version": "1.9.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/is-promise",
+      "name": "is-promise",
+      "version": "4.0.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/isexe",
+      "name": "isexe",
+      "version": "2.0.0",
+      "declared_license": "ISC",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/jose",
+      "name": "jose",
+      "version": "6.2.12",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/json-schema-to-ts",
+      "name": "json-schema-to-ts",
+      "version": "3.1.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/json-schema-traverse",
+      "name": "json-schema-traverse",
+      "version": "1.0.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/json-schema-typed",
+      "name": "json-schema-typed",
+      "version": "8.0.2",
+      "declared_license": "BSD-2-Clause",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/math-intrinsics",
+      "name": "math-intrinsics",
+      "version": "1.1.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/media-typer",
+      "name": "media-typer",
+      "version": "1.1.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/merge-descriptors",
+      "name": "merge-descriptors",
+      "version": "2.0.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/mime-db",
+      "name": "mime-db",
+      "version": "1.54.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/mime-types",
+      "name": "mime-types",
+      "version": "3.0.2",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/ms",
+      "name": "ms",
+      "version": "2.1.3",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/negotiator",
+      "name": "negotiator",
+      "version": "1.1.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/negotiator/node_modules/content-type",
+      "name": "content-type",
+      "version": "2.1.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/object-assign",
+      "name": "object-assign",
+      "version": "4.1.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/object-inspect",
+      "name": "object-inspect",
+      "version": "1.13.4",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/on-finished",
+      "name": "on-finished",
+      "version": "2.4.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/once",
+      "name": "once",
+      "version": "1.4.0",
+      "declared_license": "ISC",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/parseurl",
+      "name": "parseurl",
+      "version": "1.3.3",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/path-key",
+      "name": "path-key",
+      "version": "3.1.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/path-to-regexp",
+      "name": "path-to-regexp",
+      "version": "8.4.2",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/pkce-challenge",
+      "name": "pkce-challenge",
+      "version": "5.0.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/proxy-addr",
+      "name": "proxy-addr",
+      "version": "2.0.8",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/qs",
+      "name": "qs",
+      "version": "6.16.0",
+      "declared_license": "BSD-3-Clause",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/range-parser",
+      "name": "range-parser",
+      "version": "1.3.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/raw-body",
+      "name": "raw-body",
+      "version": "3.0.2",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/require-from-string",
+      "name": "require-from-string",
+      "version": "2.0.2",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/router",
+      "name": "router",
+      "version": "2.2.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/safer-buffer",
+      "name": "safer-buffer",
+      "version": "2.1.2",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/send",
+      "name": "send",
+      "version": "1.2.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/serve-static",
+      "name": "serve-static",
+      "version": "2.2.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/setprototypeof",
+      "name": "setprototypeof",
+      "version": "1.2.0",
+      "declared_license": "ISC",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/shebang-command",
+      "name": "shebang-command",
+      "version": "2.0.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/shebang-regex",
+      "name": "shebang-regex",
+      "version": "3.0.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/side-channel",
+      "name": "side-channel",
+      "version": "1.1.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/side-channel-list",
+      "name": "side-channel-list",
+      "version": "1.0.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/side-channel-map",
+      "name": "side-channel-map",
+      "version": "1.0.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/side-channel-weakmap",
+      "name": "side-channel-weakmap",
+      "version": "1.0.2",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/standardwebhooks",
+      "name": "standardwebhooks",
+      "version": "1.1.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/statuses",
+      "name": "statuses",
+      "version": "2.0.2",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/toidentifier",
+      "name": "toidentifier",
+      "version": "1.0.1",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/ts-algebra",
+      "name": "ts-algebra",
+      "version": "2.0.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/type-is",
+      "name": "type-is",
+      "version": "2.1.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/type-is/node_modules/content-type",
+      "name": "content-type",
+      "version": "2.1.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/unpipe",
+      "name": "unpipe",
+      "version": "1.0.0",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/vary",
+      "name": "vary",
+      "version": "1.1.2",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/which",
+      "name": "which",
+      "version": "2.0.2",
+      "declared_license": "ISC",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/wrappy",
+      "name": "wrappy",
+      "version": "1.0.2",
+      "declared_license": "ISC",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/zod",
+      "name": "zod",
+      "version": "4.6.7",
+      "declared_license": "MIT",
+      "optional": false,
+      "peer": true
+    },
+    {
+      "location": "node_modules/zod-to-json-schema",
+      "name": "zod-to-json-schema",
+      "version": "3.25.2",
+      "declared_license": "ISC",
+      "optional": false,
+      "peer": true
+    }
+  ]
+}

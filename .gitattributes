@@ -1,0 +1,7 @@
+STRATA_MODEL.md -text
+# Canonical S1 fixture byte strings are a portable contract, including their LF terminator.
+tests/fixtures/reconciliation-s1/*.json text eol=lf
+
+# Preserve upstream license evidence byte-for-byte, including original whitespace.
+licenses/* -text
+licenses/BUNDLED_LICENSES.txt -whitespace

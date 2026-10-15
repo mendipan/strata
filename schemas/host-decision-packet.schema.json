@@ -1,0 +1,186 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "decision-packet/2"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "model_version": {
+      "type": "string",
+      "const": "strata/0.3-block-lifecycle-experimental"
+    },
+    "basis_ref": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "basis_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "case_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "case_revision": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "question": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recommendation": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "options": {
+      "minItems": 1,
+      "maxItems": 3,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$"
+          },
+          "layer": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+          },
+          "proposal_index": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "target": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "partition_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "selected": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            }
+          },
+          "rejected": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            }
+          },
+          "context_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "effects": {
+            "type": "string",
+            "minLength": 1
+          },
+          "follow_up": {
+            "type": "string",
+            "minLength": 1
+          },
+          "executable": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "layer",
+          "proposal_index",
+          "target",
+          "partition_sha256",
+          "selected",
+          "rejected",
+          "context_sha256",
+          "effects",
+          "follow_up",
+          "executable"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "defer": {
+      "type": "boolean",
+      "const": true
+    },
+    "costs": {
+      "type": "string",
+      "const": "unknown; no execution permission"
+    },
+    "required_authorities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "remaining_gates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sources": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+      },
+      "additionalProperties": {}
+    },
+    "auth_receipt": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    }
+  },
+  "required": [
+    "format",
+    "project_id",
+    "model_version",
+    "basis_ref",
+    "basis_sha256",
+    "case_id",
+    "case_revision",
+    "expires_at",
+    "goal",
+    "question",
+    "recommendation",
+    "options",
+    "defer",
+    "costs",
+    "required_authorities",
+    "remaining_gates",
+    "sources",
+    "auth_receipt"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,10 @@
+import { mkdir, writeFile } from 'node:fs/promises';
+import { bootstrap, demoLayers, recipe } from '../src/fixtures.js';
+import { bytesDigest } from '../src/model.js';
+await mkdir('examples', { recursive: true });
+const { a, b, c } = demoLayers();
+const note = 'Observed a 900 second hold in a local experiment.\n';
+const distilled = { ...a, id: 'L-experiment' };
+const files = { 'bootstrap.json': bootstrap(), 'L-hold.json': a, 'L-reminder.json': b, 'L-alternative.json': c, 'composition-conflict.json': recipe(), 'source-manifest.json': { root: 'examples', files: [{ path: 'source-note.txt', digest: bytesDigest(note) }] }, 'distill-proposal.json': { layer: distilled, traceability: [{ item: 'booking.hold/requirements.expiry', classification: 'observed', rationale: 'The declared local note records this experiment; a human prepared the intent proposal.', files: ['source-note.txt'] }], questions: [] } };
+for (const [name, record] of Object.entries(files)) await writeFile('examples/' + name, JSON.stringify(record, null, 2) + '\n');
+await writeFile('examples/source-note.txt', note);

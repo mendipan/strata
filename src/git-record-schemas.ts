@@ -1,0 +1,28 @@
+import { z } from 'zod';
+import { gitBridgeSchema, gitBridgeInputSchema, gitBridgeAuthoritySchema } from './adoption/git-bridge-schema.js';
+
+export const hash = z.string().regex(/^[a-f0-9]{64}$/), ref = z.string().regex(/^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$/), text = z.string().min(1).max(4096), oid = z.string().regex(/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/);
+export const targetSchema = z.object({ ref, record_sha256: hash, candidate_fingerprint: hash, snapshot_sha256: hash }).strict();
+export const gitCheckerSchema = z.object({ id: text, version: text, sha256: hash, fixture_sha256: hash, oracle_sha256: hash }).strict();
+export const resultSchema = z.object({ criterion_ref: text, check: text, version: text, fixture: text, method: z.enum(['mechanical', 'review']), passed: z.boolean(), reviewer: text.nullable() }).strict();
+export const fileStateSchema = z.object({ content: z.string().nullable(), sha256: hash.nullable(), mode: z.enum(['100644','100755']).nullable() }).strict();
+export const operationSchema = z.object({ path: text, before: fileStateSchema, after: fileStateSchema }).strict();
+export const common = { project_id: text, repo_id: text };
+export const gitPlanInputSchema = z.object({ binding_ref: ref, target_ref: ref, write_paths: z.array(text).min(1).max(64), checker: gitCheckerSchema, oracle: z.unknown(), regressions: z.array(text).max(64) }).strict();
+export const gitPlanRequestSchema = z.union([gitPlanInputSchema,gitPlanInputSchema.extend({adoption:gitBridgeInputSchema}).strict()]);
+export const planSchema = z.object({ format: z.literal('git-change-plan/1'), ...common, binding_ref: ref, base_source_ref: ref, base_source_sha256: hash, target: targetSchema, write_paths: z.array(text), criteria: z.array(resultSchema.omit({ passed: true, reviewer: true })), checker: gitCheckerSchema, oracle: z.unknown(), regressions: z.array(text), acceptance_contract_sha256: hash, owner: text }).strict();
+export const gitPlanV2Schema = planSchema.extend({format:z.literal('git-change-plan/2'),adoption_bridge:gitBridgeSchema}).strict();
+export const allPlanSchema=z.union([planSchema,gitPlanV2Schema]);
+export const stageSchema = z.object({ format: z.literal('git-patch-stage/1'), ...common, plan_ref: ref, patch: z.string(), patch_sha256: hash, operations: z.array(operationSchema).min(1).max(64), result_tree_oid: oid, result_manifest_sha256: hash, unchanged_outside_write_set: z.literal(true), base_index_digest: hash, owner: text }).strict();
+export const acceptanceSchema = z.object({ format: z.literal('git-acceptance/1'), ...common, plan_ref: ref, stage_ref: ref, target: targetSchema, base_source_ref: ref, result_tree_oid: oid, result_manifest_sha256: hash, acceptance_contract_sha256: hash, checker: gitCheckerSchema, results: z.array(resultSchema), regressions: z.array(z.object({ id: text, passed: z.boolean() }).strict()), producer: z.object({ principal: text, trust: z.enum(['local-fixture-import','local-fixed-fixture']), execution_authenticated: z.literal(false) }).strict(), limitations: z.array(text), observations_sha256: hash }).strict();
+export const gitAcceptanceV2Schema=acceptanceSchema.extend({format:z.literal('git-acceptance/2'),producer:gitBridgeAuthoritySchema.extend({trust:z.literal('local-fixed-fixture'),execution_authenticated:z.literal(false)}).strict()}).strict();
+export const allAcceptanceSchema=z.union([acceptanceSchema,gitAcceptanceV2Schema]);
+export const observationSchema=acceptanceSchema.extend({format:z.literal('git-application-observation/1')}).strict();
+export const reviewTargetSchema = z.object({ ...common, stage_ref: ref, stage_sha256: hash, acceptance_ref: ref, acceptance_sha256: hash, plan_ref: ref, binding_ref: ref, release_ref: ref, release_sha256: hash, candidate: hash, snapshot_sha256: hash, responsible_scope: text, policy_version: text }).strict();
+export const reviewTargetV2Schema=reviewTargetSchema.extend({adoption_bridge_sha256:hash,reviewer:gitBridgeAuthoritySchema}).strict();
+export const reviewSchema = z.object({ format: z.literal('git-apply-review/1'), target: reviewTargetSchema, target_sha256: hash, principal: text, trust: z.literal('local-fixture'), accepted: z.boolean(), rationale: text }).strict();
+export const gitReviewV2Schema=reviewSchema.extend({format:z.literal('git-apply-review/2'),target:reviewTargetV2Schema}).strict();
+export const allReviewSchema=z.union([reviewSchema,gitReviewV2Schema]);
+export const receiptSchema = z.object({ format: z.literal('git-apply-receipt/1'), ...common, transaction_id: hash, plan_ref: ref, stage_ref: ref, review_ref: ref, binding_ref: ref, base_commit: oid, base_tree: oid, result_tree_oid: oid, paths: z.array(text), state: z.literal('applied-awaiting-owner-commit'), principal: text }).strict();
+export const finalizationSchema = z.object({ format: z.literal('git-finalization/1'), ...common, receipt_ref: ref, binding_ref: ref, stage_ref: ref, review_ref: ref, acceptance_ref: ref, release_ref: ref, release_sha256: hash, snapshot_sha256: hash, candidate: hash, head_commit: oid, head_tree: oid, base_commit: oid, principal: text }).strict();
+export const GIT_ADOPTION_SCHEMAS = { 'git-change-plan': allPlanSchema, 'git-patch-stage': stageSchema, 'git-acceptance': allAcceptanceSchema, 'git-application-observation':observationSchema, 'git-apply-review': allReviewSchema, 'git-apply-receipt': receiptSchema, 'git-finalization': finalizationSchema };

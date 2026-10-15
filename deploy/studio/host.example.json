@@ -1,0 +1,6 @@
+{
+  "format": "strata-studio-host/1",
+  "public_origin": "https://studio.example.test",
+  "trusted_proxy_addresses": ["127.0.0.1"],
+  "port": 4174
+}

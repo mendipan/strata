@@ -1,0 +1,9 @@
+{
+  "id": "CollectionAudit", "revision": 1, "owner": "author-a", "model_version": "strata/0.3-block-lifecycle-experimental", "baseline": "HostCollectionBaseline@1", "intent": "Add the finite audit child and its collection interface.",
+  "changes": [
+    { "op": "set_item", "block": "collection", "path": "relationships.audit", "expected": { "kind": "absent" }, "value": { "target": "audit", "statement": "The collection records successful state changes through audit.", "acceptance": ["audit"] } },
+    { "op": "set_item", "block": "collection", "path": "contract.outputs.audit", "expected": { "kind": "absent" }, "value": { "statement": "When audit is present, audit() returns detached mutation events in sequence order.", "acceptance": ["audit"] } }
+  ],
+  "acceptance": [{ "block": "collection", "id": "audit", "criterion": { "statement": "Verify collection.audit for events.", "method": "mechanical", "check": "collection.audit", "version": "1", "fixture": "events", "subjects": ["collection/contract.outputs.audit", "collection/relationships.audit"] } }],
+  "created_blocks": [], "requires_layers": [], "read_set": [], "assumptions": [], "resolution_proposals": [], "derived_from": null
+}

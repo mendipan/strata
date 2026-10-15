@@ -1,0 +1,13 @@
+{
+  "format": "contributor-collection-expectations/1",
+  "boundary": "Literal observations independent of generated configuration and the engine oracle; in-memory scope only.",
+  "baseline": {
+    "capacity": 3,
+    "audit": false
+  },
+  "changed": {
+    "capacity": 5,
+    "audit": true
+  },
+  "max_title_code_points": 20
+}

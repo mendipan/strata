@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "adoption-review/1"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "draft_ref": {
+      "type": "string",
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "proposal_ref": {
+      "type": "string",
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "proposal_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "layer_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "accepted": {
+      "type": "boolean"
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "principal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "grant_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policy_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "trust": {
+      "type": "string",
+      "const": "local-fixture"
+    },
+    "interpretation_reviewed": {
+      "type": "boolean",
+      "const": true
+    },
+    "behavior_verified": {
+      "type": "boolean",
+      "const": false
+    }
+  },
+  "required": [
+    "format",
+    "project_id",
+    "owner",
+    "draft_ref",
+    "proposal_ref",
+    "proposal_sha256",
+    "layer_sha256",
+    "accepted",
+    "rationale",
+    "principal",
+    "grant_id",
+    "policy_version",
+    "authority_sha256",
+    "trust",
+    "interpretation_reviewed",
+    "behavior_verified"
+  ],
+  "additionalProperties": false
+}

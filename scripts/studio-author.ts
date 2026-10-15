@@ -1,0 +1,28 @@
+import path from 'node:path';
+import { readFileSync,lstatSync } from 'node:fs';
+import { z } from 'zod';
+import { fileURLToPath } from 'node:url';
+import { BLOCK_MODEL,fail } from '../src/model.js';
+import { HostIssuer } from '../src/auth/host-issuer.js';
+import { ActorAccess } from '../src/auth/access.js';
+import { hostRunner } from '../src/auth/runner.js';
+import { startLocalBroker } from '../src/local-broker.js';
+import { StudioCommands,STUDIO_COMMANDS } from '../src/explorer/commands.js';
+import { ExplorerConnections } from '../src/explorer/connections.js';
+import { startExplorer } from '../src/explorer/host.js';
+import { safePath } from '../src/commands/node.js';
+import { safeJson } from '../src/explorer/contract.js';
+const absolute=z.string().refine(path.isAbsolute);
+export const authorHostSchema=z.object({format:z.literal('strata-studio-author-host/1'),project_id:z.string().regex(/^[A-Za-z0-9_-]{1,128}$/),project_directory:absolute,state_directory:absolute,accounts_file:absolute,policy_file:absolute,public_origin:z.string(),trusted_proxy_addresses:z.array(z.string()).min(1).max(8),port:z.number().int().min(0).max(65535),operations:z.array(z.enum(STUDIO_COMMANDS)).max(32),output_slots:z.record(z.string().regex(/^[A-Za-z0-9_-]{1,128}$/),z.string().regex(/^\.strata[/\\][A-Za-z0-9_./\\-]+$/)),runner_profiles:z.array(z.enum(['counter-host/1','collection-host/1'])).max(2).refine(profiles=>new Set(profiles).size===profiles.length,'Runner profiles must be distinct.')}).strict();
+function privateJson(file:string){let current=path.resolve(file);while(true){const s=lstatSync(current);if(s.isSymbolicLink())throw new Error('Protected configuration cannot use links.');if(current===file&&(!s.isFile()||s.size>65536||(process.platform!=='win32'&&(s.mode&0o077))))throw new Error('Protected configuration must be a bounded private file.');const parent=path.dirname(current);if(parent===current)break;current=parent;}return safeJson(readFileSync(file,'utf8'),65536);}
+export async function runAuthorStudio(filename:string,assets:string){const config=authorHostSchema.parse(privateJson(filename)),issuer=new HostIssuer(privateJson(config.accounts_file),privateJson(config.policy_file));if(issuer.projectId!==config.project_id)fail('PROJECT_FORBIDDEN',4,'Protected policy/project binding differs.');
+  const refresh=()=>issuer.reload(privateJson(config.accounts_file),privateJson(config.policy_file));for(const slot of Object.values(config.output_slots)){const full=await safePath(config.project_directory,slot);const relative=path.relative(path.join(config.project_directory,'.strata'),full);if(!relative||relative.startsWith('..')||path.isAbsolute(relative))fail('INVALID_PATH',2,'Configured author output slots must stay below .strata.');}
+  const runner=hostRunner(config.project_directory,config.output_slots,config.runner_profiles),broker=await startLocalBroker(config.state_directory,0,{issuer,model_version:BLOCK_MODEL,refreshAuthority:refresh,runner});
+  const access=new ActorAccess(issuer,{publicOrigin:config.public_origin,trustedProxyAddresses:config.trusted_proxy_addresses},refresh),sessions=new Map<string,{commands:StudioCommands;connections:ExplorerConnections}>();
+  const session=(req:import('node:http').IncomingMessage)=>{access.require(req);const token=access.token(req);issuer.resolve(token);for(const [key,old]of sessions){try{issuer.resolve(key);}catch{old.commands.close();sessions.delete(key);}}let s=sessions.get(token);if(!s){const commands=new StudioCommands({project_id:config.project_id,model_version:BLOCK_MODEL,broker:broker.url,artifact_adapter:'local-persistent-fake',schema_version:'1',network_policy:'loopback-only'},token,config.project_directory,config.operations,config.output_slots,'host-authenticated',()=>{refresh();const context=issuer.resolve(token,config.project_id);issuer.authorize(context,'studio.snapshot',{});return context.policy_version;});s={commands,connections:new ExplorerConnections([{reader:commands.reader,provider:'local-broker',authenticationAvailable:()=>{try{refresh();issuer.resolve(token);return true;}catch{return false;}}}])};sessions.set(token,s);}return s;};
+  // No fixture login, baseline, policy, account, grant or key is synthesized.
+  const shell={connection:{connection_id:'actor',project_id:config.project_id,display_name:'Strata project',model_version:BLOCK_MODEL},assertAuthorized(){},async load(){fail('AUTHENTICATION_REQUIRED',4,'Sign in using an owner-provisioned account.');}};
+  const {ExplorerReader}=await import('../src/explorer/read.js');let host;try{host=await startExplorer(new ExplorerReader(shell),{port:config.port,assets,actor:{access,commands:req=>session(req).commands,connections:req=>session(req).connections}});}catch(e){await broker.close();throw e;}
+  return {...host,issuer,close:async()=>{for(const s of sessions.values())s.commands.close();await host.close();await broker.close();}};
+}
+if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){const args=process.argv.slice(2);if(args.length!==2||args[0]!=='--host-config'||!path.isAbsolute(args[1]))throw new Error('Use one explicit protected author host configuration.');runAuthorStudio(args[1],path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../../explorer')).then(host=>{process.stdout.write('Studio named-account service started on loopback.\n');const stop=()=>{void host.close().then(()=>process.exit(0));};process.once('SIGTERM',stop);process.once('SIGINT',stop);}).catch(()=>{process.stderr.write('Studio author host could not start. Check protected configuration.\n');process.exitCode=1;});}

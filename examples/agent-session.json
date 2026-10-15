@@ -1,0 +1,1345 @@
+{
+  "onboarding_version": "1",
+  "scope": "portable instructions and deterministic CLI replay; fresh-model acceptance remains pending",
+  "manifest": {
+    "project_root": "$PROJECT_ROOT",
+    "cli_argv_prefix": [
+      "node",
+      "$CLI"
+    ],
+    "protocol_version": "1",
+    "model_version": "strata/0.1-facets-experimental",
+    "baseline": "R0@1",
+    "task": {
+      "role": "reminder-author",
+      "principal_label": "author-b",
+      "owned_layer_id": "L-reminder",
+      "decision_layer_id": "L-reminder-decision",
+      "intent": "Enable one reminder 60 seconds before a proposed 900-second expiry.",
+      "read_block_ids": [
+        "booking.reminder",
+        "booking.hold"
+      ],
+      "write_block_ids": [
+        "booking.reminder"
+      ],
+      "required_peer_refs": [
+        "L-hold@1"
+      ],
+      "assignment_is_advisory": true
+    },
+    "session": {
+      "transport": "host-injected STRATA_SESSION",
+      "trust_mode": "local_fixture",
+      "selectors_in_instruction_packet": false
+    },
+    "execution": {
+      "network_policy": "loopback-only",
+      "artifact_adapter": "local-persistent-fake",
+      "profile": "booking-node/1",
+      "output_root": ".strata/realization",
+      "provider_mode": "disabled",
+      "remote_grant": null
+    },
+    "handoff": {
+      "decision": "responsible operator",
+      "evidence": "host-owned fixture runner",
+      "release": "authorized operator/publisher",
+      "result": "exact refs, checks, refusals and remaining blockers"
+    },
+    "contracts": {
+      "block": "docs/BLOCK_CONTRACT.md",
+      "status": "docs/IMPLEMENTED_CONTRACT.md",
+      "block_input": "strict JSON; seven required fields; no Markdown importer or typed project assets"
+    },
+    "recovery": {
+      "context": "Personal navigation only; explicit mutation references and generation remain required.",
+      "layer_restore": "Same owned Layer and baseline/model; appends a private revision; fresh applicable review/evidence/approval.",
+      "backup": "Separate authorized local operator; full quiesced Node history export and isolated inactive restore; no session switching."
+    },
+    "packet_scope": "Use this manifest plus the skill as initial discovery; load relevant steps from this full historical 34-call replay as needed. No token-count measurement is claimed."
+  },
+  "setup": {
+    "dependencies": "already installed/pinned",
+    "build": "already available",
+    "broker": "isolated preconfigured loopback fixture",
+    "operators": "trusted harness; never agent-owned identities"
+  },
+  "process_contract": {
+    "common_argv": [
+      "--project",
+      "$PROJECT_ROOT",
+      "--json",
+      "--non-interactive",
+      "--offline"
+    ],
+    "stdin": "one JSON object; no shell interpolation",
+    "identity": "injected separately per host role; no credentials in this file"
+  },
+  "binding_contract": {
+    "argv_tokens": "Replace dollar-prefixed tokens with exact captured refs/paths. Never latest or guessed values.",
+    "stdin_overrides": {
+      "decision-draft": {
+        "resolution_proposals[0].input_fingerprint": "blocked.input_fingerprint",
+        "resolution_proposals[0].scope": "blocked.scope",
+        "resolution_proposals[0].impact": "blocked.impact"
+      },
+      "decision-endorsement": {
+        "target": "unsigned.target",
+        "scope": "unsigned.scope"
+      },
+      "seal-decision": {
+        "approvals[0]": "decision_approval.ref"
+      },
+      "eligible-compose": {
+        "resolutions[0]": "resolution.ref"
+      },
+      "scope-endorsement": {
+        "target": "candidate.fingerprint",
+        "scope": "candidate.scope",
+        "evidence_digest": "validation.evidence_digest"
+      },
+      "release-endorsement": {
+        "target": "candidate.fingerprint",
+        "evidence_digest": "validation.evidence_digest"
+      },
+      "inherit": {
+        "baseline": "release.ref"
+      }
+    },
+    "note": "stdin bodies contain schema-valid sample values. Replace declared runtime bindings before calling; the replay records complete actual requests/envelopes."
+  },
+  "steps": [
+    {
+      "id": "version",
+      "kind": "cli",
+      "role": "reader",
+      "operator_only": false,
+      "argv": [
+        "--version"
+      ],
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "help",
+      "kind": "cli",
+      "role": "reader",
+      "operator_only": false,
+      "argv": [
+        "--help"
+      ],
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "config",
+      "kind": "cli",
+      "role": "reminder-author",
+      "operator_only": false,
+      "argv": [
+        "config",
+        "show"
+      ],
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "status",
+      "kind": "cli",
+      "role": "reminder-author",
+      "operator_only": false,
+      "argv": [
+        "status"
+      ],
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "bootstrap",
+      "kind": "cli",
+      "role": "bootstrap",
+      "operator_only": true,
+      "argv": [
+        "init",
+        "--file",
+        "-"
+      ],
+      "stdin": {
+        "id": "R0",
+        "revision": 1,
+        "model_version": "strata/0.1-facets-experimental",
+        "root": "app",
+        "blocks": {
+          "app": {
+            "id": "app",
+            "parent": null,
+            "purpose": "A command-driven booking demonstration.",
+            "requirements": {},
+            "acceptance": {
+              "review": {
+                "statement": "Verify intent.review for app.",
+                "method": "review",
+                "check": "intent.review",
+                "version": "1",
+                "fixture": "app",
+                "subjects": [
+                  "app/purpose"
+                ]
+              }
+            },
+            "relationships": {},
+            "contract": {
+              "inputs": {},
+              "outputs": {},
+              "failures": {}
+            }
+          },
+          "booking": {
+            "id": "booking",
+            "parent": "app",
+            "purpose": "Coordinate exclusive holds and reminders.",
+            "requirements": {},
+            "acceptance": {
+              "review": {
+                "statement": "Verify intent.review for booking.",
+                "method": "review",
+                "check": "intent.review",
+                "version": "1",
+                "fixture": "booking",
+                "subjects": [
+                  "booking/purpose"
+                ]
+              }
+            },
+            "relationships": {},
+            "contract": {
+              "inputs": {},
+              "outputs": {},
+              "failures": {}
+            }
+          },
+          "booking.hold": {
+            "id": "booking.hold",
+            "parent": "booking",
+            "purpose": "Hold one resource until a fixed expiry.",
+            "requirements": {
+              "expiry": {
+                "statement": "A hold expires exactly 600 seconds after it starts.",
+                "kind": "rule",
+                "facets": [
+                  "behavior",
+                  "data"
+                ],
+                "acceptance": [
+                  "expiry"
+                ],
+                "parameters": {
+                  "seconds": 600
+                }
+              },
+              "exclusive": {
+                "statement": "Only one active hold may exist for a resource.",
+                "kind": "invariant",
+                "facets": [
+                  "behavior",
+                  "data",
+                  "safety"
+                ],
+                "acceptance": [
+                  "exclusive"
+                ],
+                "parameters": {
+                  "exclusive": true
+                }
+              }
+            },
+            "acceptance": {
+              "review": {
+                "statement": "Verify intent.review for booking.hold.",
+                "method": "review",
+                "check": "intent.review",
+                "version": "1",
+                "fixture": "booking.hold",
+                "subjects": [
+                  "booking.hold/purpose"
+                ]
+              },
+              "expiry": {
+                "statement": "Verify booking.expiry for expiry.",
+                "method": "mechanical",
+                "check": "booking.expiry",
+                "version": "1",
+                "fixture": "expiry",
+                "subjects": [
+                  "booking.hold/requirements.expiry",
+                  "booking.hold/contract.outputs.state"
+                ]
+              },
+              "exclusive": {
+                "statement": "Verify booking.exclusive for exclusive.",
+                "method": "mechanical",
+                "check": "booking.exclusive",
+                "version": "1",
+                "fixture": "exclusive",
+                "subjects": [
+                  "booking.hold/requirements.exclusive",
+                  "booking.hold/contract.inputs.hold",
+                  "booking.hold/contract.failures.occupied"
+                ]
+              },
+              "lifecycle": {
+                "statement": "Verify booking.lifecycle for lifecycle.",
+                "method": "mechanical",
+                "check": "booking.lifecycle",
+                "version": "1",
+                "fixture": "lifecycle",
+                "subjects": [
+                  "booking.hold/requirements.expiry"
+                ]
+              }
+            },
+            "relationships": {},
+            "contract": {
+              "inputs": {
+                "hold": {
+                  "statement": "A hold request identifies one resource and one owner.",
+                  "acceptance": [
+                    "exclusive"
+                  ]
+                }
+              },
+              "outputs": {
+                "state": {
+                  "statement": "State exposes active holds and their expiry.",
+                  "acceptance": [
+                    "expiry"
+                  ]
+                }
+              },
+              "failures": {
+                "occupied": {
+                  "statement": "An occupied resource rejects another hold.",
+                  "acceptance": [
+                    "exclusive"
+                  ]
+                }
+              }
+            }
+          },
+          "booking.reminder": {
+            "id": "booking.reminder",
+            "parent": "booking",
+            "purpose": "Remind a holder once shortly before expiry.",
+            "requirements": {
+              "timing": {
+                "statement": "Reminders are disabled.",
+                "kind": "rule",
+                "facets": [
+                  "behavior"
+                ],
+                "acceptance": [
+                  "timing",
+                  "once"
+                ],
+                "parameters": {
+                  "enabled": false,
+                  "lead_seconds": 60
+                }
+              }
+            },
+            "acceptance": {
+              "review": {
+                "statement": "Verify intent.review for booking.reminder.",
+                "method": "review",
+                "check": "intent.review",
+                "version": "1",
+                "fixture": "booking.reminder",
+                "subjects": [
+                  "booking.reminder/purpose"
+                ]
+              },
+              "timing": {
+                "statement": "Verify booking.reminder for timing.",
+                "method": "mechanical",
+                "check": "booking.reminder",
+                "version": "1",
+                "fixture": "timing",
+                "subjects": [
+                  "booking.reminder/requirements.timing",
+                  "booking.reminder/relationships.hold"
+                ]
+              },
+              "once": {
+                "statement": "Verify booking.once for once.",
+                "method": "mechanical",
+                "check": "booking.once",
+                "version": "1",
+                "fixture": "once",
+                "subjects": [
+                  "booking.reminder/requirements.timing"
+                ]
+              }
+            },
+            "relationships": {
+              "hold": {
+                "statement": "Reminder timing consumes the hold duration.",
+                "target": "booking.hold",
+                "acceptance": [
+                  "timing"
+                ]
+              }
+            },
+            "contract": {
+              "inputs": {},
+              "outputs": {},
+              "failures": {}
+            }
+          }
+        },
+        "authorities": {
+          "scopes": [
+            {
+              "block": "app",
+              "selectors": [
+                "scope-selector"
+              ]
+            },
+            {
+              "block": "booking",
+              "selectors": [
+                "scope-selector"
+              ]
+            },
+            {
+              "block": "booking.hold",
+              "selectors": [
+                "scope-selector"
+              ]
+            },
+            {
+              "block": "booking.reminder",
+              "selectors": [
+                "scope-selector"
+              ]
+            }
+          ],
+          "release": [
+            "release-manager"
+          ],
+          "guardians": [
+            {
+              "item": "booking.hold/requirements.exclusive",
+              "principal": "safety-guardian"
+            }
+          ]
+        },
+        "deleted_ids": [
+          "deleted-demo"
+        ]
+      },
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "hold-draft",
+      "kind": "cli",
+      "role": "hold-author",
+      "operator_only": false,
+      "argv": [
+        "layer",
+        "create",
+        "--file",
+        "-"
+      ],
+      "stdin": {
+        "id": "L-hold",
+        "revision": 1,
+        "owner": "author-a",
+        "model_version": "strata/0.1-facets-experimental",
+        "baseline": "R0@1",
+        "intent": "L-hold",
+        "changes": [
+          {
+            "op": "set_item",
+            "block": "booking.hold",
+            "path": "requirements.expiry",
+            "expected": {
+              "kind": "value",
+              "value": {
+                "statement": "A hold expires exactly 600 seconds after it starts.",
+                "kind": "rule",
+                "facets": [
+                  "behavior",
+                  "data"
+                ],
+                "acceptance": [
+                  "expiry"
+                ],
+                "parameters": {
+                  "seconds": 600
+                }
+              }
+            },
+            "value": {
+              "statement": "A hold expires exactly 900 seconds after it starts.",
+              "kind": "rule",
+              "facets": [
+                "behavior",
+                "data"
+              ],
+              "acceptance": [
+                "expiry"
+              ],
+              "parameters": {
+                "seconds": 900
+              }
+            }
+          }
+        ],
+        "requires_layers": [],
+        "read_set": [],
+        "assumptions": [],
+        "acceptance": [],
+        "resolution_proposals": [],
+        "derived_from": null
+      },
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "hold-publish",
+      "kind": "cli",
+      "role": "hold-author",
+      "operator_only": false,
+      "argv": [
+        "layer",
+        "publish",
+        "L-hold@1"
+      ],
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "alternative-draft",
+      "kind": "cli",
+      "role": "alternative-author",
+      "operator_only": false,
+      "argv": [
+        "layer",
+        "create",
+        "--file",
+        "-"
+      ],
+      "stdin": {
+        "id": "L-alternative",
+        "revision": 1,
+        "owner": "author-c",
+        "model_version": "strata/0.1-facets-experimental",
+        "baseline": "R0@1",
+        "intent": "L-alternative",
+        "changes": [
+          {
+            "op": "set_item",
+            "block": "booking.hold",
+            "path": "requirements.expiry",
+            "expected": {
+              "kind": "value",
+              "value": {
+                "statement": "A hold expires exactly 600 seconds after it starts.",
+                "kind": "rule",
+                "facets": [
+                  "behavior",
+                  "data"
+                ],
+                "acceptance": [
+                  "expiry"
+                ],
+                "parameters": {
+                  "seconds": 600
+                }
+              }
+            },
+            "value": {
+              "statement": "A hold expires exactly 1200 seconds after it starts.",
+              "kind": "rule",
+              "facets": [
+                "behavior",
+                "data"
+              ],
+              "acceptance": [
+                "expiry"
+              ],
+              "parameters": {
+                "seconds": 1200
+              }
+            }
+          }
+        ],
+        "requires_layers": [],
+        "read_set": [],
+        "assumptions": [],
+        "acceptance": [],
+        "resolution_proposals": [],
+        "derived_from": null
+      },
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "alternative-publish",
+      "kind": "cli",
+      "role": "alternative-author",
+      "operator_only": false,
+      "argv": [
+        "layer",
+        "publish",
+        "L-alternative@1"
+      ],
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "baseline-read",
+      "kind": "cli",
+      "role": "reminder-author",
+      "operator_only": false,
+      "argv": [
+        "inspect",
+        "release",
+        "R0@1"
+      ],
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "block-read",
+      "kind": "cli",
+      "role": "reminder-author",
+      "operator_only": false,
+      "argv": [
+        "inspect",
+        "block",
+        "booking.reminder",
+        "--at",
+        "R0@1"
+      ],
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "peer-read",
+      "kind": "cli",
+      "role": "reminder-author",
+      "operator_only": false,
+      "argv": [
+        "inspect",
+        "layer",
+        "L-hold@1"
+      ],
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "reminder-draft",
+      "kind": "cli",
+      "role": "reminder-author",
+      "operator_only": false,
+      "argv": [
+        "layer",
+        "create",
+        "--file",
+        "-"
+      ],
+      "stdin": {
+        "id": "L-reminder",
+        "revision": 1,
+        "owner": "author-b",
+        "model_version": "strata/0.1-facets-experimental",
+        "baseline": "R0@1",
+        "intent": "L-reminder",
+        "changes": [
+          {
+            "op": "set_item",
+            "block": "booking.reminder",
+            "path": "requirements.timing",
+            "expected": {
+              "kind": "value",
+              "value": {
+                "statement": "Reminders are disabled.",
+                "kind": "rule",
+                "facets": [
+                  "behavior"
+                ],
+                "acceptance": [
+                  "timing",
+                  "once"
+                ],
+                "parameters": {
+                  "enabled": false,
+                  "lead_seconds": 60
+                }
+              }
+            },
+            "value": {
+              "statement": "Send one reminder 60 seconds before hold expiry.",
+              "kind": "rule",
+              "facets": [
+                "behavior"
+              ],
+              "acceptance": [
+                "timing",
+                "once"
+              ],
+              "parameters": {
+                "enabled": true,
+                "lead_seconds": 60
+              }
+            }
+          }
+        ],
+        "requires_layers": [
+          "L-hold@1"
+        ],
+        "read_set": [
+          {
+            "layer": "L-hold@1",
+            "mode": "required"
+          }
+        ],
+        "assumptions": [
+          {
+            "block": "booking.hold",
+            "path": "requirements.expiry",
+            "expected": {
+              "kind": "value",
+              "value": {
+                "statement": "A hold expires exactly 900 seconds after it starts.",
+                "kind": "rule",
+                "facets": [
+                  "behavior",
+                  "data"
+                ],
+                "acceptance": [
+                  "expiry"
+                ],
+                "parameters": {
+                  "seconds": 900
+                }
+              }
+            }
+          }
+        ],
+        "acceptance": [
+          {
+            "block": "booking.reminder",
+            "id": "layer-reminder",
+            "criterion": {
+              "statement": "Verify booking.reminder for layer-reminder.",
+              "method": "mechanical",
+              "check": "booking.reminder",
+              "version": "1",
+              "fixture": "layer-reminder",
+              "subjects": [
+                "booking.reminder/requirements.timing"
+              ]
+            }
+          }
+        ],
+        "resolution_proposals": [],
+        "derived_from": null
+      },
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "reminder-publish",
+      "kind": "cli",
+      "role": "reminder-author",
+      "operator_only": false,
+      "argv": [
+        "layer",
+        "publish",
+        "L-reminder@1"
+      ],
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "peer-write-refusal",
+      "kind": "cli",
+      "role": "reminder-author",
+      "operator_only": false,
+      "argv": [
+        "layer",
+        "revise",
+        "L-hold@1",
+        "--file",
+        "-"
+      ],
+      "stdin": {
+        "id": "L-hold",
+        "revision": 2,
+        "owner": "author-b",
+        "model_version": "strata/0.1-facets-experimental",
+        "baseline": "R0@1",
+        "intent": "L-hold",
+        "changes": [
+          {
+            "op": "set_item",
+            "block": "booking.hold",
+            "path": "requirements.expiry",
+            "expected": {
+              "kind": "value",
+              "value": {
+                "statement": "A hold expires exactly 600 seconds after it starts.",
+                "kind": "rule",
+                "facets": [
+                  "behavior",
+                  "data"
+                ],
+                "acceptance": [
+                  "expiry"
+                ],
+                "parameters": {
+                  "seconds": 600
+                }
+              }
+            },
+            "value": {
+              "statement": "A hold expires exactly 900 seconds after it starts.",
+              "kind": "rule",
+              "facets": [
+                "behavior",
+                "data"
+              ],
+              "acceptance": [
+                "expiry"
+              ],
+              "parameters": {
+                "seconds": 900
+              }
+            }
+          }
+        ],
+        "requires_layers": [],
+        "read_set": [],
+        "assumptions": [],
+        "acceptance": [],
+        "resolution_proposals": [],
+        "derived_from": null
+      },
+      "expected_exit": 4,
+      "captures": {}
+    },
+    {
+      "id": "peer-integrity",
+      "kind": "cli",
+      "role": "reader",
+      "operator_only": false,
+      "argv": [
+        "inspect",
+        "layer",
+        "L-hold@1"
+      ],
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "blocked-compose",
+      "kind": "cli",
+      "role": "preparer",
+      "operator_only": false,
+      "argv": [
+        "compose",
+        "--file",
+        "-"
+      ],
+      "stdin": {
+        "id": "C-demo",
+        "revision": 1,
+        "model_version": "strata/0.1-facets-experimental",
+        "baseline": "R0@1",
+        "proposals": [
+          "L-hold@1",
+          "L-reminder@1",
+          "L-alternative@1"
+        ],
+        "selected": [
+          "L-hold@1",
+          "L-reminder@1",
+          "L-alternative@1"
+        ],
+        "alternative_groups": [
+          {
+            "id": "duration",
+            "members": [
+              "L-hold@1",
+              "L-alternative@1"
+            ],
+            "min": 1,
+            "max": 1
+          }
+        ],
+        "scenario": {
+          "id": "booking-demo",
+          "checks": [
+            {
+              "id": "booking.compatibility",
+              "version": "1"
+            }
+          ]
+        },
+        "resolutions": []
+      },
+      "expected_exit": 5,
+      "captures": {
+        "blocked": "data.ref",
+        "input_fingerprint": "data.input_fingerprint",
+        "scope": "data.scope",
+        "impact": "data.impact"
+      }
+    },
+    {
+      "id": "conflicts",
+      "kind": "cli",
+      "role": "preparer",
+      "operator_only": false,
+      "argv": [
+        "conflicts",
+        "$BLOCKED"
+      ],
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "blocked-read",
+      "kind": "cli",
+      "role": "reader",
+      "operator_only": false,
+      "argv": [
+        "inspect",
+        "composition",
+        "$BLOCKED"
+      ],
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "decision-draft",
+      "kind": "cli",
+      "role": "reminder-author",
+      "operator_only": false,
+      "argv": [
+        "layer",
+        "create",
+        "--file",
+        "-"
+      ],
+      "stdin": {
+        "id": "L-reminder-decision",
+        "revision": 1,
+        "owner": "author-b",
+        "model_version": "strata/0.1-facets-experimental",
+        "baseline": "R0@1",
+        "intent": "L-reminder-decision",
+        "changes": [],
+        "requires_layers": [],
+        "read_set": [],
+        "assumptions": [],
+        "acceptance": [],
+        "resolution_proposals": [
+          {
+            "input_fingerprint": "e17e7528256e2d5c7e007289da7831a55a78bebdeef917f8d15bc850ed85c18a",
+            "scope": "booking",
+            "impact": [
+              "booking.hold",
+              "booking.reminder"
+            ],
+            "outcome": {
+              "kind": "select",
+              "selected": [
+                "L-hold@1",
+                "L-reminder@1"
+              ],
+              "rejected": [
+                "L-alternative@1"
+              ]
+            }
+          }
+        ],
+        "derived_from": null
+      },
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "decision-publish",
+      "kind": "cli",
+      "role": "reminder-author",
+      "operator_only": false,
+      "argv": [
+        "layer",
+        "publish",
+        "L-reminder-decision@1"
+      ],
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "unsigned-decision",
+      "kind": "cli",
+      "role": "preparer",
+      "operator_only": false,
+      "argv": [
+        "resolve",
+        "--file",
+        "-",
+        "--dry-run"
+      ],
+      "stdin": {
+        "layer": "L-reminder-decision@1",
+        "proposal_index": 0,
+        "composition": "C-demo@1",
+        "approvals": []
+      },
+      "expected_exit": 0,
+      "captures": {
+        "unsigned_target": "data.target",
+        "unsigned_scope": "data.scope"
+      }
+    },
+    {
+      "id": "decision-endorsement",
+      "kind": "cli",
+      "role": "scope-operator",
+      "operator_only": true,
+      "argv": [
+        "approve",
+        "--file",
+        "-"
+      ],
+      "stdin": {
+        "kind": "resolution",
+        "target": "2689792ee5fb5570422d710e28a8598bb592e01679202f23b6909a2c9827a418",
+        "scope": "booking",
+        "evidence_digest": null
+      },
+      "expected_exit": 0,
+      "captures": {
+        "decision_approval": "data.ref"
+      }
+    },
+    {
+      "id": "seal-decision",
+      "kind": "cli",
+      "role": "preparer",
+      "operator_only": false,
+      "argv": [
+        "resolve",
+        "--file",
+        "-"
+      ],
+      "stdin": {
+        "layer": "L-reminder-decision@1",
+        "proposal_index": 0,
+        "composition": "C-demo@1",
+        "approvals": [
+          "approval@edf434dc3048e8677764a514"
+        ]
+      },
+      "expected_exit": 0,
+      "captures": {
+        "resolution": "data.ref"
+      }
+    },
+    {
+      "id": "eligible-compose",
+      "kind": "cli",
+      "role": "preparer",
+      "operator_only": false,
+      "argv": [
+        "compose",
+        "--file",
+        "-"
+      ],
+      "stdin": {
+        "id": "C-demo",
+        "revision": 2,
+        "model_version": "strata/0.1-facets-experimental",
+        "baseline": "R0@1",
+        "proposals": [
+          "L-hold@1",
+          "L-reminder@1",
+          "L-alternative@1"
+        ],
+        "selected": [
+          "L-hold@1",
+          "L-reminder@1"
+        ],
+        "alternative_groups": [
+          {
+            "id": "duration",
+            "members": [
+              "L-hold@1",
+              "L-alternative@1"
+            ],
+            "min": 1,
+            "max": 1
+          }
+        ],
+        "scenario": {
+          "id": "booking-demo",
+          "checks": [
+            {
+              "id": "booking.compatibility",
+              "version": "1"
+            }
+          ]
+        },
+        "resolutions": [
+          "resolution@be14493bc7658fa612f65c96"
+        ]
+      },
+      "expected_exit": 0,
+      "captures": {
+        "candidate": "data.ref",
+        "candidate_fingerprint": "data.fingerprint",
+        "candidate_scope": "data.scope"
+      }
+    },
+    {
+      "id": "materialize",
+      "kind": "cli",
+      "role": "preparer",
+      "operator_only": false,
+      "argv": [
+        "materialize",
+        "$CANDIDATE",
+        "--profile",
+        "booking-node/1",
+        "--out",
+        ".strata/realization"
+      ],
+      "expected_exit": 0,
+      "captures": {
+        "manifest": "data.manifest"
+      }
+    },
+    {
+      "id": "execute-fixture",
+      "kind": "host-runner",
+      "role": "evidence-producer",
+      "operator_only": true,
+      "host_action": "runFixtureEvidence",
+      "note": "The replay must measure and execute the actual generated booking module. Review results are explicit fixtures."
+    },
+    {
+      "id": "validate",
+      "kind": "cli",
+      "role": "evidence-producer",
+      "operator_only": true,
+      "argv": [
+        "validate",
+        "$CANDIDATE",
+        "--realization",
+        "$MANIFEST",
+        "--evidence",
+        "$EVIDENCE"
+      ],
+      "expected_exit": 0,
+      "captures": {
+        "validation": "data.ref",
+        "evidence_digest": "data.evidence_digest"
+      }
+    },
+    {
+      "id": "scope-endorsement",
+      "kind": "cli",
+      "role": "scope-operator",
+      "operator_only": true,
+      "argv": [
+        "approve",
+        "--file",
+        "-"
+      ],
+      "stdin": {
+        "kind": "scope",
+        "target": "26f269b94762519063eaf7bf62bdc0bd2bb53913a87261e4c28ae652d6c88d97",
+        "scope": "booking",
+        "evidence_digest": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "expected_exit": 0,
+      "captures": {
+        "scope_approval": "data.ref"
+      }
+    },
+    {
+      "id": "release-endorsement",
+      "kind": "cli",
+      "role": "release-operator",
+      "operator_only": true,
+      "argv": [
+        "approve",
+        "--file",
+        "-"
+      ],
+      "stdin": {
+        "kind": "release",
+        "target": "26f269b94762519063eaf7bf62bdc0bd2bb53913a87261e4c28ae652d6c88d97",
+        "scope": null,
+        "evidence_digest": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "expected_exit": 0,
+      "captures": {
+        "release_approval": "data.ref"
+      }
+    },
+    {
+      "id": "missing-endorsements",
+      "kind": "cli",
+      "role": "release-operator",
+      "operator_only": true,
+      "argv": [
+        "release",
+        "$CANDIDATE",
+        "--validation",
+        "$VALIDATION",
+        "--dry-run"
+      ],
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "release",
+      "kind": "cli",
+      "role": "release-operator",
+      "operator_only": true,
+      "argv": [
+        "release",
+        "$CANDIDATE",
+        "--validation",
+        "$VALIDATION",
+        "--approval",
+        "$SCOPE_APPROVAL",
+        "--approval",
+        "$RELEASE_APPROVAL",
+        "--idempotency-key",
+        "onboarding-release"
+      ],
+      "expected_exit": 0,
+      "captures": {
+        "release": "data.ref"
+      }
+    },
+    {
+      "id": "release-retry",
+      "kind": "cli",
+      "role": "release-operator",
+      "operator_only": true,
+      "argv": [
+        "release",
+        "$CANDIDATE",
+        "--validation",
+        "$VALIDATION",
+        "--approval",
+        "$SCOPE_APPROVAL",
+        "--approval",
+        "$RELEASE_APPROVAL",
+        "--idempotency-key",
+        "onboarding-release"
+      ],
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "release-read",
+      "kind": "cli",
+      "role": "reader",
+      "operator_only": false,
+      "argv": [
+        "inspect",
+        "release",
+        "$RELEASE"
+      ],
+      "expected_exit": 0,
+      "captures": {}
+    },
+    {
+      "id": "inherit",
+      "kind": "cli",
+      "role": "preparer",
+      "operator_only": false,
+      "argv": [
+        "compose",
+        "--file",
+        "-"
+      ],
+      "stdin": {
+        "id": "C-onboarding-inherited",
+        "revision": 1,
+        "model_version": "strata/0.1-facets-experimental",
+        "baseline": "release@000000000000000000000000",
+        "proposals": [],
+        "selected": [],
+        "alternative_groups": [],
+        "scenario": {
+          "id": "booking-demo",
+          "checks": [
+            {
+              "id": "booking.compatibility",
+              "version": "1"
+            }
+          ]
+        },
+        "resolutions": []
+      },
+      "expected_exit": 0,
+      "captures": {}
+    }
+  ],
+  "assertions": {
+    "peer_write": {
+      "exit_code": 4,
+      "code": "OWNER_FORBIDDEN",
+      "peer_bytes_unchanged": true
+    },
+    "blocked": {
+      "complete_considered_set": [
+        "L-hold@1",
+        "L-reminder@1",
+        "L-alternative@1"
+      ],
+      "diagnostic": "ITEM_COLLISION"
+    },
+    "unsigned": {
+      "execution_ready": false
+    },
+    "missing_endorsements": {
+      "ok": true,
+      "execution_ready": false
+    },
+    "mechanical": {
+      "competing_hold_rejected": true,
+      "no_reminder_at": 839,
+      "one_reminder_at": 840,
+      "active_at": 899,
+      "expired_at": 900,
+      "next_hold_accepted": true
+    },
+    "release": {
+      "same_ref_on_retry": true,
+      "inherited_seconds": 900,
+      "inherited_reminder": true,
+      "inherited_layer_acceptance": true
+    }
+  },
+  "trust": {
+    "identity": "public local fixtures",
+    "operator_endorsements": "scripted local fixtures, not human consent",
+    "mechanical_checks": "must execute real generated fixture",
+    "review": "fixture attestations, not independent validation",
+    "provider_calls": 0,
+    "fresh_model_acceptance": "pending separate approval"
+  }
+}

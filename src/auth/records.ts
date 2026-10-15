@@ -1,0 +1,15 @@
+import { z } from 'zod';
+import { BLOCK_MODEL, authoringReviewSchema, contentApprovalSchema, plainTextSchema } from '../model.js';
+const hash=z.string().regex(/^[a-f0-9]{64}$/),ref=z.string().regex(/^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$/),id=z.string().min(1).max(128);
+export const authReceiptSchema=z.object({format:z.literal('strata-host-auth/1'),project_id:id,model_version:z.literal(BLOCK_MODEL),principal_id:id,principal_kind:z.enum(['person','agent']),account_id:id,credential_epoch:z.number().int().positive(),action:id,input_sha256:hash,request_sha256:hash,policy_generation:id.max(256),grant_id:id,expires_at:z.string().datetime(),trust:z.literal('host-authenticated')}).strict();
+export const hostAuthoringReviewSchema=authoringReviewSchema.extend({format:z.literal('authoring-review/2'),model_version:z.literal(BLOCK_MODEL),trust:z.literal('host-authenticated'),auth_receipt:ref}).strict();
+export const hostApprovalSchema=contentApprovalSchema.extend({format:z.literal('approval/3'),model_version:z.literal(BLOCK_MODEL)}).strict();
+export const storedHostApprovalSchema=hostApprovalSchema.extend({principal:id,trust:z.literal('host-authenticated'),auth_receipt:ref,ref}).strict();
+export const hostResolutionSchema=z.object({format:z.literal('resolution/3'),layer:ref,proposal_index:z.number().int().nonnegative(),payload:z.unknown(),approvals:z.array(ref),sealed_by:id,trust:z.literal('host-authenticated'),auth_receipt:ref}).strict();
+const binding={candidate:hash,realization:ref,profile:hash,output_tree:hash,checker_sha256:hash,fixture_sha256:hash,oracle_sha256:hash};
+const result=z.object({check:id,version:id,fixture:id,method:z.enum(['mechanical','review']),passed:z.boolean()}).strict();
+export const hostRunSchema=z.object({format:z.literal('strata-host-run/1'),project_id:id,model_version:z.literal(BLOCK_MODEL),...binding,profile_id:id,producer:id,results:z.array(result.omit({method:true})).max(100),observations_sha256:hash,auth_receipt:ref,trust:z.literal('host-measured')}).strict();
+export const criterionReviewSchema=z.object({format:z.literal('criterion-review/1'),project_id:id,model_version:z.literal(BLOCK_MODEL),...binding,criterion:z.object({check:id,version:id,fixture:id,method:z.literal('review')}).strict(),accepted:z.boolean(),rationale:plainTextSchema.pipe(z.string().min(1)),reviewer:id,auth_receipt:ref,trust:z.literal('host-authenticated')}).strict();
+export const hostEvidenceSchema=z.object({format:z.literal('strata-host-evidence/1'),...binding,producer:id,run_ref:ref,results:z.array(result.extend({reviewer:id.nullable(),review_ref:ref.nullable()})).max(100)}).strict();
+export const hostValidationSchema=z.object({format:z.literal('validation/3'),candidate:hash,target:ref,realization:ref,evidence:hostEvidenceSchema,evidence_digest:hash,auth_receipt:ref,trust:z.literal('host-measured')}).strict();
+export const HOST_RECORD_SCHEMAS={'auth-receipt':authReceiptSchema,'host-run':hostRunSchema,'criterion-review':criterionReviewSchema,'authoring-review':hostAuthoringReviewSchema,'approval':storedHostApprovalSchema,'resolution':hostResolutionSchema,'validation':hostValidationSchema};

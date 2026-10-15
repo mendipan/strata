@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "reconciliation-git-object/1"
+    },
+    "object_format": {
+      "type": "string",
+      "enum": [
+        "sha1",
+        "sha256"
+      ]
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "commit",
+        "tree",
+        "blob"
+      ]
+    },
+    "oid": {
+      "type": "string",
+      "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$"
+    },
+    "byte_length": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 524288
+    },
+    "raw_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "bytes_base64": {
+      "type": "string",
+      "maxLength": 699052
+    }
+  },
+  "required": [
+    "format",
+    "object_format",
+    "kind",
+    "oid",
+    "byte_length",
+    "raw_sha256",
+    "bytes_base64"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "adoption-proposal-record/1"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "draft_ref": {
+      "type": "string",
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "inventory_record_ref": {
+      "type": "string",
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "previous_proposal_ref": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "proposal": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "const": "adoption-proposal/1"
+        },
+        "project_id": {
+          "type": "string",
+          "maxLength": 120,
+          "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+        },
+        "inventory_ref": {
+          "type": "string",
+          "pattern": "^adoption-inventory@[a-f0-9]{64}$"
+        },
+        "inventory_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "ref": {
+              "type": "string",
+              "pattern": "^source-snapshot@[a-f0-9]{64}$"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "ref",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "baseline_ref": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "baseline_snapshot_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "layer_ref": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "layer_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "model_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "author": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "output_lane": {
+          "type": "string",
+          "enum": [
+            "selected_git_patch",
+            "independent_reconstruction"
+          ]
+        }
+      },
+      "required": [
+        "format",
+        "project_id",
+        "inventory_ref",
+        "inventory_sha256",
+        "source",
+        "baseline_ref",
+        "baseline_snapshot_sha256",
+        "layer_ref",
+        "layer_sha256",
+        "model_version",
+        "author",
+        "output_lane"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "format",
+    "project_id",
+    "owner",
+    "draft_ref",
+    "inventory_record_ref",
+    "previous_proposal_ref",
+    "proposal"
+  ],
+  "additionalProperties": false
+}

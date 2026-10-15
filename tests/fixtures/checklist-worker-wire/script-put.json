@@ -1,0 +1,11 @@
+{
+  "success": true,
+  "errors": [],
+  "messages": [],
+  "result": {
+    "id": "synthetic-checklist-app",
+    "startup_time_ms": 12,
+    "etag": "synthetic-opaque-script-hash",
+    "has_assets": false
+  }
+}

@@ -1,0 +1,1561 @@
+{
+  "format": "strata-codex-transcripts/1",
+  "pinned": {
+    "surface": "codex app-server; JSON-RPC over stdio (newline-delimited JSON, jsonrpc header omitted); supervised child process",
+    "cli_package": "@openai/codex",
+    "cli_version": "0.162.1",
+    "release_tag": "rust-v0.162.1",
+    "schema_pin": "Checked-in generated JSON schema snapshots at upstream commit 092d3acd6bec3e3a14bdc7e7a2810ab628ab759d for rust-v0.162.1; binary generation equivalence unverified",
+    "transport_selected": "stdio",
+    "sources": [
+      {
+        "label": "Official release",
+        "url": "https://github.com/openai/codex/releases/tag/rust-v0.162.1",
+        "accessed": "2026-10-12"
+      },
+      {
+        "label": "Immutable generated schema snapshots",
+        "url": "https://github.com/openai/codex/tree/092d3acd6bec3e3a14bdc7e7a2810ab628ab759d/codex-rs/app-server-protocol/schema/json",
+        "accessed": "2026-10-12"
+      },
+      {
+        "label": "Current explanatory guide; mutable",
+        "url": "https://learn.chatgpt.com/docs/app-server",
+        "accessed": "2026-10-12"
+      }
+    ],
+    "upstream_commit": "092d3acd6bec3e3a14bdc7e7a2810ab628ab759d",
+    "schema_tree_git_sha": "3613a5054c1c9af876fccba53c995f0ac8425b85",
+    "schema_sources": [
+      {
+        "path": "codex-rs/app-server-protocol/schema/json/v1/InitializeParams.json",
+        "git_blob_sha": "750dddeaf5f551257110120effed655141eab5bf"
+      },
+      {
+        "path": "codex-rs/app-server-protocol/schema/json/v1/InitializeResponse.json",
+        "git_blob_sha": "1de65f82f4df9fa810fbda3ff199eca49430a29f"
+      },
+      {
+        "path": "codex-rs/app-server-protocol/schema/json/v2/ThreadStartParams.json",
+        "git_blob_sha": "5164caf6a208e4e0aa1d21baff108df8430c9d54"
+      },
+      {
+        "path": "codex-rs/app-server-protocol/schema/json/v2/ThreadStartResponse.json",
+        "git_blob_sha": "00d698b329014cfff62391d33403624db6befdef"
+      },
+      {
+        "path": "codex-rs/app-server-protocol/schema/json/v2/ThreadReadParams.json",
+        "git_blob_sha": "920e6c346d6b6fca1773e7ea4b68c69dee46dec1"
+      },
+      {
+        "path": "codex-rs/app-server-protocol/schema/json/v2/ThreadReadResponse.json",
+        "git_blob_sha": "d824e570369d09d73a21cdf937265e0ba09d7cf2"
+      },
+      {
+        "path": "codex-rs/app-server-protocol/schema/json/v2/TurnStartParams.json",
+        "git_blob_sha": "ff77ccec851b4289e92c931f77b27b092e58b2f5"
+      },
+      {
+        "path": "codex-rs/app-server-protocol/schema/json/v2/TurnStartResponse.json",
+        "git_blob_sha": "f2f5c903f33f047f43c4a66e69e05dc3ad9c5a57"
+      },
+      {
+        "path": "codex-rs/app-server-protocol/schema/json/v2/TurnInterruptParams.json",
+        "git_blob_sha": "9181428a10e17186272d2cdd74fc2c4f07c76504"
+      },
+      {
+        "path": "codex-rs/app-server-protocol/schema/json/v2/TurnInterruptResponse.json",
+        "git_blob_sha": "5d8a0f9ce22e0387218fd390c362de6a61247b8c"
+      },
+      {
+        "path": "codex-rs/app-server-protocol/schema/json/v2/TurnCompletedNotification.json",
+        "git_blob_sha": "a0c543c01f2f6f9e785560506064e60bae17c8f5"
+      }
+    ]
+  },
+  "normalization": [
+    "Synthetic projected native messages and proposed decisions; no mapper implementation, runtime, account or capture.",
+    "All identifiers, text, paths and times are synthetic.",
+    "Selected request fields and simple error variants were checked against immutable upstream generated schema snapshots; binary/schema equivalence unverified.",
+    "Responses/notifications are projections omitting native fields; no full native schema conformance is claimed.",
+    "Journal steps are proposed decisions, not durability or recovery evidence; errors after adapter invocation are unknown.",
+    "Known-thread reconciliation assumes retained exclusive thread identity and complete uniquely attributable history; no lost-thread-handle recovery guarantee.",
+    "Deadline-triggered interruption is illustrative and does not enforce a hard runtime limit."
+  ],
+  "scenarios": [
+    {
+      "id": "submit-succeed-result",
+      "purpose": "Happy path: initialize, one task one thread one turn, terminal succeeded snapshot with bound result digest, bounded artifacts.",
+      "assumes": "Fresh supervised stdio process.",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-codex-appserver-1",
+        "task_id": "9f1c2ab4-3d5e-4f60-8a7b-1c2d3e4f5a60",
+        "binding": {
+          "project_id": "strata-project-1",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "strata-repository-1"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+        "instruction": "Synthetic instruction A: summarize the pinned checkout and propose a bounded two-file change.",
+        "limits": {
+          "runtime_ms": 3600000,
+          "output_bytes": 65536
+        }
+      },
+      "steps": [
+        {
+          "kind": "request",
+          "method": "initialize",
+          "id": 1,
+          "params": {
+            "clientInfo": {
+              "name": "strata-adapter-p-codex",
+              "title": "Strata execution bridge (synthetic)",
+              "version": "0.1.0"
+            }
+          }
+        },
+        {
+          "kind": "response",
+          "id": 1,
+          "result": {
+            "platformFamily": "unix",
+            "platformOs": "linux",
+            "userAgent": "codex-app-server/0.162.1 synthetic",
+            "codexHome": "/synthetic/codex-home"
+          }
+        },
+        {
+          "kind": "notification",
+          "method": "initialized",
+          "params": {}
+        },
+        {
+          "kind": "adapter",
+          "action": "journal-reserve",
+          "detail": {
+            "connection_id": "conn-codex-appserver-1",
+            "task_id": "9f1c2ab4-3d5e-4f60-8a7b-1c2d3e4f5a60",
+            "request_sha256": "8ef95014612213f64a7cd89d2e26ca9109df96f85487b2aafd6d5508247681ea",
+            "state": "reserved-before-native-start"
+          }
+        },
+        {
+          "kind": "request",
+          "method": "thread/start",
+          "id": 2,
+          "params": {
+            "cwd": "/srv/strata-checkouts/strata-repository-1",
+            "approvalPolicy": "never",
+            "serviceName": "strata-agent-execution/1",
+            "sandbox": "workspace-write",
+            "ephemeral": false
+          }
+        },
+        {
+          "kind": "response",
+          "id": 2,
+          "result": {
+            "thread": {
+              "id": "thr_syn_01",
+              "preview": "",
+              "ephemeral": false,
+              "modelProvider": "openai"
+            },
+            "instructionSources": []
+          }
+        },
+        {
+          "kind": "notification",
+          "method": "thread/started",
+          "params": {
+            "thread": {
+              "id": "thr_syn_01"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "action": "journal-map",
+          "detail": {
+            "task_id": "9f1c2ab4-3d5e-4f60-8a7b-1c2d3e4f5a60",
+            "threadId": "thr_syn_01",
+            "turnId": null
+          }
+        },
+        {
+          "kind": "request",
+          "method": "turn/start",
+          "id": 3,
+          "params": {
+            "threadId": "thr_syn_01",
+            "input": [
+              {
+                "type": "text",
+                "text": "Synthetic instruction A: summarize the pinned checkout and propose a bounded two-file change."
+              }
+            ]
+          }
+        },
+        {
+          "kind": "response",
+          "id": 3,
+          "result": {
+            "turn": {
+              "id": "turn_syn_01a",
+              "status": "inProgress",
+              "items": [],
+              "error": null
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "action": "journal-map",
+          "detail": {
+            "task_id": "9f1c2ab4-3d5e-4f60-8a7b-1c2d3e4f5a60",
+            "threadId": "thr_syn_01",
+            "turnId": "turn_syn_01a"
+          }
+        },
+        {
+          "kind": "notification",
+          "method": "thread/status/changed",
+          "params": {
+            "threadId": "thr_syn_01",
+            "status": {
+              "type": "active",
+              "activeFlags": []
+            }
+          }
+        },
+        {
+          "kind": "notification",
+          "method": "item/started",
+          "params": {
+            "threadId": "thr_syn_01",
+            "turnId": "turn_syn_01a",
+            "item": {
+              "type": "agentMessage",
+              "id": "itm_syn_01a",
+              "text": ""
+            }
+          }
+        },
+        {
+          "kind": "notification",
+          "method": "item/agentMessage/delta",
+          "params": {
+            "threadId": "thr_syn_01",
+            "turnId": "turn_syn_01a",
+            "itemId": "itm_syn_01a",
+            "delta": "Synthetic agent message: pinned surface mapping fixture. Two file changes normalized as artifacts."
+          }
+        },
+        {
+          "kind": "notification",
+          "method": "item/started",
+          "params": {
+            "threadId": "thr_syn_01",
+            "turnId": "turn_syn_01a",
+            "item": {
+              "type": "fileChange",
+              "id": "itm_syn_01b",
+              "changes": [
+                {
+                  "path": "src/example.ts",
+                  "kind": {
+                    "type": "update",
+                    "move_path": null
+                  },
+                  "diff": "--- a/src/example.ts\n+++ b/src/example.ts\n@@ -1,3 +1,4 @@\n+// synthetic normalized change\n export const value = 1;\n"
+                }
+              ],
+              "status": "completed"
+            }
+          }
+        },
+        {
+          "kind": "notification",
+          "method": "turn/completed",
+          "params": {
+            "threadId": "thr_syn_01",
+            "turn": {
+              "id": "turn_syn_01a",
+              "status": "completed",
+              "items": []
+            }
+          }
+        },
+        {
+          "kind": "notification",
+          "method": "thread/status/changed",
+          "params": {
+            "threadId": "thr_syn_01",
+            "status": {
+              "type": "idle"
+            }
+          }
+        },
+        {
+          "op": "submit",
+          "kind": "adapter",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-codex-appserver-1",
+                "task_id": "9f1c2ab4-3d5e-4f60-8a7b-1c2d3e4f5a60",
+                "binding": {
+                  "project_id": "strata-project-1",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-repository-1"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+                "request_sha256": "8ef95014612213f64a7cd89d2e26ca9109df96f85487b2aafd6d5508247681ea"
+              },
+              "sequence": 1,
+              "state": "running"
+            }
+          }
+        },
+        {
+          "kind": "request",
+          "method": "thread/read",
+          "id": 4,
+          "params": {
+            "threadId": "thr_syn_01",
+            "includeTurns": true
+          }
+        },
+        {
+          "kind": "response",
+          "id": 4,
+          "result": {
+            "thread": {
+              "id": "thr_syn_01",
+              "status": {
+                "type": "idle"
+              },
+              "turns": [
+                {
+                  "id": "turn_syn_01a",
+                  "status": "completed",
+                  "items": [
+                    {
+                      "type": "agentMessage",
+                      "id": "itm_syn_01a",
+                      "text": "Synthetic agent message: pinned surface mapping fixture. Two file changes normalized as artifacts."
+                    },
+                    {
+                      "type": "fileChange",
+                      "id": "itm_syn_01b",
+                      "changes": [
+                        {
+                          "path": "src/example.ts",
+                          "kind": {
+                            "type": "update",
+                            "move_path": null
+                          },
+                          "diff": "--- a/src/example.ts\n+++ b/src/example.ts\n@@ -1,3 +1,4 @@\n+// synthetic normalized change\n export const value = 1;\n"
+                        }
+                      ],
+                      "status": "completed"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "action": "freeze-result",
+          "detail": {
+            "result_sha256": "3804ae7a9534519473a1233860a70901038b89085e43fe1d08dde94417654418",
+            "meaning": "proposed immutable normalization; not executed storage"
+          }
+        },
+        {
+          "op": "status",
+          "kind": "adapter",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-codex-appserver-1",
+                "task_id": "9f1c2ab4-3d5e-4f60-8a7b-1c2d3e4f5a60",
+                "binding": {
+                  "project_id": "strata-project-1",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-repository-1"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+                "request_sha256": "8ef95014612213f64a7cd89d2e26ca9109df96f85487b2aafd6d5508247681ea"
+              },
+              "sequence": 2,
+              "state": "succeeded",
+              "result_sha256": "3804ae7a9534519473a1233860a70901038b89085e43fe1d08dde94417654418"
+            }
+          }
+        },
+        {
+          "op": "result",
+          "kind": "adapter",
+          "action": "emit-result",
+          "detail": {
+            "result": {
+              "format": "strata-agent-task-result/1",
+              "task": {
+                "connection_id": "conn-codex-appserver-1",
+                "task_id": "9f1c2ab4-3d5e-4f60-8a7b-1c2d3e4f5a60",
+                "binding": {
+                  "project_id": "strata-project-1",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-repository-1"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+                "request_sha256": "8ef95014612213f64a7cd89d2e26ca9109df96f85487b2aafd6d5508247681ea"
+              },
+              "summary": "Synthetic agent message: pinned surface mapping fixture. Two file changes normalized as artifacts.",
+              "artifacts": [
+                {
+                  "id": "artifact-diff-1",
+                  "sha256": "2aac41c1b695e92dae64f4caeb913aec863426de01b2200db8cc82f00c86932f",
+                  "bytes": 115,
+                  "media_type": "text/x-diff"
+                },
+                {
+                  "id": "artifact-notes-1",
+                  "sha256": "95c79234275635b3750468ef9b5281cf4e8a25971485e9d7ea63e977b974c6be",
+                  "bytes": 78,
+                  "media_type": "text/plain"
+                }
+              ],
+              "trust": "agent-output"
+            },
+            "artifact_contents": {
+              "artifact-diff-1": "--- a/src/example.ts\n+++ b/src/example.ts\n@@ -1,3 +1,4 @@\n+// synthetic normalized change\n export const value = 1;\n",
+              "artifact-notes-1": "Synthetic text/plain artifact: normalized turn notes for the mapping fixture.\n"
+            }
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "succeeded",
+        "result_available": true
+      },
+      "adapter_invoked": true
+    },
+    {
+      "id": "cancel-race-success-wins",
+      "purpose": "Cooperative cancellation race: interrupt acknowledged, turn still completes; result remains available.",
+      "assumes": "Established connection; submit already returned running (sequence 1).",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-codex-appserver-1",
+        "task_id": "6b8d9e01-4c2f-4a8b-9d3e-2f4a6b8c0d12",
+        "binding": {
+          "project_id": "strata-project-1",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "strata-repository-1"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+        "instruction": "Synthetic instruction B: long-running analysis with a late owner cancellation.",
+        "limits": {
+          "runtime_ms": 3600000,
+          "output_bytes": 65536
+        }
+      },
+      "steps": [
+        {
+          "op": "cancel",
+          "kind": "request",
+          "method": "turn/interrupt",
+          "id": 2,
+          "params": {
+            "threadId": "thr_syn_02",
+            "turnId": "turn_syn_02a"
+          }
+        },
+        {
+          "op": "cancel",
+          "kind": "response",
+          "id": 2,
+          "result": {}
+        },
+        {
+          "op": "cancel",
+          "kind": "adapter",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-codex-appserver-1",
+                "task_id": "6b8d9e01-4c2f-4a8b-9d3e-2f4a6b8c0d12",
+                "binding": {
+                  "project_id": "strata-project-1",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-repository-1"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+                "request_sha256": "84e323d1510aeefb87607c745389d9eb07f4b26aa0c079c020eafc4a34108b52"
+              },
+              "sequence": 2,
+              "state": "cancel_requested"
+            }
+          }
+        },
+        {
+          "kind": "notification",
+          "method": "turn/completed",
+          "params": {
+            "threadId": "thr_syn_02",
+            "turn": {
+              "id": "turn_syn_02a",
+              "status": "completed",
+              "items": []
+            }
+          }
+        },
+        {
+          "kind": "request",
+          "method": "thread/read",
+          "id": 3,
+          "params": {
+            "threadId": "thr_syn_02",
+            "includeTurns": true
+          }
+        },
+        {
+          "kind": "response",
+          "id": 3,
+          "result": {
+            "thread": {
+              "id": "thr_syn_02",
+              "status": {
+                "type": "idle"
+              },
+              "turns": [
+                {
+                  "id": "turn_syn_02a",
+                  "status": "completed",
+                  "items": [
+                    {
+                      "type": "agentMessage",
+                      "id": "itm_syn_02a",
+                      "text": "Synthetic agent message: finished before the cooperative interrupt took effect."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "action": "freeze-result",
+          "detail": {
+            "result_sha256": "54f884ab6c392b61a0a8458f615cfe7fae1014f3e35aae0e4335550e22cfbef4",
+            "meaning": "proposed immutable normalization; not executed storage"
+          }
+        },
+        {
+          "op": "status",
+          "kind": "adapter",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-codex-appserver-1",
+                "task_id": "6b8d9e01-4c2f-4a8b-9d3e-2f4a6b8c0d12",
+                "binding": {
+                  "project_id": "strata-project-1",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-repository-1"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+                "request_sha256": "84e323d1510aeefb87607c745389d9eb07f4b26aa0c079c020eafc4a34108b52"
+              },
+              "sequence": 3,
+              "state": "succeeded",
+              "result_sha256": "54f884ab6c392b61a0a8458f615cfe7fae1014f3e35aae0e4335550e22cfbef4"
+            }
+          }
+        },
+        {
+          "op": "result",
+          "kind": "adapter",
+          "action": "emit-result",
+          "detail": {
+            "result": {
+              "format": "strata-agent-task-result/1",
+              "task": {
+                "connection_id": "conn-codex-appserver-1",
+                "task_id": "6b8d9e01-4c2f-4a8b-9d3e-2f4a6b8c0d12",
+                "binding": {
+                  "project_id": "strata-project-1",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-repository-1"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+                "request_sha256": "84e323d1510aeefb87607c745389d9eb07f4b26aa0c079c020eafc4a34108b52"
+              },
+              "summary": "Synthetic agent message: finished before the cooperative interrupt took effect.",
+              "artifacts": [
+                {
+                  "id": "artifact-diff-2",
+                  "sha256": "1b12aa40b06c8215d85eaf80a336193173aebd9cfe3d4f2698c6bdbfebec9ee6",
+                  "bytes": 38,
+                  "media_type": "text/x-diff"
+                }
+              ],
+              "trust": "agent-output"
+            },
+            "artifact_contents": {
+              "artifact-diff-2": "+// synthetic normalized race outcome\n"
+            }
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "succeeded",
+        "result_available": true,
+        "intermediate_states": [
+          "cancel_requested"
+        ]
+      },
+      "adapter_invoked": true
+    },
+    {
+      "id": "cancel-interrupt-wins",
+      "purpose": "Illustrative observed interrupted turn maps to cancelled; exact-task stopping remains a qualification gate.",
+      "assumes": "Established connection; submit already returned running (sequence 1).",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-codex-appserver-1",
+        "task_id": "3a7c5e91-2b4d-4c6f-8e0a-4d6f8a0c2e41",
+        "binding": {
+          "project_id": "strata-project-1",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "strata-repository-1"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+        "instruction": "Synthetic instruction C: interruptible synthesis task.",
+        "limits": {
+          "runtime_ms": 3600000,
+          "output_bytes": 65536
+        }
+      },
+      "steps": [
+        {
+          "op": "cancel",
+          "kind": "request",
+          "method": "turn/interrupt",
+          "id": 2,
+          "params": {
+            "threadId": "thr_syn_03",
+            "turnId": "turn_syn_03a"
+          }
+        },
+        {
+          "op": "cancel",
+          "kind": "response",
+          "id": 2,
+          "result": {}
+        },
+        {
+          "op": "cancel",
+          "kind": "adapter",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-codex-appserver-1",
+                "task_id": "3a7c5e91-2b4d-4c6f-8e0a-4d6f8a0c2e41",
+                "binding": {
+                  "project_id": "strata-project-1",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-repository-1"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+                "request_sha256": "96edffbd62f8a2dc9f9393eb44b46c50adc28ffcb13fd58fbe2161db1c61d0a2"
+              },
+              "sequence": 2,
+              "state": "cancel_requested"
+            }
+          }
+        },
+        {
+          "kind": "notification",
+          "method": "turn/completed",
+          "params": {
+            "threadId": "thr_syn_03",
+            "turn": {
+              "id": "turn_syn_03a",
+              "status": "interrupted",
+              "items": []
+            }
+          }
+        },
+        {
+          "kind": "request",
+          "method": "thread/read",
+          "id": 3,
+          "params": {
+            "threadId": "thr_syn_03",
+            "includeTurns": true
+          }
+        },
+        {
+          "kind": "response",
+          "id": 3,
+          "result": {
+            "thread": {
+              "id": "thr_syn_03",
+              "status": {
+                "type": "idle"
+              },
+              "turns": [
+                {
+                  "id": "turn_syn_03a",
+                  "status": "interrupted",
+                  "items": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "op": "status",
+          "kind": "adapter",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-codex-appserver-1",
+                "task_id": "3a7c5e91-2b4d-4c6f-8e0a-4d6f8a0c2e41",
+                "binding": {
+                  "project_id": "strata-project-1",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-repository-1"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+                "request_sha256": "96edffbd62f8a2dc9f9393eb44b46c50adc28ffcb13fd58fbe2161db1c61d0a2"
+              },
+              "sequence": 3,
+              "state": "cancelled"
+            }
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "cancelled",
+        "result_available": false,
+        "intermediate_states": [
+          "cancel_requested"
+        ]
+      },
+      "adapter_invoked": true
+    },
+    {
+      "id": "deadline-triggered-interruption",
+      "purpose": "Illustrative timer-triggered interrupt followed by observed interruption; no hard deadline or runtime stopping guarantee.",
+      "assumes": "Established connection; submit already returned running (sequence 1).",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-codex-appserver-1",
+        "task_id": "5d9b1f63-7e2a-4b8c-a3f5-6c8e0a2d4b67",
+        "binding": {
+          "project_id": "strata-project-1",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "strata-repository-1"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+        "instruction": "Synthetic instruction D: deliberately exceeds the small requested runtime bound.",
+        "limits": {
+          "runtime_ms": 120000,
+          "output_bytes": 65536
+        }
+      },
+      "steps": [
+        {
+          "kind": "adapter",
+          "action": "deadline-timer-fired",
+          "detail": {
+            "runtime_ms": 120000,
+            "action": "adapter-initiated interrupt; origin recorded in journal"
+          }
+        },
+        {
+          "kind": "request",
+          "method": "turn/interrupt",
+          "id": 2,
+          "params": {
+            "threadId": "thr_syn_04",
+            "turnId": "turn_syn_04a"
+          }
+        },
+        {
+          "kind": "response",
+          "id": 2,
+          "result": {}
+        },
+        {
+          "kind": "notification",
+          "method": "turn/completed",
+          "params": {
+            "threadId": "thr_syn_04",
+            "turn": {
+              "id": "turn_syn_04a",
+              "status": "interrupted",
+              "items": []
+            }
+          }
+        },
+        {
+          "kind": "request",
+          "method": "thread/read",
+          "id": 3,
+          "params": {
+            "threadId": "thr_syn_04",
+            "includeTurns": true
+          }
+        },
+        {
+          "kind": "response",
+          "id": 3,
+          "result": {
+            "thread": {
+              "id": "thr_syn_04",
+              "status": {
+                "type": "idle"
+              },
+              "turns": [
+                {
+                  "id": "turn_syn_04a",
+                  "status": "interrupted",
+                  "items": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "op": "status",
+          "kind": "adapter",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-codex-appserver-1",
+                "task_id": "5d9b1f63-7e2a-4b8c-a3f5-6c8e0a2d4b67",
+                "binding": {
+                  "project_id": "strata-project-1",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-repository-1"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+                "request_sha256": "7df12a7a7a2c44a61812358755595556dd372695b3d81b4261333cac646c3495"
+              },
+              "sequence": 2,
+              "state": "failed",
+              "failure": "TASK_DEADLINE"
+            }
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "failed",
+        "failure": "TASK_DEADLINE",
+        "result_available": false
+      },
+      "adapter_invoked": true
+    },
+    {
+      "id": "native-usage-limit-failed",
+      "purpose": "Illustrative observed failure with usageLimitExceeded maps to TASK_LIMIT; native diagnostics excluded.",
+      "assumes": "Established connection; submit already returned running (sequence 1).",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-codex-appserver-1",
+        "task_id": "1e4a8c2d-9f3b-4d5e-b7a9-8c0e2f4a6d83",
+        "binding": {
+          "project_id": "strata-project-1",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "strata-repository-1"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+        "instruction": "Synthetic instruction E: exceeds the account usage ceiling in one turn.",
+        "limits": {
+          "runtime_ms": 3600000,
+          "output_bytes": 65536
+        }
+      },
+      "steps": [
+        {
+          "kind": "notification",
+          "method": "turn/completed",
+          "params": {
+            "threadId": "thr_syn_05",
+            "turn": {
+              "id": "turn_syn_05a",
+              "status": "failed",
+              "error": {
+                "message": "synthetic-native-message-not-persisted",
+                "codexErrorInfo": "usageLimitExceeded"
+              },
+              "items": []
+            }
+          }
+        },
+        {
+          "kind": "request",
+          "method": "thread/read",
+          "id": 2,
+          "params": {
+            "threadId": "thr_syn_05",
+            "includeTurns": true
+          }
+        },
+        {
+          "kind": "response",
+          "id": 2,
+          "result": {
+            "thread": {
+              "id": "thr_syn_05",
+              "status": {
+                "type": "idle"
+              },
+              "turns": [
+                {
+                  "id": "turn_syn_05a",
+                  "status": "failed",
+                  "items": [],
+                  "error": {
+                    "message": "synthetic-native-message-not-persisted",
+                    "codexErrorInfo": "usageLimitExceeded"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "op": "status",
+          "kind": "adapter",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-codex-appserver-1",
+                "task_id": "1e4a8c2d-9f3b-4d5e-b7a9-8c0e2f4a6d83",
+                "binding": {
+                  "project_id": "strata-project-1",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-repository-1"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+                "request_sha256": "c9050328ef42ce5ad68ca777a53707840bf90803eaab55a57292d2c9d39dd1b7"
+              },
+              "sequence": 2,
+              "state": "failed",
+              "failure": "TASK_LIMIT"
+            }
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "failed",
+        "failure": "TASK_LIMIT",
+        "result_available": false
+      },
+      "adapter_invoked": true
+    },
+    {
+      "id": "ambiguous-dispatch-reconcile",
+      "purpose": "Lost turn-start reply with a retained thread handle: preserve uncertainty; explicit uniquely attributable history can supply a turn handle; no second start.",
+      "assumes": "Fresh supervised process; exclusive retained thread identity and complete history. The successful synthetic lookup is assumed, not native recovery evidence.",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-codex-appserver-1",
+        "task_id": "8c3f7a19-5d6e-4f2b-9a4c-6e8a0c2d4f51",
+        "binding": {
+          "project_id": "strata-project-1",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "strata-repository-1"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+        "instruction": "Synthetic instruction F: lose a turn-start reply, then explicitly inspect the retained exclusive thread.",
+        "limits": {
+          "runtime_ms": 3600000,
+          "output_bytes": 65536
+        }
+      },
+      "steps": [
+        {
+          "kind": "request",
+          "method": "initialize",
+          "id": 1,
+          "params": {
+            "clientInfo": {
+              "name": "strata-adapter-p-codex",
+              "title": "Strata execution bridge (synthetic)",
+              "version": "0.1.0"
+            }
+          }
+        },
+        {
+          "kind": "response",
+          "id": 1,
+          "result": {
+            "platformFamily": "unix",
+            "platformOs": "linux",
+            "userAgent": "codex-app-server/0.162.1 synthetic",
+            "codexHome": "/synthetic/codex-home"
+          }
+        },
+        {
+          "kind": "notification",
+          "method": "initialized",
+          "params": {}
+        },
+        {
+          "kind": "adapter",
+          "action": "journal-reserve",
+          "detail": {
+            "connection_id": "conn-codex-appserver-1",
+            "task_id": "8c3f7a19-5d6e-4f2b-9a4c-6e8a0c2d4f51",
+            "request_sha256": "37803d99f3f9fbde99fa3cdffe32ee49a278548c29b9c063faf8ac94eecdd71b",
+            "state": "reserved-before-native-start"
+          }
+        },
+        {
+          "kind": "request",
+          "method": "thread/start",
+          "id": 2,
+          "params": {
+            "cwd": "/srv/strata-checkouts/strata-repository-1",
+            "approvalPolicy": "never",
+            "serviceName": "strata-agent-execution/1",
+            "sandbox": "workspace-write",
+            "ephemeral": false
+          }
+        },
+        {
+          "kind": "response",
+          "id": 2,
+          "result": {
+            "thread": {
+              "id": "thr_syn_06",
+              "preview": "",
+              "ephemeral": false,
+              "modelProvider": "openai"
+            },
+            "instructionSources": []
+          }
+        },
+        {
+          "kind": "notification",
+          "method": "thread/started",
+          "params": {
+            "thread": {
+              "id": "thr_syn_06"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "action": "journal-map",
+          "detail": {
+            "task_id": "8c3f7a19-5d6e-4f2b-9a4c-6e8a0c2d4f51",
+            "threadId": "thr_syn_06",
+            "turnId": null
+          }
+        },
+        {
+          "kind": "request",
+          "method": "turn/start",
+          "id": 3,
+          "params": {
+            "threadId": "thr_syn_06",
+            "input": [
+              {
+                "type": "text",
+                "text": "Synthetic instruction F: lose a turn-start reply, then explicitly inspect the retained exclusive thread."
+              }
+            ]
+          }
+        },
+        {
+          "kind": "adapter",
+          "action": "native-response-lost",
+          "detail": {
+            "request_id": 3,
+            "threadId": "thr_syn_06",
+            "turnId": null,
+            "outcome": "unknown; no native reply retained"
+          }
+        },
+        {
+          "op": "submit",
+          "kind": "adapter",
+          "action": "emit-error",
+          "detail": {
+            "error": {
+              "code": "EXECUTION_UNAVAILABLE",
+              "dispatch": "unknown"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "action": "reconcile",
+          "detail": {
+            "reason": "lost reply; retained thread only",
+            "rule": "explicit lookup under current grant; never resubmit"
+          }
+        },
+        {
+          "kind": "request",
+          "method": "thread/read",
+          "id": 4,
+          "params": {
+            "threadId": "thr_syn_06",
+            "includeTurns": true
+          }
+        },
+        {
+          "kind": "response",
+          "id": 4,
+          "result": {
+            "thread": {
+              "id": "thr_syn_06",
+              "status": {
+                "type": "active"
+              },
+              "turns": [
+                {
+                  "id": "turn_syn_06a",
+                  "status": "inProgress",
+                  "items": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "action": "journal-map",
+          "detail": {
+            "task_id": "8c3f7a19-5d6e-4f2b-9a4c-6e8a0c2d4f51",
+            "threadId": "thr_syn_06",
+            "turnId": "turn_syn_06a"
+          }
+        },
+        {
+          "op": "status",
+          "kind": "adapter",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-codex-appserver-1",
+                "task_id": "8c3f7a19-5d6e-4f2b-9a4c-6e8a0c2d4f51",
+                "binding": {
+                  "project_id": "strata-project-1",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-repository-1"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+                "request_sha256": "37803d99f3f9fbde99fa3cdffe32ee49a278548c29b9c063faf8ac94eecdd71b"
+              },
+              "sequence": 1,
+              "state": "running"
+            }
+          }
+        },
+        {
+          "kind": "notification",
+          "method": "turn/completed",
+          "params": {
+            "threadId": "thr_syn_06",
+            "turn": {
+              "id": "turn_syn_06a",
+              "status": "completed",
+              "items": []
+            }
+          }
+        },
+        {
+          "kind": "request",
+          "method": "thread/read",
+          "id": 5,
+          "params": {
+            "threadId": "thr_syn_06",
+            "includeTurns": true
+          }
+        },
+        {
+          "kind": "response",
+          "id": 5,
+          "result": {
+            "thread": {
+              "id": "thr_syn_06",
+              "status": {
+                "type": "idle"
+              },
+              "turns": [
+                {
+                  "id": "turn_syn_06a",
+                  "status": "completed",
+                  "items": [
+                    {
+                      "type": "agentMessage",
+                      "id": "itm_syn_06a",
+                      "text": "Synthetic agent message: explicit retained-thread history identifies the turn after its start reply was lost."
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "action": "freeze-result",
+          "detail": {
+            "result_sha256": "53c670a96a2de748dfe8ca14d5a033aa89eb8b8212053cff9ff41677fd73bc08",
+            "meaning": "proposed immutable normalization; not executed storage"
+          }
+        },
+        {
+          "op": "status",
+          "kind": "adapter",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-codex-appserver-1",
+                "task_id": "8c3f7a19-5d6e-4f2b-9a4c-6e8a0c2d4f51",
+                "binding": {
+                  "project_id": "strata-project-1",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-repository-1"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+                "request_sha256": "37803d99f3f9fbde99fa3cdffe32ee49a278548c29b9c063faf8ac94eecdd71b"
+              },
+              "sequence": 2,
+              "state": "succeeded",
+              "result_sha256": "53c670a96a2de748dfe8ca14d5a033aa89eb8b8212053cff9ff41677fd73bc08"
+            }
+          }
+        },
+        {
+          "op": "result",
+          "kind": "adapter",
+          "action": "emit-result",
+          "detail": {
+            "result": {
+              "format": "strata-agent-task-result/1",
+              "task": {
+                "connection_id": "conn-codex-appserver-1",
+                "task_id": "8c3f7a19-5d6e-4f2b-9a4c-6e8a0c2d4f51",
+                "binding": {
+                  "project_id": "strata-project-1",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-repository-1"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+                "request_sha256": "37803d99f3f9fbde99fa3cdffe32ee49a278548c29b9c063faf8ac94eecdd71b"
+              },
+              "summary": "Synthetic agent message: explicit retained-thread history identifies the turn after its start reply was lost.",
+              "artifacts": [],
+              "trust": "agent-output"
+            },
+            "artifact_contents": {}
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "succeeded",
+        "result_available": true,
+        "intermediate_states": [
+          "running"
+        ],
+        "surfaced_error": {
+          "code": "EXECUTION_UNAVAILABLE",
+          "dispatch": "unknown"
+        }
+      },
+      "adapter_invoked": true
+    },
+    {
+      "id": "duplicate-id-changed-digest-conflict",
+      "purpose": "Adapter-invoked journal conflict preserves identity; guarded error dispatch remains unknown although no native request is shown.",
+      "assumes": "Established connection; the original task already succeeded in the retained journal.",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-codex-appserver-1",
+        "task_id": "7a2e6b4c-1f8d-4e3a-b5c7-9d1f3a5e7c29",
+        "binding": {
+          "project_id": "strata-project-1",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "strata-repository-1"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+        "instruction": "Synthetic instruction G: original accepted request.",
+        "limits": {
+          "runtime_ms": 3600000,
+          "output_bytes": 65536
+        }
+      },
+      "steps": [
+        {
+          "op": "submit",
+          "kind": "adapter",
+          "action": "journal-conflict",
+          "detail": {
+            "key": [
+              "conn-codex-appserver-1",
+              "7a2e6b4c-1f8d-4e3a-b5c7-9d1f3a5e7c29"
+            ],
+            "existing_request_sha256": "9d65db243fe055a332306b025a8abf7d99730398cfa2cb344ec5dfd19e5caecd",
+            "terminal": "succeeded"
+          }
+        },
+        {
+          "op": "submit",
+          "kind": "adapter",
+          "action": "emit-error",
+          "detail": {
+            "error": {
+              "code": "EXECUTION_CONFLICT",
+              "dispatch": "unknown"
+            }
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "error",
+        "error": {
+          "code": "EXECUTION_CONFLICT",
+          "dispatch": "unknown"
+        }
+      },
+      "conflicting_task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-codex-appserver-1",
+        "task_id": "7a2e6b4c-1f8d-4e3a-b5c7-9d1f3a5e7c29",
+        "binding": {
+          "project_id": "strata-project-1",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "strata-repository-1"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+        "instruction": "Synthetic instruction G (changed payload): same task id, different digest.",
+        "limits": {
+          "runtime_ms": 3600000,
+          "output_bytes": 65536
+        }
+      },
+      "adapter_invoked": true
+    },
+    {
+      "id": "sandbox-policy-refusal",
+      "purpose": "Illustrative observed failed turn with sandboxError maps to TASK_POLICY; approval suppression remains unqualified.",
+      "assumes": "Established connection; submit already returned running (sequence 1).",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-codex-appserver-1",
+        "task_id": "4d6f2a8e-3c7b-4d9f-a1e3-5f7b9d1c3e57",
+        "binding": {
+          "project_id": "strata-project-1",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "strata-repository-1"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+        "instruction": "Synthetic instruction H: attempts an operation outside the pinned sandbox policy.",
+        "limits": {
+          "runtime_ms": 3600000,
+          "output_bytes": 65536
+        }
+      },
+      "steps": [
+        {
+          "kind": "notification",
+          "method": "item/started",
+          "params": {
+            "threadId": "thr_syn_08",
+            "turnId": "turn_syn_08a",
+            "item": {
+              "type": "commandExecution",
+              "id": "itm_syn_08a",
+              "command": "synthetic-out-of-policy-command",
+              "cwd": "/srv/strata-checkouts/strata-repository-1",
+              "status": "failed",
+              "commandActions": []
+            }
+          }
+        },
+        {
+          "kind": "notification",
+          "method": "turn/completed",
+          "params": {
+            "threadId": "thr_syn_08",
+            "turn": {
+              "id": "turn_syn_08a",
+              "status": "failed",
+              "error": {
+                "message": "synthetic-native-message-not-persisted",
+                "codexErrorInfo": "sandboxError"
+              },
+              "items": []
+            }
+          }
+        },
+        {
+          "kind": "request",
+          "method": "thread/read",
+          "id": 2,
+          "params": {
+            "threadId": "thr_syn_08",
+            "includeTurns": true
+          }
+        },
+        {
+          "kind": "response",
+          "id": 2,
+          "result": {
+            "thread": {
+              "id": "thr_syn_08",
+              "status": {
+                "type": "idle"
+              },
+              "turns": [
+                {
+                  "id": "turn_syn_08a",
+                  "status": "failed",
+                  "items": [
+                    {
+                      "type": "commandExecution",
+                      "id": "itm_syn_08a",
+                      "command": "synthetic-out-of-policy-command",
+                      "cwd": "/srv/strata-checkouts/strata-repository-1",
+                      "status": "failed",
+                      "commandActions": []
+                    }
+                  ],
+                  "error": {
+                    "message": "synthetic-native-message-not-persisted",
+                    "codexErrorInfo": "sandboxError"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "op": "status",
+          "kind": "adapter",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-codex-appserver-1",
+                "task_id": "4d6f2a8e-3c7b-4d9f-a1e3-5f7b9d1c3e57",
+                "binding": {
+                  "project_id": "strata-project-1",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-repository-1"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+                "request_sha256": "2d7e39d4e075516dce4dcda04afb01a7298f5525965f6c684258bdfe721789b7"
+              },
+              "sequence": 2,
+              "state": "failed",
+              "failure": "TASK_POLICY"
+            }
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "failed",
+        "failure": "TASK_POLICY",
+        "result_available": false
+      },
+      "adapter_invoked": true
+    },
+    {
+      "id": "control-call-before-initialize",
+      "purpose": "An invoked status read before initialization is rejected; guarded dispatch remains unknown.",
+      "assumes": "Fresh supervised stdio process; handshake not yet performed.",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-codex-appserver-1",
+        "task_id": "2b9d4f1a-8e6c-4a7b-b3d5-7f9c1e3a5d63",
+        "binding": {
+          "project_id": "strata-project-1",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "strata-repository-1"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f9a0b1c2d3e",
+        "instruction": "Synthetic instruction I: placeholder task; never dispatched in this scenario.",
+        "limits": {
+          "runtime_ms": 3600000,
+          "output_bytes": 65536
+        }
+      },
+      "steps": [
+        {
+          "kind": "request",
+          "method": "thread/read",
+          "id": 1,
+          "params": {
+            "threadId": "thr_uninitialized_syn",
+            "includeTurns": true
+          }
+        },
+        {
+          "kind": "response",
+          "id": 1,
+          "error": {
+            "message": "Not initialized"
+          }
+        },
+        {
+          "op": "status",
+          "kind": "adapter",
+          "action": "emit-error",
+          "detail": {
+            "error": {
+              "code": "EXECUTION_PROTOCOL",
+              "dispatch": "unknown"
+            }
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "error",
+        "error": {
+          "code": "EXECUTION_PROTOCOL",
+          "dispatch": "unknown"
+        }
+      },
+      "adapter_invoked": true
+    }
+  ]
+}

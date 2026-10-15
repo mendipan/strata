@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "revision": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+    },
+    "previous": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^asset@[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "access": {
+      "type": "string",
+      "const": "project-private"
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "local-created",
+            "local-provided"
+          ]
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attribution": {
+          "type": "string"
+        },
+        "permitted_uses": {
+          "minItems": 2,
+          "maxItems": 2,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "internal-retention",
+              "backup"
+            ]
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "provider",
+        "attribution",
+        "permitted_uses"
+      ],
+      "additionalProperties": false
+    },
+    "format": {
+      "type": "string",
+      "const": "strata-asset/1"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+    },
+    "content_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "byte_length": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 4194304
+    },
+    "media_type": {
+      "type": "string",
+      "enum": [
+        "image/png",
+        "image/jpeg"
+      ]
+    },
+    "width": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 4096
+    },
+    "height": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 4096
+    },
+    "validation": {
+      "type": "string",
+      "const": "bounded-structure/1"
+    },
+    "imported_by": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "id",
+    "revision",
+    "previous",
+    "title",
+    "access",
+    "source",
+    "format",
+    "project_id",
+    "content_sha256",
+    "byte_length",
+    "media_type",
+    "width",
+    "height",
+    "validation",
+    "imported_by"
+  ],
+  "additionalProperties": false
+}

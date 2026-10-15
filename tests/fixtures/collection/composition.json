@@ -1,0 +1,4 @@
+{
+  "id": "CollectionCandidate", "revision": 1, "model_version": "strata/0.1-facets-experimental", "baseline": "CollectionBaseline@1",
+  "proposals": ["CollectionExtension@1"], "selected": ["CollectionExtension@1"], "alternative_groups": [], "scenario": { "id": "bounded-collection", "checks": [{ "id": "collection.compatibility", "version": "1" }] }, "resolutions": []
+}

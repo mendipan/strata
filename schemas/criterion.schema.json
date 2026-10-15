@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "method": {
+      "type": "string",
+      "enum": [
+        "mechanical",
+        "review"
+      ]
+    },
+    "check": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fixture": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subjects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "statement",
+    "method",
+    "check",
+    "version",
+    "fixture",
+    "subjects"
+  ],
+  "additionalProperties": false
+}

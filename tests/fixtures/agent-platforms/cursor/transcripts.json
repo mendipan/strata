@@ -1,0 +1,1042 @@
+{
+  "format": "strata-cursor-transcripts/1",
+  "pinned": {
+    "api_family": "Cursor Cloud Agents API v1 (agent/run lifecycle)",
+    "yaml_url": "https://cursor.com/docs-static/cloud-agents-openapi.yaml",
+    "yaml_bytes": 114037,
+    "yaml_sha256": "f61a5671e572d53086360958f9a9f1329548ff0ffc9b0ea3a32c66d6fd3b23ee",
+    "yaml_etag": "W/\"f2410ec850fd418d9b908666fd079a45\"",
+    "yaml_last_modified": "Sun, 11 Oct 2026 18:42:26 GMT",
+    "accessed_at": "2026-10-12T10:41:59.0019881Z",
+    "subset_file": "tests/fixtures/agent-platforms/cursor/transcripts.json#pinned.schema_subset_json",
+    "subset_sha256": "f870ccc208c16223c12488fad28d1f7577d5eb79c867ae363ca7187a091fbfc9",
+    "openapi": "3.0.3",
+    "info_version": "1.0.0",
+    "selected_paths": {
+      "/v1/agents": [
+        "get",
+        "post"
+      ],
+      "/v1/agents/{id}": [
+        "get"
+      ],
+      "/v1/agents/{id}/runs": [
+        "get",
+        "post"
+      ],
+      "/v1/agents/{id}/runs/{runId}": [
+        "get"
+      ],
+      "/v1/agents/{id}/runs/{runId}/cancel": [
+        "post"
+      ],
+      "/v1/agents/{id}/artifacts": [
+        "get"
+      ]
+    },
+    "pin_meaning": "Read-time official schema snapshot fingerprint, not a stable vendor build or verified native behavior",
+    "docs_read": [
+      {
+        "url": "https://cursor.com/docs/cloud-agent/api/endpoints",
+        "date": "2026-10-12",
+        "note": "Endpoint reference: create enqueues the initial run, run statuses, one active run per agent, terminal cancellation with 409 run_not_cancellable, per-agent git snapshot, agent-scoped artifacts, public beta"
+      },
+      {
+        "url": "https://cursor.com/docs/api",
+        "date": "2026-10-12",
+        "note": "API overview: basic-or-bearer authentication with a user or service-account API key, standard rate limiting without figures, Cloud Agents beta on all plans"
+      },
+      {
+        "url": "https://cursor.com/docs/cloud-agent/security-network",
+        "date": "2026-10-12",
+        "note": "Security and networking statements: isolated-VMs claim, default internet egress, encrypted secrets and snapshots; conversation history indefinite by default, optional Enterprise 90-day retention, and rolling 90-day snapshot inactivity retention (mutable prose, not guaranteed API replay)"
+      }
+    ],
+    "schema_subset_json": "{\n  \"openapi\": \"3.0.3\",\n  \"info\": {\n    \"title\": \"Cursor Cloud Agents API\",\n    \"description\": \"Programmatically create and manage Cursor Cloud Agents that work\\nautonomously on your repositories. v1 separates a durable agent\\nfrom one or more runs: each prompt submission creates a run on the\\nagent. Streaming and cancellation are scoped to the active run.\\nEnvironment endpoints manage the saved environments agents run in.\\n\",\n    \"version\": \"1.0.0\",\n    \"contact\": {\n      \"email\": \"hi@cursor.com\"\n    }\n  },\n  \"servers\": [\n    {\n      \"url\": \"https://api.cursor.com\",\n      \"description\": \"Production server\"\n    }\n  ],\n  \"security\": [\n    {\n      \"basicAuth\": []\n    },\n    {\n      \"bearerAuth\": []\n    }\n  ],\n  \"paths\": {\n    \"/v1/agents\": {\n      \"post\": {\n        \"summary\": \"Create an agent\",\n        \"description\": \"Create a Cloud Agent and immediately enqueue its initial run.\\nThe response contains both the durable `agent` and the initial\\n`run`.\\n\",\n        \"operationId\": \"createAgent\",\n        \"requestBody\": {\n          \"required\": true,\n          \"content\": {\n            \"application/json\": {\n              \"schema\": {\n                \"$ref\": \"#/components/schemas/CreateAgentRequest\"\n              }\n            }\n          }\n        },\n        \"responses\": {\n          \"201\": {\n            \"description\": \"Agent created and initial run enqueued.\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/CreateAgentResponse\"\n                }\n              }\n            }\n          },\n          \"400\": {\n            \"$ref\": \"#/components/responses/BadRequest\"\n          },\n          \"401\": {\n            \"$ref\": \"#/components/responses/Unauthorized\"\n          },\n          \"403\": {\n            \"$ref\": \"#/components/responses/Forbidden\"\n          },\n          \"409\": {\n            \"$ref\": \"#/components/responses/Conflict\"\n          },\n          \"429\": {\n            \"$ref\": \"#/components/responses/RateLimited\"\n          },\n          \"500\": {\n            \"$ref\": \"#/components/responses/InternalError\"\n          }\n        }\n      },\n      \"get\": {\n        \"summary\": \"List agents\",\n        \"description\": \"List agents for the authenticated user, newest first.\",\n        \"operationId\": \"listAgents\",\n        \"parameters\": [\n          {\n            \"name\": \"limit\",\n            \"in\": \"query\",\n            \"required\": false,\n            \"description\": \"Number of agents to return.\",\n            \"schema\": {\n              \"type\": \"integer\",\n              \"minimum\": 1,\n              \"maximum\": 100,\n              \"default\": 20\n            }\n          },\n          {\n            \"name\": \"cursor\",\n            \"in\": \"query\",\n            \"required\": false,\n            \"description\": \"Pagination cursor from the previous response.\",\n            \"schema\": {\n              \"type\": \"string\",\n              \"minLength\": 1\n            }\n          },\n          {\n            \"name\": \"prUrl\",\n            \"in\": \"query\",\n            \"required\": false,\n            \"description\": \"Filter agents by GitHub pull request URL.\",\n            \"schema\": {\n              \"type\": \"string\",\n              \"format\": \"uri\"\n            }\n          },\n          {\n            \"name\": \"includeArchived\",\n            \"in\": \"query\",\n            \"required\": false,\n            \"description\": \"Whether to include archived agents.\",\n            \"schema\": {\n              \"type\": \"boolean\",\n              \"default\": true\n            }\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"Agents retrieved successfully.\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/ListAgentsResponse\"\n                }\n              }\n            }\n          },\n          \"400\": {\n            \"$ref\": \"#/components/responses/BadRequest\"\n          },\n          \"401\": {\n            \"$ref\": \"#/components/responses/Unauthorized\"\n          },\n          \"403\": {\n            \"$ref\": \"#/components/responses/Forbidden\"\n          },\n          \"429\": {\n            \"$ref\": \"#/components/responses/RateLimited\"\n          },\n          \"500\": {\n            \"$ref\": \"#/components/responses/InternalError\"\n          }\n        }\n      }\n    },\n    \"/v1/agents/{id}\": {\n      \"get\": {\n        \"summary\": \"Get an agent\",\n        \"description\": \"Retrieve durable metadata for an agent. Execution status lives on runs.\",\n        \"operationId\": \"getAgent\",\n        \"parameters\": [\n          {\n            \"$ref\": \"#/components/parameters/AgentId\"\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"Agent retrieved successfully.\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Agent\"\n                }\n              }\n            }\n          },\n          \"401\": {\n            \"$ref\": \"#/components/responses/Unauthorized\"\n          },\n          \"403\": {\n            \"$ref\": \"#/components/responses/Forbidden\"\n          },\n          \"404\": {\n            \"$ref\": \"#/components/responses/NotFound\"\n          },\n          \"429\": {\n            \"$ref\": \"#/components/responses/RateLimited\"\n          },\n          \"500\": {\n            \"$ref\": \"#/components/responses/InternalError\"\n          }\n        }\n      }\n    },\n    \"/v1/agents/{id}/runs\": {\n      \"post\": {\n        \"summary\": \"Create a run\",\n        \"description\": \"Send a follow-up prompt to an existing active agent. The new\\nrun uses the agent's current conversation and workspace state.\\nOnly one run can be active per agent at a time.\\n\",\n        \"operationId\": \"createRun\",\n        \"parameters\": [\n          {\n            \"$ref\": \"#/components/parameters/AgentId\"\n          }\n        ],\n        \"requestBody\": {\n          \"required\": true,\n          \"content\": {\n            \"application/json\": {\n              \"schema\": {\n                \"$ref\": \"#/components/schemas/CreateRunRequest\"\n              }\n            }\n          }\n        },\n        \"responses\": {\n          \"201\": {\n            \"description\": \"Run created and enqueued.\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/CreateRunResponse\"\n                }\n              }\n            }\n          },\n          \"400\": {\n            \"$ref\": \"#/components/responses/BadRequest\"\n          },\n          \"401\": {\n            \"$ref\": \"#/components/responses/Unauthorized\"\n          },\n          \"403\": {\n            \"$ref\": \"#/components/responses/Forbidden\"\n          },\n          \"404\": {\n            \"$ref\": \"#/components/responses/NotFound\"\n          },\n          \"409\": {\n            \"$ref\": \"#/components/responses/Conflict\"\n          },\n          \"429\": {\n            \"$ref\": \"#/components/responses/RateLimited\"\n          },\n          \"500\": {\n            \"$ref\": \"#/components/responses/InternalError\"\n          }\n        }\n      },\n      \"get\": {\n        \"summary\": \"List runs\",\n        \"description\": \"List runs for an agent, newest first.\",\n        \"operationId\": \"listRuns\",\n        \"parameters\": [\n          {\n            \"$ref\": \"#/components/parameters/AgentId\"\n          },\n          {\n            \"name\": \"limit\",\n            \"in\": \"query\",\n            \"required\": false,\n            \"schema\": {\n              \"type\": \"integer\",\n              \"minimum\": 1,\n              \"maximum\": 100,\n              \"default\": 20\n            }\n          },\n          {\n            \"name\": \"cursor\",\n            \"in\": \"query\",\n            \"required\": false,\n            \"description\": \"Pagination cursor from the previous response.\",\n            \"schema\": {\n              \"type\": \"string\",\n              \"minLength\": 1\n            }\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"Runs retrieved successfully.\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/ListRunsResponse\"\n                }\n              }\n            }\n          },\n          \"401\": {\n            \"$ref\": \"#/components/responses/Unauthorized\"\n          },\n          \"403\": {\n            \"$ref\": \"#/components/responses/Forbidden\"\n          },\n          \"404\": {\n            \"$ref\": \"#/components/responses/NotFound\"\n          },\n          \"429\": {\n            \"$ref\": \"#/components/responses/RateLimited\"\n          },\n          \"500\": {\n            \"$ref\": \"#/components/responses/InternalError\"\n          }\n        }\n      }\n    },\n    \"/v1/agents/{id}/runs/{runId}\": {\n      \"get\": {\n        \"summary\": \"Get a run\",\n        \"description\": \"Retrieve status and timestamps for a specific run.\",\n        \"operationId\": \"getRun\",\n        \"parameters\": [\n          {\n            \"$ref\": \"#/components/parameters/AgentId\"\n          },\n          {\n            \"$ref\": \"#/components/parameters/RunId\"\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"Run retrieved successfully.\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Run\"\n                }\n              }\n            }\n          },\n          \"401\": {\n            \"$ref\": \"#/components/responses/Unauthorized\"\n          },\n          \"403\": {\n            \"$ref\": \"#/components/responses/Forbidden\"\n          },\n          \"404\": {\n            \"$ref\": \"#/components/responses/NotFound\"\n          },\n          \"429\": {\n            \"$ref\": \"#/components/responses/RateLimited\"\n          },\n          \"500\": {\n            \"$ref\": \"#/components/responses/InternalError\"\n          }\n        }\n      }\n    },\n    \"/v1/agents/{id}/runs/{runId}/cancel\": {\n      \"post\": {\n        \"summary\": \"Cancel a run\",\n        \"description\": \"Cancel the active run for an agent. Cancellation is terminal \\u2014\\nthe run transitions to `CANCELLED`. Cancelling a run that is\\nalready terminal or was never active returns\\n`409 run_not_cancellable`. To continue the conversation,\\ncreate a new run on the same agent.\\n\",\n        \"operationId\": \"cancelRun\",\n        \"parameters\": [\n          {\n            \"$ref\": \"#/components/parameters/AgentId\"\n          },\n          {\n            \"$ref\": \"#/components/parameters/RunId\"\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"Run cancelled successfully.\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/IdResponse\"\n                }\n              }\n            }\n          },\n          \"401\": {\n            \"$ref\": \"#/components/responses/Unauthorized\"\n          },\n          \"403\": {\n            \"$ref\": \"#/components/responses/Forbidden\"\n          },\n          \"404\": {\n            \"$ref\": \"#/components/responses/NotFound\"\n          },\n          \"409\": {\n            \"$ref\": \"#/components/responses/Conflict\"\n          },\n          \"429\": {\n            \"$ref\": \"#/components/responses/RateLimited\"\n          },\n          \"500\": {\n            \"$ref\": \"#/components/responses/InternalError\"\n          }\n        }\n      }\n    },\n    \"/v1/agents/{id}/artifacts\": {\n      \"get\": {\n        \"summary\": \"List artifacts\",\n        \"description\": \"List artifacts produced by an agent. Each artifact's `path` is\\nrelative to the workspace's `artifacts/` directory. Pass that\\n`path` to GET /v1/agents/{id}/artifacts/download to obtain a\\npresigned download URL.\\n\",\n        \"operationId\": \"listArtifacts\",\n        \"parameters\": [\n          {\n            \"$ref\": \"#/components/parameters/AgentId\"\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"Artifacts retrieved successfully.\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/ListArtifactsResponse\"\n                }\n              }\n            }\n          },\n          \"401\": {\n            \"$ref\": \"#/components/responses/Unauthorized\"\n          },\n          \"403\": {\n            \"$ref\": \"#/components/responses/Forbidden\"\n          },\n          \"404\": {\n            \"$ref\": \"#/components/responses/NotFound\"\n          },\n          \"429\": {\n            \"$ref\": \"#/components/responses/RateLimited\"\n          },\n          \"500\": {\n            \"$ref\": \"#/components/responses/InternalError\"\n          }\n        }\n      }\n    }\n  },\n  \"components\": {\n    \"responses\": {\n      \"InternalError\": {\n        \"description\": \"Internal server error.\",\n        \"content\": {\n          \"application/json\": {\n            \"schema\": {\n              \"$ref\": \"#/components/schemas/Error\"\n            }\n          }\n        }\n      },\n      \"RateLimited\": {\n        \"description\": \"Rate limit exceeded. Response includes `Retry-After`, `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset` headers.\",\n        \"content\": {\n          \"application/json\": {\n            \"schema\": {\n              \"$ref\": \"#/components/schemas/Error\"\n            }\n          }\n        }\n      },\n      \"NotFound\": {\n        \"description\": \"Resource not found.\",\n        \"content\": {\n          \"application/json\": {\n            \"schema\": {\n              \"$ref\": \"#/components/schemas/Error\"\n            }\n          }\n        }\n      },\n      \"Forbidden\": {\n        \"description\": \"Authenticated but insufficient permissions, plan required, or feature unavailable.\",\n        \"content\": {\n          \"application/json\": {\n            \"schema\": {\n              \"$ref\": \"#/components/schemas/Error\"\n            }\n          }\n        }\n      },\n      \"Unauthorized\": {\n        \"description\": \"Invalid, missing, or unsupported API key. When the API key fails authentication, the body has a top-level `code` and `message` instead of an `error` object.\",\n        \"content\": {\n          \"application/json\": {\n            \"schema\": {\n              \"oneOf\": [\n                {\n                  \"$ref\": \"#/components/schemas/AuthenticationError\"\n                },\n                {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              ]\n            }\n          }\n        }\n      },\n      \"Conflict\": {\n        \"description\": \"Resource state conflict (`agent_busy`, `agent_archived`, `agent_id_conflict`, `run_not_cancellable`, or `environment_name_conflict`).\",\n        \"content\": {\n          \"application/json\": {\n            \"schema\": {\n              \"$ref\": \"#/components/schemas/Error\"\n            }\n          }\n        }\n      },\n      \"BadRequest\": {\n        \"description\": \"Validation error or malformed request body.\",\n        \"content\": {\n          \"application/json\": {\n            \"schema\": {\n              \"$ref\": \"#/components/schemas/Error\"\n            }\n          }\n        }\n      }\n    },\n    \"schemas\": {\n      \"Error\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"error\"\n        ],\n        \"properties\": {\n          \"error\": {\n            \"type\": \"object\",\n            \"required\": [\n              \"code\",\n              \"message\"\n            ],\n            \"properties\": {\n              \"code\": {\n                \"type\": \"string\",\n                \"description\": \"Machine-readable error code. Possible values include\\n`unauthorized`, `api_key_not_found`, `plan_required`,\\n`role_forbidden`, `feature_unavailable`,\\n`integration_not_connected`, `validation_error`,\\n`missing_body`, `invalid_model`, `invalid_branch_name`,\\n`repository_required`, `repository_access`,\\n`pr_resolution_failed`, `artifact_not_found`,\\n`service_account_required`, `agent_not_found`,\\n`run_not_found`, `environment_not_found`, `build_not_found`,\\n`team_admin_required`, `environment_name_conflict`,\\n`duplicate_json_key`, `agent_busy`, `agent_archived`,\\n`agent_id_conflict`, `run_not_cancellable`,\\n`rate_limit_exceeded`, `usage_limit_exceeded`,\\n`stream_expired`, `stream_unavailable`,\\n`invalid_last_event_id`, `client_cancelled`,\\n`not_implemented`, `upstream_error`, and\\n`internal_error`.\\n\"\n              },\n              \"message\": {\n                \"type\": \"string\",\n                \"description\": \"Human-readable error message.\"\n              },\n              \"helpUrl\": {\n                \"type\": \"string\",\n                \"format\": \"uri\",\n                \"description\": \"Optional follow-up link. Populated for codes like `integration_not_connected`.\"\n              },\n              \"provider\": {\n                \"type\": \"string\",\n                \"minLength\": 1,\n                \"description\": \"Optional provider identifier. Populated for codes like `integration_not_connected`.\"\n              },\n              \"environmentId\": {\n                \"type\": \"string\",\n                \"format\": \"uuid\",\n                \"description\": \"ID of the existing environment with the requested name, when an `environment_name_conflict` error returns it.\",\n                \"example\": \"8f14e45f-ceea-4e6b-9c3a-1d2e3f4a5b6c\"\n              }\n            }\n          }\n        }\n      },\n      \"AuthenticationError\": {\n        \"type\": \"object\",\n        \"description\": \"Body of a `401` response when the API key fails authentication.\",\n        \"required\": [\n          \"code\",\n          \"message\"\n        ],\n        \"properties\": {\n          \"code\": {\n            \"type\": \"string\",\n            \"description\": \"Error category, such as `error`.\",\n            \"example\": \"error\"\n          },\n          \"message\": {\n            \"type\": \"string\",\n            \"description\": \"Human-readable error message.\",\n            \"example\": \"Invalid User API Key\"\n          }\n        }\n      },\n      \"ListArtifactsResponse\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"items\"\n        ],\n        \"properties\": {\n          \"items\": {\n            \"type\": \"array\",\n            \"description\": \"Artifacts produced by the agent. Returns at most 100 artifacts.\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/Artifact\"\n            }\n          }\n        }\n      },\n      \"Artifact\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"path\",\n          \"sizeBytes\",\n          \"updatedAt\"\n        ],\n        \"properties\": {\n          \"path\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"Artifact path relative to the workspace's `artifacts/` directory.\",\n            \"example\": \"artifacts/screenshot.png\"\n          },\n          \"sizeBytes\": {\n            \"type\": \"integer\",\n            \"minimum\": 0,\n            \"description\": \"File size in bytes.\",\n            \"example\": 12345\n          },\n          \"updatedAt\": {\n            \"type\": \"string\",\n            \"format\": \"date-time\",\n            \"description\": \"Last modified timestamp.\"\n          }\n        }\n      },\n      \"IdResponse\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"id\"\n        ],\n        \"properties\": {\n          \"id\": {\n            \"type\": \"string\",\n            \"description\": \"Identifier of the affected resource.\"\n          }\n        }\n      },\n      \"Run\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"id\",\n          \"agentId\",\n          \"status\",\n          \"createdAt\",\n          \"updatedAt\"\n        ],\n        \"properties\": {\n          \"id\": {\n            \"type\": \"string\",\n            \"description\": \"Unique run identifier.\",\n            \"example\": \"run-00000000-0000-0000-0000-000000000001\"\n          },\n          \"agentId\": {\n            \"type\": \"string\",\n            \"description\": \"ID of the agent this run belongs to.\",\n            \"example\": \"bc-00000000-0000-0000-0000-000000000001\"\n          },\n          \"status\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"CREATING\",\n              \"RUNNING\",\n              \"FINISHED\",\n              \"ERROR\",\n              \"CANCELLED\",\n              \"EXPIRED\"\n            ],\n            \"description\": \"Current run status.\"\n          },\n          \"createdAt\": {\n            \"type\": \"string\",\n            \"format\": \"date-time\"\n          },\n          \"updatedAt\": {\n            \"type\": \"string\",\n            \"format\": \"date-time\"\n          },\n          \"durationMs\": {\n            \"type\": \"integer\",\n            \"minimum\": 0,\n            \"description\": \"Wall-clock duration of the run in milliseconds. Populated once the run reaches a terminal status (`FINISHED`, `ERROR`, `CANCELLED`, `EXPIRED`).\",\n            \"example\": 12357\n          },\n          \"result\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"Final assistant reply text. Populated once the run terminates.\",\n            \"example\": \"Added README.md with installation instructions.\"\n          },\n          \"git\": {\n            \"allOf\": [\n              {\n                \"$ref\": \"#/components/schemas/RunGit\"\n              }\n            ],\n            \"description\": \"The agent's pushed branches and PRs. Populated once the agent has pushed at least one branch. Per-agent state, not per-run.\"\n          }\n        }\n      },\n      \"RunGit\": {\n        \"type\": \"object\",\n        \"description\": \"The agent's current pushed branches and pull requests. This is\\nper-agent state \\u2014 every run on the same agent returns the same\\n`git` snapshot rather than only that run's contributions. Use\\nthe agent's `latestRunId` or the SSE stream to attribute work\\nto a specific run.\\n\",\n        \"required\": [\n          \"branches\"\n        ],\n        \"properties\": {\n          \"branches\": {\n            \"type\": \"array\",\n            \"description\": \"Branches the agent has pushed. Stacked agents return one entry per branch.\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/RunGitBranch\"\n            }\n          }\n        }\n      },\n      \"RunGitBranch\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"repoUrl\"\n        ],\n        \"properties\": {\n          \"repoUrl\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"Repository URL the agent pushed to. Returned without the scheme (for example, `github.com/your-org/your-repo`).\",\n            \"example\": \"github.com/your-org/your-repo\"\n          },\n          \"branch\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"Branch name the agent pushed.\",\n            \"example\": \"cursor/add-readme-a1b2\"\n          },\n          \"prUrl\": {\n            \"type\": \"string\",\n            \"format\": \"uri\",\n            \"description\": \"Pull request URL, when Cursor opened a PR.\",\n            \"example\": \"https://github.com/your-org/your-repo/pull/123\"\n          }\n        }\n      },\n      \"ListRunsResponse\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"items\"\n        ],\n        \"properties\": {\n          \"items\": {\n            \"type\": \"array\",\n            \"description\": \"Runs for this agent, newest first.\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/Run\"\n            }\n          },\n          \"nextCursor\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"Cursor for fetching the next page of results. Omitted (not `null`) when there are no more pages.\"\n          }\n        }\n      },\n      \"CreateRunResponse\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"run\"\n        ],\n        \"properties\": {\n          \"run\": {\n            \"$ref\": \"#/components/schemas/Run\"\n          }\n        }\n      },\n      \"CreateRunRequest\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"prompt\"\n        ],\n        \"properties\": {\n          \"prompt\": {\n            \"type\": \"object\",\n            \"required\": [\n              \"text\"\n            ],\n            \"properties\": {\n              \"text\": {\n                \"type\": \"string\",\n                \"minLength\": 1,\n                \"description\": \"Follow-up instruction text.\",\n                \"example\": \"Also add troubleshooting steps\"\n              },\n              \"images\": {\n                \"type\": \"array\",\n                \"maxItems\": 5,\n                \"items\": {\n                  \"$ref\": \"#/components/schemas/Image\"\n                },\n                \"description\": \"Image inputs for the follow-up. Each entry must provide either `data` (with required `mimeType`) or `url`. Maximum 5 images, 15 MB each.\"\n              }\n            }\n          },\n          \"mcpServers\": {\n            \"type\": \"array\",\n            \"maxItems\": 50,\n            \"description\": \"Inline MCP server definitions for this follow-up run. When provided, these definitions replace any create-time inline MCP servers for this run.\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/McpServer\"\n            }\n          },\n          \"mode\": {\n            \"$ref\": \"#/components/schemas/AgentMode\"\n          }\n        }\n      },\n      \"AgentMode\": {\n        \"type\": \"string\",\n        \"enum\": [\n          \"agent\",\n          \"plan\"\n        ],\n        \"description\": \"Conversation mode. `plan` explores and drafts a plan before coding; `agent` implements changes directly. On follow-up runs, omit to keep the conversation's current mode; set explicitly to switch modes for that run.\\n\"\n      },\n      \"McpServer\": {\n        \"oneOf\": [\n          {\n            \"$ref\": \"#/components/schemas/StdioMcpServer\"\n          },\n          {\n            \"$ref\": \"#/components/schemas/RemoteMcpServer\"\n          }\n        ]\n      },\n      \"RemoteMcpServer\": {\n        \"type\": \"object\",\n        \"additionalProperties\": false,\n        \"required\": [\n          \"name\",\n          \"url\"\n        ],\n        \"properties\": {\n          \"name\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"MCP server name exposed to the agent.\",\n            \"example\": \"linear\"\n          },\n          \"type\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"http\",\n              \"sse\"\n            ],\n            \"description\": \"Remote MCP transport. Defaults to `http` when `url` is provided.\",\n            \"example\": \"http\"\n          },\n          \"url\": {\n            \"type\": \"string\",\n            \"format\": \"uri\",\n            \"description\": \"HTTP or HTTPS URL for the remote MCP server. Userinfo in the URL is not allowed.\",\n            \"example\": \"https://mcp.linear.app/sse\"\n          },\n          \"headers\": {\n            \"type\": \"object\",\n            \"description\": \"Headers Cursor sends with every request to the remote MCP server.\",\n            \"additionalProperties\": {\n              \"type\": \"string\"\n            },\n            \"example\": {\n              \"Authorization\": \"Bearer lin_api_...\"\n            }\n          },\n          \"auth\": {\n            \"$ref\": \"#/components/schemas/McpAuth\"\n          }\n        }\n      },\n      \"McpAuth\": {\n        \"type\": \"object\",\n        \"additionalProperties\": false,\n        \"required\": [\n          \"CLIENT_ID\"\n        ],\n        \"properties\": {\n          \"CLIENT_ID\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"OAuth client ID for the MCP server.\",\n            \"example\": \"client-id\"\n          },\n          \"CLIENT_SECRET\": {\n            \"type\": \"string\",\n            \"description\": \"OAuth client secret for the MCP server.\",\n            \"example\": \"client-secret\"\n          },\n          \"scopes\": {\n            \"type\": \"array\",\n            \"description\": \"OAuth scopes to request for the MCP server.\",\n            \"items\": {\n              \"type\": \"string\",\n              \"minLength\": 1\n            },\n            \"example\": [\n              \"file_content:read\"\n            ]\n          }\n        }\n      },\n      \"StdioMcpServer\": {\n        \"type\": \"object\",\n        \"additionalProperties\": false,\n        \"required\": [\n          \"name\",\n          \"command\"\n        ],\n        \"properties\": {\n          \"name\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"MCP server name exposed to the agent.\",\n            \"example\": \"github\"\n          },\n          \"type\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"stdio\"\n            ],\n            \"description\": \"Stdio MCP server. Defaults to `stdio` when `command` is provided.\",\n            \"example\": \"stdio\"\n          },\n          \"command\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"Command to start inside the cloud agent VM.\",\n            \"example\": \"npx\"\n          },\n          \"args\": {\n            \"type\": \"array\",\n            \"description\": \"Command arguments.\",\n            \"items\": {\n              \"type\": \"string\"\n            },\n            \"example\": [\n              \"-y\",\n              \"@modelcontextprotocol/server-github\"\n            ]\n          },\n          \"env\": {\n            \"type\": \"object\",\n            \"description\": \"Environment variables passed to the stdio MCP server inside the VM.\",\n            \"additionalProperties\": {\n              \"type\": \"string\"\n            },\n            \"example\": {\n              \"GITHUB_TOKEN\": \"ghp_...\"\n            }\n          }\n        }\n      },\n      \"Image\": {\n        \"type\": \"object\",\n        \"description\": \"An image input. Provide exactly one of `data` or `url`. When\\n`data` is provided, `mimeType` is required. When `url` is\\nprovided, Cursor fetches the image and `mimeType` must be\\nomitted.\\n\",\n        \"properties\": {\n          \"data\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"Base64 encoded image bytes (max 15 MB). Mutually exclusive with `url`.\",\n            \"example\": \"iVBORw0KGgoAAAANSUhEUgAA...\"\n          },\n          \"url\": {\n            \"type\": \"string\",\n            \"format\": \"uri\",\n            \"description\": \"HTTP or HTTPS URL Cursor fetches. Mutually exclusive with `data`.\",\n            \"example\": \"https://example.com/screenshot.png\"\n          },\n          \"mimeType\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"MIME type of the image bytes. Required when `data` is provided; must be omitted when `url` is provided. Supported types are `image/png`, `image/jpeg`, `image/gif`, and `image/webp`.\",\n            \"example\": \"image/png\"\n          },\n          \"dimension\": {\n            \"$ref\": \"#/components/schemas/ImageDimension\"\n          }\n        },\n        \"oneOf\": [\n          {\n            \"required\": [\n              \"data\",\n              \"mimeType\"\n            ],\n            \"not\": {\n              \"required\": [\n                \"url\"\n              ]\n            }\n          },\n          {\n            \"required\": [\n              \"url\"\n            ],\n            \"not\": {\n              \"anyOf\": [\n                {\n                  \"required\": [\n                    \"data\"\n                  ]\n                },\n                {\n                  \"required\": [\n                    \"mimeType\"\n                  ]\n                }\n              ]\n            }\n          }\n        ]\n      },\n      \"ImageDimension\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"width\",\n          \"height\"\n        ],\n        \"properties\": {\n          \"width\": {\n            \"type\": \"integer\",\n            \"minimum\": 1,\n            \"description\": \"Width in pixels\"\n          },\n          \"height\": {\n            \"type\": \"integer\",\n            \"minimum\": 1,\n            \"description\": \"Height in pixels\"\n          }\n        }\n      },\n      \"Agent\": {\n        \"allOf\": [\n          {\n            \"$ref\": \"#/components/schemas/AgentSummary\"\n          },\n          {\n            \"type\": \"object\",\n            \"properties\": {\n              \"repos\": {\n                \"type\": \"array\",\n                \"description\": \"Repository configuration. Empty for no-repo agents.\",\n                \"items\": {\n                  \"$ref\": \"#/components/schemas/RepoConfig\"\n                }\n              },\n              \"workOnCurrentBranch\": {\n                \"type\": \"boolean\",\n                \"description\": \"When `false` (the default), Cursor pushes commits to a new auto-generated branch. When `true`, commits land on the existing head branch.\",\n                \"example\": false\n              },\n              \"autoCreatePR\": {\n                \"type\": \"boolean\",\n                \"description\": \"Whether Cursor opens a pull request when the run completes.\",\n                \"example\": true\n              },\n              \"skipReviewerRequest\": {\n                \"type\": \"boolean\",\n                \"description\": \"Whether to skip requesting the user as a reviewer when Cursor opens a PR.\"\n              },\n              \"customSubagents\": {\n                \"type\": \"array\",\n                \"description\": \"Custom subagents defined at create time. Omitted when none were provided.\",\n                \"items\": {\n                  \"$ref\": \"#/components/schemas/CustomSubagent\"\n                }\n              }\n            }\n          }\n        ]\n      },\n      \"CustomSubagent\": {\n        \"type\": \"object\",\n        \"additionalProperties\": false,\n        \"required\": [\n          \"name\",\n          \"description\",\n          \"prompt\"\n        ],\n        \"properties\": {\n          \"name\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"maxLength\": 100,\n            \"description\": \"Subagent name. Must be unique within `customSubagents` and cannot collide with built-ins (for example, `explore`, `shell`, `debug`, `computerUse`, `cursorGuide`).\",\n            \"example\": \"frontend-reviewer\"\n          },\n          \"description\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"maxLength\": 1000,\n            \"description\": \"Short summary used by the main agent to decide when to delegate.\"\n          },\n          \"prompt\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"maxLength\": 8192,\n            \"description\": \"System prompt the subagent receives when invoked.\"\n          },\n          \"model\": {\n            \"oneOf\": [\n              {\n                \"type\": \"string\",\n                \"enum\": [\n                  \"inherit\"\n                ],\n                \"description\": \"Use the parent agent's model selection.\"\n              },\n              {\n                \"type\": \"string\",\n                \"minLength\": 1,\n                \"description\": \"An explicit model ID.\",\n                \"example\": \"claude-4.6-sonnet-thinking\"\n              },\n              {\n                \"$ref\": \"#/components/schemas/ModelRef\"\n              }\n            ]\n          }\n        }\n      },\n      \"ModelRef\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"id\"\n        ],\n        \"properties\": {\n          \"id\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"Explicit model ID returned by GET /v1/models. Omit `model` from the request to use the configured default.\",\n            \"example\": \"composer-2\"\n          },\n          \"params\": {\n            \"type\": \"array\",\n            \"description\": \"Per-model parameters such as reasoning effort or max mode. Use only parameters supported by the selected model.\",\n            \"items\": {\n              \"type\": \"object\",\n              \"required\": [\n                \"id\",\n                \"value\"\n              ],\n              \"properties\": {\n                \"id\": {\n                  \"type\": \"string\",\n                  \"minLength\": 1,\n                  \"example\": \"thinking\"\n                },\n                \"value\": {\n                  \"type\": \"string\",\n                  \"minLength\": 1,\n                  \"example\": \"high\"\n                }\n              }\n            }\n          }\n        }\n      },\n      \"RepoConfig\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"url\"\n        ],\n        \"properties\": {\n          \"url\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"GitHub repository URL. Required on every repo entry, including when `prUrl` is provided.\",\n            \"example\": \"https://github.com/your-org/your-repo\"\n          },\n          \"startingRef\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"Branch name or commit SHA to use as the starting point. Ignored when `prUrl` is provided.\",\n            \"example\": \"main\"\n          },\n          \"prUrl\": {\n            \"type\": \"string\",\n            \"format\": \"uri\",\n            \"description\": \"GitHub pull request URL. When provided, the agent works on this PR's repository and branches; `startingRef` is ignored. `url` must still be set on the same entry.\",\n            \"example\": \"https://github.com/your-org/your-repo/pull/123\"\n          }\n        }\n      },\n      \"AgentSummary\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"id\",\n          \"status\",\n          \"env\",\n          \"url\",\n          \"createdAt\",\n          \"updatedAt\"\n        ],\n        \"properties\": {\n          \"id\": {\n            \"type\": \"string\",\n            \"description\": \"Unique agent identifier.\",\n            \"example\": \"bc-00000000-0000-0000-0000-000000000001\"\n          },\n          \"name\": {\n            \"type\": \"string\",\n            \"description\": \"Display name. Auto-derived from the prompt when not supplied at create time. Omitted when no name has been set.\",\n            \"example\": \"Add README with setup instructions\"\n          },\n          \"status\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"ACTIVE\",\n              \"ARCHIVED\"\n            ],\n            \"description\": \"Agent lifecycle state. Execution status lives on runs.\"\n          },\n          \"env\": {\n            \"$ref\": \"#/components/schemas/AgentEnv\"\n          },\n          \"url\": {\n            \"type\": \"string\",\n            \"format\": \"uri\",\n            \"description\": \"URL to view the agent in Cursor Web.\",\n            \"example\": \"https://cursor.com/agents/bc-00000000-0000-0000-0000-000000000001\"\n          },\n          \"createdAt\": {\n            \"type\": \"string\",\n            \"format\": \"date-time\",\n            \"description\": \"When the agent was created.\"\n          },\n          \"updatedAt\": {\n            \"type\": \"string\",\n            \"format\": \"date-time\",\n            \"description\": \"When the agent was last updated.\"\n          },\n          \"latestRunId\": {\n            \"type\": \"string\",\n            \"description\": \"ID of the most recent run on this agent, if any.\",\n            \"example\": \"run-00000000-0000-0000-0000-000000000001\"\n          }\n        }\n      },\n      \"AgentEnv\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"type\"\n        ],\n        \"properties\": {\n          \"type\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"cloud\",\n              \"pool\",\n              \"machine\"\n            ],\n            \"description\": \"Execution environment type. `cloud` uses Cursor-hosted VMs; `pool` and `machine` route to self-hosted workers.\",\n            \"example\": \"cloud\"\n          },\n          \"name\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"Named Cursor-hosted environment, Team Pool, or self-hosted machine name. For `type: pool`, this is the pool name (defaults to `default` when omitted). Unknown pool names return `400`. Omit `repos` with `type: pool` to target a repo-less pool. Name an any-repo pool to send more than one entry in `repos`.\",\n            \"example\": \"Release workspace\"\n          }\n        }\n      },\n      \"ListAgentsResponse\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"items\"\n        ],\n        \"properties\": {\n          \"items\": {\n            \"type\": \"array\",\n            \"description\": \"Agents, newest first.\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/AgentSummary\"\n            }\n          },\n          \"nextCursor\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"description\": \"Cursor for fetching the next page of results. Omitted (not `null`) when there are no more pages.\",\n            \"example\": \"bc-00000000-0000-0000-0000-000000000002\"\n          }\n        }\n      },\n      \"CreateAgentResponse\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"agent\",\n          \"run\"\n        ],\n        \"properties\": {\n          \"agent\": {\n            \"$ref\": \"#/components/schemas/Agent\"\n          },\n          \"run\": {\n            \"$ref\": \"#/components/schemas/Run\"\n          }\n        }\n      },\n      \"CreateAgentRequest\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"prompt\"\n        ],\n        \"properties\": {\n          \"prompt\": {\n            \"type\": \"object\",\n            \"required\": [\n              \"text\"\n            ],\n            \"properties\": {\n              \"text\": {\n                \"type\": \"string\",\n                \"minLength\": 1,\n                \"description\": \"Task instruction for the agent.\",\n                \"example\": \"Add a README with setup instructions\"\n              },\n              \"images\": {\n                \"type\": \"array\",\n                \"maxItems\": 5,\n                \"items\": {\n                  \"$ref\": \"#/components/schemas/Image\"\n                },\n                \"description\": \"Image inputs. Each entry must provide either `data` (with required `mimeType`) or `url`. Maximum 5 images, 15 MB each.\"\n              }\n            }\n          },\n          \"model\": {\n            \"$ref\": \"#/components/schemas/ModelRef\"\n          },\n          \"name\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"maxLength\": 100,\n            \"description\": \"Display name for the agent. Auto-derived from the prompt when omitted.\",\n            \"example\": \"Add README with setup instructions\"\n          },\n          \"agentId\": {\n            \"type\": \"string\",\n            \"minLength\": 1,\n            \"pattern\": \"^bc-[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$\",\n            \"description\": \"Optional client-supplied agent identifier in `bc-<uuid>` form. Re-POSTing the same `agentId` returns `409 agent_id_conflict` instead of creating a duplicate. Cannot be combined with `envVars`; omit `agentId` so the server mints one when you need session secrets.\",\n            \"example\": \"bc-00000000-0000-0000-0000-000000000001\"\n          },\n          \"env\": {\n            \"$ref\": \"#/components/schemas/AgentEnv\"\n          },\n          \"repos\": {\n            \"type\": \"array\",\n            \"maxItems\": 20,\n            \"description\": \"Repository configuration. Mutually exclusive with a named cloud environment. Omit both `repos` and `env` (or pass `repos: []`) to start a no-repo agent. On self-hosted targets, only a named any-repo pool takes more than one entry. `machine`, the `default` pool, and repo-backed pools take one and return `400` for more.\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/RepoConfig\"\n            }\n          },\n          \"workOnCurrentBranch\": {\n            \"type\": \"boolean\",\n            \"description\": \"When `false` (the default), Cursor pushes commits to a new\\nauto-generated branch (`cursor/...`) based on\\n`repos[0].startingRef` (or the PR base ref when `prUrl`\\nis set). When `true`, Cursor pushes directly to that\\nstarting ref \\u2014 for a non-PR create, that's the branch you\\npassed in `startingRef`; for a `prUrl` create, that's the\\nPR's head branch.\\n\",\n            \"default\": false\n          },\n          \"autoCreatePR\": {\n            \"type\": \"boolean\",\n            \"description\": \"Whether Cursor should open a pull request when the run completes.\",\n            \"default\": false\n          },\n          \"skipReviewerRequest\": {\n            \"type\": \"boolean\",\n            \"description\": \"Whether to skip requesting the user as a reviewer when Cursor opens a PR. Only applies when `autoCreatePR` is true.\",\n            \"default\": false\n          },\n          \"envVars\": {\n            \"type\": \"object\",\n            \"maxProperties\": 50,\n            \"description\": \"Session-scoped environment variables for the cloud agent.\\nValues are encrypted at rest, injected into the agent's\\nshell, and deleted with the agent. Names must be non-empty,\\n255 bytes or less, and cannot start with `CURSOR_`. Values\\nmust be non-empty and 4096 bytes or less. Cannot be\\ncombined with a client-supplied `agentId`.\\n\\nBeta: `envVars` is rolling out. If it isn't enabled for\\nyour account yet, the field is silently ignored on create\\nrather than failing the request \\u2014 verify the values are\\npresent on a first run before relying on them in\\nproduction.\\n\",\n            \"additionalProperties\": {\n              \"type\": \"string\",\n              \"minLength\": 1,\n              \"maxLength\": 4096\n            }\n          },\n          \"mcpServers\": {\n            \"type\": \"array\",\n            \"maxItems\": 50,\n            \"description\": \"Inline MCP server definitions available to the initial run. Remote servers support `headers` or OAuth `auth`; stdio servers run inside the cloud agent VM and can receive `env`. Server names must be unique.\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/McpServer\"\n            }\n          },\n          \"customSubagents\": {\n            \"type\": \"array\",\n            \"maxItems\": 20,\n            \"description\": \"Custom subagents the main agent can delegate to. Names must be unique and not collide with built-ins.\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/CustomSubagent\"\n            }\n          },\n          \"mode\": {\n            \"allOf\": [\n              {\n                \"$ref\": \"#/components/schemas/AgentMode\"\n              }\n            ],\n            \"default\": \"agent\",\n            \"description\": \"Initial conversation mode for the agent's first run.\"\n          }\n        }\n      }\n    },\n    \"parameters\": {\n      \"AgentId\": {\n        \"name\": \"id\",\n        \"in\": \"path\",\n        \"required\": true,\n        \"description\": \"Unique identifier for the agent.\",\n        \"schema\": {\n          \"type\": \"string\",\n          \"example\": \"bc-00000000-0000-0000-0000-000000000001\"\n        }\n      },\n      \"RunId\": {\n        \"name\": \"runId\",\n        \"in\": \"path\",\n        \"required\": true,\n        \"description\": \"Unique identifier for the run.\",\n        \"schema\": {\n          \"type\": \"string\",\n          \"example\": \"run-00000000-0000-0000-0000-000000000001\"\n        }\n      }\n    },\n    \"securitySchemes\": {\n      \"basicAuth\": {\n        \"type\": \"http\",\n        \"scheme\": \"basic\",\n        \"description\": \"API key from Cursor Dashboard, supplied as the Basic\\nAuthentication username with an empty password.\\n\"\n      },\n      \"bearerAuth\": {\n        \"type\": \"http\",\n        \"scheme\": \"bearer\",\n        \"description\": \"API key from Cursor Dashboard, supplied via\\n`Authorization: Bearer <key>`. Equivalent to Basic Auth.\\n\"\n      }\n    }\n  }\n}\n",
+    "schema_receipt": {
+      "url": "https://cursor.com/docs-static/cloud-agents-openapi.yaml",
+      "bytes": 114037,
+      "lastModified": [
+        "Sun, 11 Oct 2026 18:42:26 GMT"
+      ],
+      "sha256": "f61a5671e572d53086360958f9a9f1329548ff0ffc9b0ea3a32c66d6fd3b23ee",
+      "scope": "Anonymous official public schema read only; no live API/account call",
+      "accessedAt": "2026-10-12T10:41:59.0019881Z",
+      "contentType": [
+        "text/yaml; charset=utf-8"
+      ],
+      "etag": [
+        "W/\"f2410ec850fd418d9b908666fd079a45\""
+      ],
+      "derivedSubset": "tests/fixtures/agent-platforms/cursor/transcripts.json#pinned.schema_subset_json",
+      "derivedSubsetSha256": "f870ccc208c16223c12488fad28d1f7577d5eb79c867ae363ca7187a091fbfc9",
+      "conversion": "yaml2.9.1 safe parse -> JSON; exact selected paths/methods with transitive local components; no schema behavior altered",
+      "selectedPaths": {
+        "/v1/agents": [
+          "get",
+          "post"
+        ],
+        "/v1/agents/{id}": [
+          "get"
+        ],
+        "/v1/agents/{id}/runs": [
+          "get",
+          "post"
+        ],
+        "/v1/agents/{id}/runs/{runId}": [
+          "get"
+        ],
+        "/v1/agents/{id}/runs/{runId}/cancel": [
+          "post"
+        ],
+        "/v1/agents/{id}/artifacts": [
+          "get"
+        ]
+      },
+      "externalRefsNotFetched": [],
+      "openapi": "3.0.3",
+      "infoVersion": "1.0.0",
+      "pinMeaning": "Read-time official schema snapshot fingerprint, not a stable vendor build or verified native behavior",
+      "preparationSubset": "reference/cursor-execution-openapi.json",
+      "preparationSubsetSha256": "5a60d9fd6d2335658a85cafe10637c48fff7c40dc909e6551cbdfeb008237c91",
+      "derivationNote": "Four UTF-8 em dash description repairs against retained OFFICIAL_OPENAPI.json; fields, selected methods and local refs unchanged. Original preparation subset checksum retained separately."
+    }
+  },
+  "normalization": [
+    "POST /v1/agents is the single selected native start: the pinned description says it immediately enqueues the initial run, so resource creation is run creation; submit maps to exactly one create per task lifetime and follow-up POST /runs is never used for the same task.",
+    "Run state normalization: CREATING to queued, RUNNING to running, FINISHED to succeeded, ERROR to failed with TASK_FAILED, CANCELLED to cancelled; EXPIRED to failed with TASK_LIMIT is a candidate mapping whose native semantics are undefined in the reviewed inputs.",
+    "Result text is normalized from the observed terminal Run.result of the exact retained run; sequences, result digests and artifact descriptors are adapter-owned, and native per-agent artifact metadata without digests is not mapped into digest-bound descriptors.",
+    "Cancellation is cooperative: a 200 IdResponse receipt yields cancel_requested until a bounded GET observes CANCELLED; a 409 run_not_cancellable triggers observation because completion may have won; archive/delete is never used as cancellation.",
+    "Repository binding sends repos[0].startingRef as the exact approved commit SHA with workOnCurrentBranch false; Run.git branch and PR references are proposed output metadata, never evidence, adoption or download permission.",
+    "Authentication is a Cursor account API key (Basic username or Bearer); it is separate from the host ExecutionGrant service/instance/source/repository binding and never appears in DTOs or persisted errors.",
+    "The only documented duplicate prevention is 409 agent_id_conflict on a re-POSTed client agentId; it is not an idempotent reply and supplies no run-level dedup, so journal reservation and uncertain-admission rules carry recovery.",
+    "The mechanically selected official schema text and receipt are embedded in pinned.schema_subset_json/schema_receipt for portable offline validation; reference/ paths in provenance name the preparation inputs only and are not runtime dependencies.",
+    "Known-agent latestRunId reconciliation is conditional on the explicit synthetic recovery_assumptions: a dedicated, exclusively controlled agent, no foreign follow-up runs, and initial-run attribution. These assumptions are not native evidence; absent actual proof, the admission remains uncertain."
+  ],
+  "scenarios": [
+    {
+      "id": "submit-succeed-result",
+      "adapter_invoked": true,
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-cursor-synth-001",
+        "task_id": "11111111-1111-4111-8111-111111111111",
+        "binding": {
+          "project_id": "strata-synth-project",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "strata-synth-repo-main"
+        },
+        "repository_revision": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3",
+        "instruction": "Write a synthetic README section describing the fixture projection.",
+        "limits": {
+          "runtime_ms": 1800000,
+          "output_bytes": 16384
+        }
+      },
+      "steps": [
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "reserve-key",
+          "detail": {
+            "connection_id": "conn-cursor-synth-001",
+            "task_id": "11111111-1111-4111-8111-111111111111",
+            "request_sha256": "80a945b04199eff218011ba5ea46a7e79a589e908cbddf652c78e0a5453aa4a3",
+            "agent_id_supplied": "bc-aaaa0001-0000-4000-8000-000000000001"
+          }
+        },
+        {
+          "kind": "api-call",
+          "call": 1,
+          "op": "submit",
+          "method": "createAgent",
+          "path": "/v1/agents",
+          "detail": {
+            "agent_id_supplied": "bc-aaaa0001-0000-4000-8000-000000000001",
+            "request": {
+              "prompt": {
+                "text": "Write a synthetic README section describing the fixture projection."
+              },
+              "repos": [
+                {
+                  "url": "https://github.com/strata-synth/cursor-mapping-synth",
+                  "startingRef": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3"
+                }
+              ],
+              "workOnCurrentBranch": false,
+              "$omitted": "Projection omits operator-owned model/env/name fields and unselected create-time options; tasks never choose native options",
+              "agentId": "bc-aaaa0001-0000-4000-8000-000000000001"
+            }
+          }
+        },
+        {
+          "kind": "api-return",
+          "call": 1,
+          "status": 201,
+          "body": {
+            "$projection": "CreateAgentResponse; unrelated required fields omitted",
+            "agent": {
+              "id": "bc-aaaa0001-0000-4000-8000-000000000001",
+              "status": "ACTIVE",
+              "latestRunId": "run-bbbb0001-0000-4000-8000-000000000001"
+            },
+            "run": {
+              "id": "run-bbbb0001-0000-4000-8000-000000000001",
+              "agentId": "bc-aaaa0001-0000-4000-8000-000000000001",
+              "status": "RUNNING"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "bind-native-identity",
+          "detail": {
+            "agent_id": "bc-aaaa0001-0000-4000-8000-000000000001",
+            "run_id": "run-bbbb0001-0000-4000-8000-000000000001",
+            "source": "observed-create-reply"
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-cursor-synth-001",
+                "task_id": "11111111-1111-4111-8111-111111111111",
+                "binding": {
+                  "project_id": "strata-synth-project",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-synth-repo-main"
+                },
+                "repository_revision": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3",
+                "request_sha256": "80a945b04199eff218011ba5ea46a7e79a589e908cbddf652c78e0a5453aa4a3"
+              },
+              "sequence": 1,
+              "state": "running"
+            }
+          }
+        },
+        {
+          "kind": "api-call",
+          "call": 2,
+          "op": "status",
+          "method": "getRun",
+          "path": "/v1/agents/bc-aaaa0001-0000-4000-8000-000000000001/runs/run-bbbb0001-0000-4000-8000-000000000001",
+          "detail": {
+            "agent_id": "bc-aaaa0001-0000-4000-8000-000000000001",
+            "run_id": "run-bbbb0001-0000-4000-8000-000000000001"
+          }
+        },
+        {
+          "kind": "api-return",
+          "call": 2,
+          "status": 200,
+          "body": {
+            "$projection": "Run; unrelated fields omitted; git is per-agent state, not per-run, and its branch/PR entries are proposed output only",
+            "run": {
+              "id": "run-bbbb0001-0000-4000-8000-000000000001",
+              "agentId": "bc-aaaa0001-0000-4000-8000-000000000001",
+              "status": "FINISHED",
+              "result": "Added a synthetic README section and pushed proposed branch cursor/synth-readme-001.",
+              "git": {
+                "branches": [
+                  {
+                    "repoUrl": "github.com/strata-synth/cursor-mapping-synth",
+                    "branch": "cursor/synth-readme-001",
+                    "prUrl": "https://github.com/strata-synth/cursor-mapping-synth/pull/7"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "action": "freeze-result",
+          "detail": {
+            "result_sha256": "99cdb8278ab9d21fcdbe9542ac05660940271ca619fe6e52c639285d6975a740",
+            "artifact_ids": [
+              "branch-diff-001"
+            ]
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-cursor-synth-001",
+                "task_id": "11111111-1111-4111-8111-111111111111",
+                "binding": {
+                  "project_id": "strata-synth-project",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-synth-repo-main"
+                },
+                "repository_revision": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3",
+                "request_sha256": "80a945b04199eff218011ba5ea46a7e79a589e908cbddf652c78e0a5453aa4a3"
+              },
+              "sequence": 2,
+              "state": "succeeded",
+              "result_sha256": "99cdb8278ab9d21fcdbe9542ac05660940271ca619fe6e52c639285d6975a740"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "result",
+          "action": "emit-result",
+          "detail": {
+            "result": {
+              "format": "strata-agent-task-result/1",
+              "task": {
+                "connection_id": "conn-cursor-synth-001",
+                "task_id": "11111111-1111-4111-8111-111111111111",
+                "binding": {
+                  "project_id": "strata-synth-project",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-synth-repo-main"
+                },
+                "repository_revision": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3",
+                "request_sha256": "80a945b04199eff218011ba5ea46a7e79a589e908cbddf652c78e0a5453aa4a3"
+              },
+              "summary": "Added a synthetic README section and pushed proposed branch cursor/synth-readme-001.",
+              "artifacts": [
+                {
+                  "id": "branch-diff-001",
+                  "sha256": "e64c72ddcf0c38bc070e2ce53fe66bee8c04a4381ba37a56ea0b472e453e6aac",
+                  "bytes": 185,
+                  "media_type": "text/x-diff"
+                }
+              ],
+              "trust": "agent-output"
+            },
+            "artifact_contents": {
+              "branch-diff-001": "diff --git a/docs/synth-note.md b/docs/synth-note.md\nnew file mode 100644\nindex 0000000..1111111\n--- /dev/null\n+++ b/docs/synth-note.md\n@@ -0,0 +1 @@\n+synthetic fixture projection line\n"
+            }
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "succeeded",
+        "intermediate_states": [
+          "running"
+        ],
+        "result_available": true
+      }
+    },
+    {
+      "id": "duplicate-key-changed-request-conflict",
+      "adapter_invoked": true,
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-cursor-synth-001",
+        "task_id": "22222222-2222-4222-8222-222222222222",
+        "binding": {
+          "project_id": "strata-synth-project",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "strata-synth-repo-main"
+        },
+        "repository_revision": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3",
+        "instruction": "Changed second instruction that must conflict with the retained original request.",
+        "limits": {
+          "runtime_ms": 1800000,
+          "output_bytes": 16384
+        }
+      },
+      "conflicting_task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-cursor-synth-001",
+        "task_id": "22222222-2222-4222-8222-222222222222",
+        "binding": {
+          "project_id": "strata-synth-project",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "strata-synth-repo-main"
+        },
+        "repository_revision": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3",
+        "instruction": "Original retained instruction admitted first under the same task key.",
+        "limits": {
+          "runtime_ms": 1800000,
+          "output_bytes": 16384
+        }
+      },
+      "steps": [
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "reserve-key",
+          "detail": {
+            "connection_id": "conn-cursor-synth-001",
+            "task_id": "22222222-2222-4222-8222-222222222222",
+            "request_sha256": "3a8620ace2b734ea86d69cabc2964888af09fe91981e4415bf102f9169bdb5db",
+            "existing_request_sha256": "e45b7904b2d6e1b490f136e839201d14814d2f999c4425ba7e66e4d8c37bcbf4",
+            "agent_id_supplied": "bc-aaaa0002-0000-4000-8000-000000000002"
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "emit-error",
+          "detail": {
+            "error": {
+              "code": "EXECUTION_CONFLICT",
+              "dispatch": "unknown"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "block-second-start",
+          "detail": {
+            "reason": "changed request digest on the reserved key; the originally admitted identity stays authoritative and no native create is issued"
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "error",
+        "error": {
+          "code": "EXECUTION_CONFLICT",
+          "dispatch": "unknown"
+        }
+      }
+    },
+    {
+      "id": "known-identity-observation-after-lost-reply",
+      "adapter_invoked": true,
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-cursor-synth-001",
+        "task_id": "33333333-3333-4333-8333-333333333333",
+        "binding": {
+          "project_id": "strata-synth-project",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "strata-synth-repo-main"
+        },
+        "repository_revision": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3",
+        "instruction": "Reconcile a lost create reply through the retained agent identifier.",
+        "limits": {
+          "runtime_ms": 1800000,
+          "output_bytes": 16384
+        }
+      },
+      "steps": [
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "reserve-key",
+          "detail": {
+            "connection_id": "conn-cursor-synth-001",
+            "task_id": "33333333-3333-4333-8333-333333333333",
+            "request_sha256": "cfa2f6f7a72e043d3b7dc0821528e1d95b1d4b4bb4b58944bb219cc5ab2e91f5",
+            "agent_id_supplied": "bc-aaaa0003-0000-4000-8000-000000000003"
+          }
+        },
+        {
+          "kind": "api-call",
+          "call": 1,
+          "op": "submit",
+          "method": "createAgent",
+          "path": "/v1/agents",
+          "detail": {
+            "agent_id_supplied": "bc-aaaa0003-0000-4000-8000-000000000003",
+            "request": {
+              "prompt": {
+                "text": "Reconcile a lost create reply through the retained agent identifier."
+              },
+              "repos": [
+                {
+                  "url": "https://github.com/strata-synth/cursor-mapping-synth",
+                  "startingRef": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3"
+                }
+              ],
+              "workOnCurrentBranch": false,
+              "$omitted": "Projection omits operator-owned model/env/name fields and unselected create-time options; tasks never choose native options",
+              "agentId": "bc-aaaa0003-0000-4000-8000-000000000003"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "retain-uncertain-admission",
+          "detail": {
+            "reason": "create reply lost after dispatch; native outcome and dispatch certainty are unknown"
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "emit-error",
+          "detail": {
+            "error": {
+              "code": "EXECUTION_UNAVAILABLE",
+              "dispatch": "unknown"
+            }
+          }
+        },
+        {
+          "kind": "api-call",
+          "call": 2,
+          "op": "status",
+          "method": "getAgent",
+          "path": "/v1/agents/bc-aaaa0003-0000-4000-8000-000000000003",
+          "detail": {
+            "agent_id": "bc-aaaa0003-0000-4000-8000-000000000003"
+          }
+        },
+        {
+          "kind": "api-return",
+          "call": 2,
+          "status": 200,
+          "body": {
+            "$projection": "AgentSummary; unrelated required fields omitted",
+            "agent": {
+              "id": "bc-aaaa0003-0000-4000-8000-000000000003",
+              "status": "ACTIVE",
+              "latestRunId": "run-bbbb0003-0000-4000-8000-000000000003"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "action": "bind-native-identity",
+          "detail": {
+            "agent_id": "bc-aaaa0003-0000-4000-8000-000000000003",
+            "run_id": "run-bbbb0003-0000-4000-8000-000000000003",
+            "source": "observed-agent-lookup-latestRunId"
+          }
+        },
+        {
+          "kind": "api-call",
+          "call": 3,
+          "op": "status",
+          "method": "getRun",
+          "path": "/v1/agents/bc-aaaa0003-0000-4000-8000-000000000003/runs/run-bbbb0003-0000-4000-8000-000000000003",
+          "detail": {
+            "agent_id": "bc-aaaa0003-0000-4000-8000-000000000003",
+            "run_id": "run-bbbb0003-0000-4000-8000-000000000003"
+          }
+        },
+        {
+          "kind": "api-return",
+          "call": 3,
+          "status": 200,
+          "body": {
+            "$projection": "Run; unrelated fields omitted",
+            "run": {
+              "id": "run-bbbb0003-0000-4000-8000-000000000003",
+              "agentId": "bc-aaaa0003-0000-4000-8000-000000000003",
+              "status": "RUNNING"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-cursor-synth-001",
+                "task_id": "33333333-3333-4333-8333-333333333333",
+                "binding": {
+                  "project_id": "strata-synth-project",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-synth-repo-main"
+                },
+                "repository_revision": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3",
+                "request_sha256": "cfa2f6f7a72e043d3b7dc0821528e1d95b1d4b4bb4b58944bb219cc5ab2e91f5"
+              },
+              "sequence": 1,
+              "state": "running"
+            }
+          }
+        },
+        {
+          "kind": "api-call",
+          "call": 4,
+          "op": "status",
+          "method": "getRun",
+          "path": "/v1/agents/bc-aaaa0003-0000-4000-8000-000000000003/runs/run-bbbb0003-0000-4000-8000-000000000003",
+          "detail": {
+            "agent_id": "bc-aaaa0003-0000-4000-8000-000000000003",
+            "run_id": "run-bbbb0003-0000-4000-8000-000000000003"
+          }
+        },
+        {
+          "kind": "api-return",
+          "call": 4,
+          "status": 200,
+          "body": {
+            "$projection": "Run; unrelated fields omitted",
+            "run": {
+              "id": "run-bbbb0003-0000-4000-8000-000000000003",
+              "agentId": "bc-aaaa0003-0000-4000-8000-000000000003",
+              "status": "FINISHED",
+              "result": "Reconciled the lost create reply and pushed proposed branch cursor/synth-reconcile-003."
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "action": "freeze-result",
+          "detail": {
+            "result_sha256": "0e9a4733a193ef10e339a5509afb3470c2a78cfd0ac6165cbc3ff431b96fbd19",
+            "artifact_ids": []
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-cursor-synth-001",
+                "task_id": "33333333-3333-4333-8333-333333333333",
+                "binding": {
+                  "project_id": "strata-synth-project",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-synth-repo-main"
+                },
+                "repository_revision": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3",
+                "request_sha256": "cfa2f6f7a72e043d3b7dc0821528e1d95b1d4b4bb4b58944bb219cc5ab2e91f5"
+              },
+              "sequence": 2,
+              "state": "succeeded",
+              "result_sha256": "0e9a4733a193ef10e339a5509afb3470c2a78cfd0ac6165cbc3ff431b96fbd19"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "result",
+          "action": "emit-result",
+          "detail": {
+            "result": {
+              "format": "strata-agent-task-result/1",
+              "task": {
+                "connection_id": "conn-cursor-synth-001",
+                "task_id": "33333333-3333-4333-8333-333333333333",
+                "binding": {
+                  "project_id": "strata-synth-project",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-synth-repo-main"
+                },
+                "repository_revision": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3",
+                "request_sha256": "cfa2f6f7a72e043d3b7dc0821528e1d95b1d4b4bb4b58944bb219cc5ab2e91f5"
+              },
+              "summary": "Reconciled the lost create reply and pushed proposed branch cursor/synth-reconcile-003.",
+              "artifacts": [],
+              "trust": "agent-output"
+            },
+            "artifact_contents": {}
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "succeeded",
+        "intermediate_states": [
+          "running"
+        ],
+        "result_available": true
+      },
+      "recovery_assumptions": {
+        "dedicated_agent": true,
+        "exclusive_control": true,
+        "no_foreign_followup_runs": true,
+        "initial_run_attribution_assumed": true
+      }
+    },
+    {
+      "id": "unknown-identity-remains-uncertain",
+      "adapter_invoked": true,
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-cursor-synth-001",
+        "task_id": "44444444-4444-4444-8444-444444444444",
+        "binding": {
+          "project_id": "strata-synth-project",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "strata-synth-repo-main"
+        },
+        "repository_revision": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3",
+        "instruction": "Keep an unknown native identity uncertain without a guessed lookup.",
+        "limits": {
+          "runtime_ms": 1800000,
+          "output_bytes": 16384
+        }
+      },
+      "steps": [
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "reserve-key",
+          "detail": {
+            "connection_id": "conn-cursor-synth-001",
+            "task_id": "44444444-4444-4444-8444-444444444444",
+            "request_sha256": "556eb0e43f349d2bf7e2b5a9edb41f52373ba2136226b75ed72b9cae0b806ed6",
+            "agent_id_supplied": null
+          }
+        },
+        {
+          "kind": "api-call",
+          "call": 1,
+          "op": "submit",
+          "method": "createAgent",
+          "path": "/v1/agents",
+          "detail": {
+            "agent_id_supplied": null,
+            "request": {
+              "prompt": {
+                "text": "Keep an unknown native identity uncertain without a guessed lookup."
+              },
+              "repos": [
+                {
+                  "url": "https://github.com/strata-synth/cursor-mapping-synth",
+                  "startingRef": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3"
+                }
+              ],
+              "workOnCurrentBranch": false,
+              "$omitted": "Server-minted agent-id configuration; projection omits operator-owned fields and unselected create-time options"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "retain-uncertain-admission",
+          "detail": {
+            "reason": "create reply lost before any native identity was observed; server-minted ids cannot be reconstructed from the original key"
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "emit-error",
+          "detail": {
+            "error": {
+              "code": "EXECUTION_UNAVAILABLE",
+              "dispatch": "unknown"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "action": "lookup-bound-identity",
+          "detail": {
+            "agent_id": null,
+            "run_id": null
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "action": "emit-error",
+          "detail": {
+            "error": {
+              "code": "EXECUTION_NOT_FOUND",
+              "dispatch": "unknown"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "action": "block-second-start",
+          "detail": {
+            "reason": "no provably retained native identity; the uncertain admission blocks every second start and list matching never authorizes resubmission"
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "error",
+        "error": {
+          "code": "EXECUTION_NOT_FOUND",
+          "dispatch": "unknown"
+        },
+        "surfaced_error": {
+          "code": "EXECUTION_UNAVAILABLE"
+        }
+      }
+    },
+    {
+      "id": "cancel-completion-race-completion-wins",
+      "adapter_invoked": true,
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "conn-cursor-synth-001",
+        "task_id": "55555555-5555-4555-8555-555555555555",
+        "binding": {
+          "project_id": "strata-synth-project",
+          "model_version": "strata/0.1-facets-experimental",
+          "repository_id": "strata-synth-repo-main"
+        },
+        "repository_revision": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3",
+        "instruction": "Illustrate the cancellation race where completion wins.",
+        "limits": {
+          "runtime_ms": 1800000,
+          "output_bytes": 16384
+        }
+      },
+      "steps": [
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "reserve-key",
+          "detail": {
+            "connection_id": "conn-cursor-synth-001",
+            "task_id": "55555555-5555-4555-8555-555555555555",
+            "request_sha256": "fc265d25b66edb0dd261bc1253a7a3b433f2b2780e8b7274d9cd32cb81f8d636",
+            "agent_id_supplied": "bc-aaaa0005-0000-4000-8000-000000000005"
+          }
+        },
+        {
+          "kind": "api-call",
+          "call": 1,
+          "op": "submit",
+          "method": "createAgent",
+          "path": "/v1/agents",
+          "detail": {
+            "agent_id_supplied": "bc-aaaa0005-0000-4000-8000-000000000005",
+            "request": {
+              "prompt": {
+                "text": "Illustrate the cancellation race where completion wins."
+              },
+              "repos": [
+                {
+                  "url": "https://github.com/strata-synth/cursor-mapping-synth",
+                  "startingRef": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3"
+                }
+              ],
+              "workOnCurrentBranch": false,
+              "$omitted": "Projection omits operator-owned model/env/name fields and unselected create-time options; tasks never choose native options",
+              "agentId": "bc-aaaa0005-0000-4000-8000-000000000005"
+            }
+          }
+        },
+        {
+          "kind": "api-return",
+          "call": 1,
+          "status": 201,
+          "body": {
+            "$projection": "CreateAgentResponse; unrelated required fields omitted",
+            "agent": {
+              "id": "bc-aaaa0005-0000-4000-8000-000000000005",
+              "status": "ACTIVE",
+              "latestRunId": "run-bbbb0005-0000-4000-8000-000000000005"
+            },
+            "run": {
+              "id": "run-bbbb0005-0000-4000-8000-000000000005",
+              "agentId": "bc-aaaa0005-0000-4000-8000-000000000005",
+              "status": "CREATING"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "bind-native-identity",
+          "detail": {
+            "agent_id": "bc-aaaa0005-0000-4000-8000-000000000005",
+            "run_id": "run-bbbb0005-0000-4000-8000-000000000005",
+            "source": "observed-create-reply"
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "submit",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-cursor-synth-001",
+                "task_id": "55555555-5555-4555-8555-555555555555",
+                "binding": {
+                  "project_id": "strata-synth-project",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-synth-repo-main"
+                },
+                "repository_revision": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3",
+                "request_sha256": "fc265d25b66edb0dd261bc1253a7a3b433f2b2780e8b7274d9cd32cb81f8d636"
+              },
+              "sequence": 1,
+              "state": "queued"
+            }
+          }
+        },
+        {
+          "kind": "api-call",
+          "call": 2,
+          "op": "status",
+          "method": "getRun",
+          "path": "/v1/agents/bc-aaaa0005-0000-4000-8000-000000000005/runs/run-bbbb0005-0000-4000-8000-000000000005",
+          "detail": {
+            "agent_id": "bc-aaaa0005-0000-4000-8000-000000000005",
+            "run_id": "run-bbbb0005-0000-4000-8000-000000000005"
+          }
+        },
+        {
+          "kind": "api-return",
+          "call": 2,
+          "status": 200,
+          "body": {
+            "$projection": "Run; unrelated fields omitted",
+            "run": {
+              "id": "run-bbbb0005-0000-4000-8000-000000000005",
+              "agentId": "bc-aaaa0005-0000-4000-8000-000000000005",
+              "status": "RUNNING"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "status",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-cursor-synth-001",
+                "task_id": "55555555-5555-4555-8555-555555555555",
+                "binding": {
+                  "project_id": "strata-synth-project",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-synth-repo-main"
+                },
+                "repository_revision": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3",
+                "request_sha256": "fc265d25b66edb0dd261bc1253a7a3b433f2b2780e8b7274d9cd32cb81f8d636"
+              },
+              "sequence": 2,
+              "state": "running"
+            }
+          }
+        },
+        {
+          "kind": "api-call",
+          "call": 3,
+          "op": "cancel",
+          "method": "cancelRun",
+          "path": "/v1/agents/bc-aaaa0005-0000-4000-8000-000000000005/runs/run-bbbb0005-0000-4000-8000-000000000005/cancel",
+          "detail": {
+            "agent_id": "bc-aaaa0005-0000-4000-8000-000000000005",
+            "run_id": "run-bbbb0005-0000-4000-8000-000000000005"
+          }
+        },
+        {
+          "kind": "api-error",
+          "call": 3,
+          "status": 409,
+          "error": {
+            "code": "run_not_cancellable"
+          }
+        },
+        {
+          "kind": "api-call",
+          "call": 4,
+          "op": "cancel",
+          "method": "getRun",
+          "path": "/v1/agents/bc-aaaa0005-0000-4000-8000-000000000005/runs/run-bbbb0005-0000-4000-8000-000000000005",
+          "detail": {
+            "agent_id": "bc-aaaa0005-0000-4000-8000-000000000005",
+            "run_id": "run-bbbb0005-0000-4000-8000-000000000005"
+          }
+        },
+        {
+          "kind": "api-return",
+          "call": 4,
+          "status": 200,
+          "body": {
+            "$projection": "Run; unrelated fields omitted",
+            "run": {
+              "id": "run-bbbb0005-0000-4000-8000-000000000005",
+              "agentId": "bc-aaaa0005-0000-4000-8000-000000000005",
+              "status": "FINISHED",
+              "result": "Finished the synthetic race task and pushed proposed branch cursor/synth-race-005."
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "cancel",
+          "action": "freeze-result",
+          "detail": {
+            "result_sha256": "f399e5971c17ff1d53a19a26a7df39249d1c3915d940ad1d2f98205295f5b36e",
+            "artifact_ids": []
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "cancel",
+          "action": "emit-snapshot",
+          "detail": {
+            "snapshot": {
+              "format": "strata-agent-task-status/1",
+              "task": {
+                "connection_id": "conn-cursor-synth-001",
+                "task_id": "55555555-5555-4555-8555-555555555555",
+                "binding": {
+                  "project_id": "strata-synth-project",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-synth-repo-main"
+                },
+                "repository_revision": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3",
+                "request_sha256": "fc265d25b66edb0dd261bc1253a7a3b433f2b2780e8b7274d9cd32cb81f8d636"
+              },
+              "sequence": 3,
+              "state": "succeeded",
+              "result_sha256": "f399e5971c17ff1d53a19a26a7df39249d1c3915d940ad1d2f98205295f5b36e"
+            }
+          }
+        },
+        {
+          "kind": "adapter",
+          "op": "result",
+          "action": "emit-result",
+          "detail": {
+            "result": {
+              "format": "strata-agent-task-result/1",
+              "task": {
+                "connection_id": "conn-cursor-synth-001",
+                "task_id": "55555555-5555-4555-8555-555555555555",
+                "binding": {
+                  "project_id": "strata-synth-project",
+                  "model_version": "strata/0.1-facets-experimental",
+                  "repository_id": "strata-synth-repo-main"
+                },
+                "repository_revision": "1f0e2d3c4b5a69788796a5b4c3d2e1f0a0b1c2d3",
+                "request_sha256": "fc265d25b66edb0dd261bc1253a7a3b433f2b2780e8b7274d9cd32cb81f8d636"
+              },
+              "summary": "Finished the synthetic race task and pushed proposed branch cursor/synth-race-005.",
+              "artifacts": [],
+              "trust": "agent-output"
+            },
+            "artifact_contents": {}
+          }
+        }
+      ],
+      "expected": {
+        "final_state": "succeeded",
+        "intermediate_states": [
+          "queued",
+          "running"
+        ],
+        "result_available": true
+      }
+    }
+  ]
+}

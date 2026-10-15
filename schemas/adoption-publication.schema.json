@@ -1,0 +1,340 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "adoption-publication/1"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "draft_ref": {
+      "type": "string",
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "proposal_ref": {
+      "type": "string",
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "review_ref": {
+      "type": "string",
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "layer_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "pattern": "^source-snapshot@[a-f0-9]{64}$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "observation": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "const": "git-observation/1"
+        },
+        "project_id": {
+          "type": "string",
+          "maxLength": 120,
+          "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+        },
+        "repo_id": {
+          "type": "string",
+          "maxLength": 120,
+          "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+        },
+        "object_format": {
+          "type": "string",
+          "enum": [
+            "sha1",
+            "sha256"
+          ]
+        },
+        "head_commit": {
+          "type": "string"
+        },
+        "head_tree": {
+          "type": "string"
+        },
+        "index_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "scope_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "entries": {
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "maxLength": 240
+              },
+              "presence": {
+                "type": "string",
+                "enum": [
+                  "present",
+                  "absent"
+                ]
+              },
+              "kind": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "regular",
+                      "symlink",
+                      "gitlink"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "mode": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "100644",
+                      "100755",
+                      "120000",
+                      "160000"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "byte_length": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 4194304
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "sha256": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "path",
+              "presence",
+              "kind",
+              "mode",
+              "byte_length",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "manifest_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "status": {
+          "maxItems": 5000,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "maxLength": 240
+              },
+              "staged": {
+                "type": "boolean"
+              },
+              "unstaged": {
+                "type": "boolean"
+              },
+              "untracked": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "path",
+              "staged",
+              "unstaged",
+              "untracked"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "outside_scope_dirty": {
+          "type": "boolean"
+        },
+        "ignored_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5000
+        },
+        "excluded_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5000
+        },
+        "unsupported": {
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "maxLength": 240
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              }
+            },
+            "required": [
+              "path",
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "coherence": {
+          "type": "string",
+          "enum": [
+            "stable",
+            "changed-during-read"
+          ]
+        },
+        "trust": {
+          "type": "string",
+          "enum": [
+            "local-measurement",
+            "imported-snapshot"
+          ]
+        }
+      },
+      "required": [
+        "format",
+        "project_id",
+        "repo_id",
+        "object_format",
+        "head_commit",
+        "head_tree",
+        "index_sha256",
+        "scope_sha256",
+        "entries",
+        "manifest_sha256",
+        "status",
+        "outside_scope_dirty",
+        "ignored_count",
+        "excluded_count",
+        "unsupported",
+        "coherence",
+        "trust"
+      ],
+      "additionalProperties": false
+    },
+    "observation_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "index_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "principal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policy_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "trust": {
+      "type": "string",
+      "const": "local-measurement"
+    },
+    "interpretation_reviewed": {
+      "type": "boolean",
+      "const": true
+    },
+    "source_fresh_at_publication": {
+      "type": "boolean",
+      "const": true
+    },
+    "behavior_verified": {
+      "type": "boolean",
+      "const": false
+    }
+  },
+  "required": [
+    "format",
+    "project_id",
+    "owner",
+    "draft_ref",
+    "proposal_ref",
+    "review_ref",
+    "layer_sha256",
+    "source",
+    "observation",
+    "observation_sha256",
+    "index_sha256",
+    "principal",
+    "policy_version",
+    "authority_sha256",
+    "trust",
+    "interpretation_reviewed",
+    "source_fresh_at_publication",
+    "behavior_verified"
+  ],
+  "additionalProperties": false
+}

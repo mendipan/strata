@@ -1,0 +1,5 @@
+{
+  "id": "CounterCandidate", "revision": 1, "model_version": "strata/0.1-facets-experimental", "baseline": "CounterBaseline@1",
+  "proposals": ["CounterExtension@1"], "selected": ["CounterExtension@1"], "alternative_groups": [],
+  "scenario": { "id": "bounded-counter", "checks": [{ "id": "counter.compatibility", "version": "1" }] }, "resolutions": []
+}

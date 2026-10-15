@@ -1,0 +1,738 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "reconciliation-completion/2"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "repo_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "accept_code",
+        "restore_intent",
+        "update_intent"
+      ]
+    },
+    "plan": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "reviews": {
+      "minItems": 1,
+      "maxItems": 256,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ref": {
+            "type": "string",
+            "maxLength": 256,
+            "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "ref",
+          "sha256"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "auth": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "historical_bridge": {
+      "type": "object",
+      "properties": {
+        "predecessor": {
+          "type": "object",
+          "properties": {
+            "ref": {
+              "type": "string",
+              "maxLength": 256,
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "ref",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "old_intent": {
+          "type": "object",
+          "properties": {
+            "release_ref": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "release_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "snapshot_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "model_version": {
+              "type": "string",
+              "const": "strata/0.1-facets-experimental"
+            }
+          },
+          "required": [
+            "release_ref",
+            "release_sha256",
+            "snapshot_sha256",
+            "model_version"
+          ],
+          "additionalProperties": false
+        },
+        "target": {
+          "type": "object",
+          "properties": {
+            "release_ref": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "release_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "snapshot_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "model_version": {
+              "type": "string",
+              "const": "strata/0.1-facets-experimental"
+            },
+            "candidate_fingerprint": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "release_ref",
+            "release_sha256",
+            "snapshot_sha256",
+            "model_version",
+            "candidate_fingerprint"
+          ],
+          "additionalProperties": false
+        },
+        "target_release_trust": {
+          "type": "string",
+          "const": "local-fixture"
+        },
+        "predecessor_validation": {
+          "type": "string",
+          "enum": [
+            "validated",
+            "accepted-unvalidated-bootstrap"
+          ]
+        },
+        "target_validation": {
+          "type": "string",
+          "const": "validated"
+        },
+        "semantic_records": {
+          "maxItems": 16384,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "release",
+                  "composition",
+                  "layer",
+                  "resolution",
+                  "realization",
+                  "validation",
+                  "approval"
+                ]
+              },
+              "pin": {
+                "type": "object",
+                "properties": {
+                  "ref": {
+                    "type": "string",
+                    "maxLength": 256,
+                    "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  }
+                },
+                "required": [
+                  "ref",
+                  "sha256"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "type",
+              "pin"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "predecessor",
+        "old_intent",
+        "target",
+        "target_release_trust",
+        "predecessor_validation",
+        "target_validation",
+        "semantic_records"
+      ],
+      "additionalProperties": false
+    },
+    "owner_commit_oid": {
+      "type": "string",
+      "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$"
+    },
+    "observation": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "const": "git-observation/1"
+        },
+        "project_id": {
+          "type": "string",
+          "maxLength": 120,
+          "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+        },
+        "repo_id": {
+          "type": "string",
+          "maxLength": 120,
+          "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+        },
+        "object_format": {
+          "type": "string",
+          "enum": [
+            "sha1",
+            "sha256"
+          ]
+        },
+        "head_commit": {
+          "type": "string"
+        },
+        "head_tree": {
+          "type": "string"
+        },
+        "index_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "scope_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "entries": {
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "maxLength": 240
+              },
+              "presence": {
+                "type": "string",
+                "enum": [
+                  "present",
+                  "absent"
+                ]
+              },
+              "kind": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "regular",
+                      "symlink",
+                      "gitlink"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "mode": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "100644",
+                      "100755",
+                      "120000",
+                      "160000"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "byte_length": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 4194304
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "sha256": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "path",
+              "presence",
+              "kind",
+              "mode",
+              "byte_length",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "manifest_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "status": {
+          "maxItems": 5000,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "maxLength": 240
+              },
+              "staged": {
+                "type": "boolean"
+              },
+              "unstaged": {
+                "type": "boolean"
+              },
+              "untracked": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "path",
+              "staged",
+              "unstaged",
+              "untracked"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "outside_scope_dirty": {
+          "type": "boolean"
+        },
+        "ignored_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5000
+        },
+        "excluded_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5000
+        },
+        "unsupported": {
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "maxLength": 240
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              }
+            },
+            "required": [
+              "path",
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "coherence": {
+          "type": "string",
+          "enum": [
+            "stable",
+            "changed-during-read"
+          ]
+        },
+        "trust": {
+          "type": "string",
+          "enum": [
+            "local-measurement",
+            "imported-snapshot"
+          ]
+        }
+      },
+      "required": [
+        "format",
+        "project_id",
+        "repo_id",
+        "object_format",
+        "head_commit",
+        "head_tree",
+        "index_sha256",
+        "scope_sha256",
+        "entries",
+        "manifest_sha256",
+        "status",
+        "outside_scope_dirty",
+        "ignored_count",
+        "excluded_count",
+        "unsupported",
+        "coherence",
+        "trust"
+      ],
+      "additionalProperties": false
+    },
+    "observation_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "source_snapshot": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "source_proof": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "final_run": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "successor_payload": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "const": "source-binding-payload/2"
+        },
+        "project_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "repo_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "intent": {
+          "type": "object",
+          "properties": {
+            "release_ref": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "release_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "snapshot_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "model_version": {
+              "type": "string",
+              "const": "strata/0.1-facets-experimental"
+            }
+          },
+          "required": [
+            "release_ref",
+            "release_sha256",
+            "snapshot_sha256",
+            "model_version"
+          ],
+          "additionalProperties": false
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "ref": {
+              "type": "string",
+              "maxLength": 256,
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "ref",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "predecessor": {
+          "type": "object",
+          "properties": {
+            "ref": {
+              "type": "string",
+              "maxLength": 256,
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "ref",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "basis": {
+          "type": "string",
+          "const": "authenticated-reconciliation-association"
+        },
+        "evidence": {
+          "minItems": 1,
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ref": {
+                "type": "string",
+                "maxLength": 256,
+                "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "ref",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "limitations": {
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        }
+      },
+      "required": [
+        "format",
+        "project_id",
+        "repo_id",
+        "intent",
+        "source",
+        "predecessor",
+        "basis",
+        "evidence",
+        "limitations"
+      ],
+      "additionalProperties": false
+    },
+    "successor_payload_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "accepted-code-selected-scope",
+        "restored-intent-selected-scope",
+        "updated-intent-selected-scope"
+      ]
+    },
+    "completion": {
+      "type": "boolean",
+      "const": true
+    },
+    "behavior_verified": {
+      "type": "boolean",
+      "const": false
+    }
+  },
+  "required": [
+    "format",
+    "project_id",
+    "repo_id",
+    "action",
+    "plan",
+    "evidence",
+    "reviews",
+    "auth",
+    "historical_bridge",
+    "owner_commit_oid",
+    "observation",
+    "observation_sha256",
+    "source_snapshot",
+    "source_proof",
+    "final_run",
+    "successor_payload",
+    "successor_payload_sha256",
+    "completed_at",
+    "outcome",
+    "completion",
+    "behavior_verified"
+  ],
+  "additionalProperties": false
+}

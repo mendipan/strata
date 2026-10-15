@@ -1,0 +1,26 @@
+{
+  "id": "CounterBaseline", "revision": 1, "model_version": "strata/0.1-facets-experimental", "root": "counter",
+  "blocks": {
+    "counter": {
+      "id": "counter", "parent": null, "purpose": "Accumulate positive integer additions within a fixed ceiling.",
+      "requirements": {
+        "limit": { "statement": "The total starts at zero and cannot exceed 6.", "kind": "rule", "facets": ["behavior", "data"], "acceptance": ["add", "limit"], "parameters": { "maximum": 6 } },
+        "integers": { "statement": "Accept only positive safe integer additions.", "kind": "invariant", "facets": ["behavior", "safety"], "acceptance": ["invalid"], "parameters": { "positive": true } }
+      },
+      "acceptance": {
+        "add": { "statement": "Verify counter.add for accumulation.", "method": "mechanical", "check": "counter.add", "version": "1", "fixture": "accumulation", "subjects": ["counter/requirements.limit", "counter/contract.inputs.add", "counter/contract.outputs.total"] },
+        "limit": { "statement": "Verify counter.limit for ceiling.", "method": "mechanical", "check": "counter.limit", "version": "1", "fixture": "ceiling", "subjects": ["counter/requirements.limit", "counter/contract.failures.ceiling"] },
+        "invalid": { "statement": "Verify counter.invalid for integers.", "method": "mechanical", "check": "counter.invalid", "version": "1", "fixture": "integers", "subjects": ["counter/requirements.integers", "counter/contract.inputs.add"] },
+        "review": { "statement": "Verify intent.review for counter.", "method": "review", "check": "intent.review", "version": "1", "fixture": "counter", "subjects": ["counter/purpose"] }
+      },
+      "relationships": {},
+      "contract": {
+        "inputs": { "add": { "statement": "An addition supplies one positive integer.", "acceptance": ["add", "invalid"] } },
+        "outputs": { "total": { "statement": "Expose the accumulated total.", "acceptance": ["add"] } },
+        "failures": { "ceiling": { "statement": "Reject an addition above the ceiling without changing the total.", "acceptance": ["limit"] } }
+      }
+    }
+  },
+  "authorities": { "scopes": [{ "block": "counter", "selectors": ["scope-selector"] }], "release": ["release-manager"], "guardians": [{ "item": "counter/requirements.integers", "principal": "safety-guardian" }] },
+  "deleted_ids": []
+}

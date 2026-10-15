@@ -1,0 +1,14 @@
+[
+  {
+    "id": "missing-option",
+    "binding_patch": { "option_id": "does-not-exist" },
+    "expected_live_error": "MEDIATION_STALE",
+    "expected_historical_state": "corrupt"
+  },
+  {
+    "id": "wrong-case-revision",
+    "binding_patch": { "case_revision": 99 },
+    "expected_live_error": "MEDIATION_STALE",
+    "expected_historical_state": "corrupt"
+  }
+]

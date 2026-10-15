@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "candidate": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "profile": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "output_tree": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "executor": {
+      "type": "string",
+      "const": "strata-local-fixture-runner/1"
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "check": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "fixture": {
+            "type": "string"
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "mechanical",
+              "review"
+            ]
+          },
+          "reviewer": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "check",
+          "version",
+          "fixture",
+          "passed",
+          "method",
+          "reviewer"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "format": {
+      "type": "string",
+      "const": "strata-fixture-evidence/2"
+    },
+    "checker_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "fixture_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "oracle_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "candidate",
+    "profile",
+    "output_tree",
+    "executor",
+    "results",
+    "format",
+    "checker_sha256",
+    "fixture_sha256",
+    "oracle_sha256"
+  ],
+  "additionalProperties": false
+}

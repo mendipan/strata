@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "selection": {
+      "type": "object",
+      "properties": {
+        "release_ref": {
+          "type": "string",
+          "maxLength": 512,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "profile_ref": {
+          "type": "string",
+          "maxLength": 512,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "destination": {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "local"
+            },
+            "slot_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]{0,255}$"
+            }
+          },
+          "required": [
+            "kind",
+            "slot_id"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "release_ref",
+        "profile_ref",
+        "destination"
+      ],
+      "additionalProperties": false
+    },
+    "expected_plan_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "selection",
+    "expected_plan_sha256"
+  ],
+  "additionalProperties": false
+}

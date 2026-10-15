@@ -1,0 +1,339 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "adoption-inventory-record/1"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "draft_ref": {
+      "type": "string",
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "inventory": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "const": "adoption-inventory/1"
+        },
+        "project_id": {
+          "type": "string",
+          "maxLength": 120,
+          "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+        },
+        "source": {
+          "type": "object",
+          "properties": {
+            "ref": {
+              "type": "string",
+              "pattern": "^source-snapshot@[a-f0-9]{64}$"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "ref",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "incremental",
+            "reconstruct_declared_scope"
+          ]
+        },
+        "declared_scope": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "units": {
+          "minItems": 1,
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 120,
+                "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "behavior",
+                  "interface",
+                  "error",
+                  "state",
+                  "test"
+                ]
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "scope": {
+                "type": "string",
+                "enum": [
+                  "adopted",
+                  "outside"
+                ]
+              },
+              "classification": {
+                "type": "string",
+                "enum": [
+                  "observed",
+                  "inferred"
+                ]
+              },
+              "rationale": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "disposition": {
+                "type": "string",
+                "enum": [
+                  "mapped",
+                  "excluded",
+                  "unknown"
+                ]
+              },
+              "files": {
+                "minItems": 1,
+                "maxItems": 256,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "sha256"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "dependency_paths": {
+                "maxItems": 256,
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "items": {
+                "maxItems": 256,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 512,
+                  "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*\\/(?:purpose|requirements\\.[A-Za-z0-9_.-]+|acceptance\\.[A-Za-z0-9_.-]+|relationships\\.[A-Za-z0-9_.-]+|contract\\.(?:inputs|outputs|failures)\\.[A-Za-z0-9_.-]+)$"
+                }
+              },
+              "criteria": {
+                "maxItems": 256,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 512,
+                  "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*\\/(?:purpose|requirements\\.[A-Za-z0-9_.-]+|acceptance\\.[A-Za-z0-9_.-]+|relationships\\.[A-Za-z0-9_.-]+|contract\\.(?:inputs|outputs|failures)\\.[A-Za-z0-9_.-]+)$"
+                }
+              },
+              "evidence_refs": {
+                "maxItems": 256,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+                }
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "description",
+              "scope",
+              "classification",
+              "rationale",
+              "disposition",
+              "files",
+              "dependency_paths",
+              "items",
+              "criteria",
+              "evidence_refs"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "accounting": {
+          "minItems": 5,
+          "maxItems": 5,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "behavior",
+                  "interface",
+                  "error",
+                  "state",
+                  "test"
+                ]
+              },
+              "unit_ids": {
+                "maxItems": 256,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 120,
+                  "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+                }
+              },
+              "none_reason": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "unit_ids",
+              "none_reason"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "protected_paths": {
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "exclusions": {
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "unit_id": {
+                "type": "string",
+                "maxLength": 120,
+                "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              }
+            },
+            "required": [
+              "unit_id",
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "questions": {
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 120,
+                "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+              },
+              "unit_ids": {
+                "maxItems": 256,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 120,
+                  "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+                }
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              }
+            },
+            "required": [
+              "id",
+              "unit_ids",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "limitations": {
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        }
+      },
+      "required": [
+        "format",
+        "project_id",
+        "source",
+        "mode",
+        "declared_scope",
+        "units",
+        "accounting",
+        "protected_paths",
+        "exclusions",
+        "questions",
+        "limitations"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "format",
+    "project_id",
+    "owner",
+    "draft_ref",
+    "inventory"
+  ],
+  "additionalProperties": false
+}

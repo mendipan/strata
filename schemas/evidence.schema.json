@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "candidate": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "profile": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "output_tree": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "executor": {
+      "type": "string",
+      "const": "strata-local-fixture-runner/1"
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "check": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "fixture": {
+            "type": "string"
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "mechanical",
+              "review"
+            ]
+          },
+          "reviewer": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "check",
+          "version",
+          "fixture",
+          "passed",
+          "method",
+          "reviewer"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "candidate",
+    "profile",
+    "output_tree",
+    "executor",
+    "results"
+  ],
+  "additionalProperties": false
+}

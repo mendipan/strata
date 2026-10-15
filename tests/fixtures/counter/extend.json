@@ -1,0 +1,5 @@
+{
+  "id": "CounterExtension", "revision": 1, "owner": "author-a", "model_version": "strata/0.1-facets-experimental", "baseline": "CounterBaseline@1", "intent": "Extend the counter ceiling to twelve.",
+  "changes": [{ "op": "set_item", "block": "counter", "path": "requirements.limit", "expected": { "kind": "value", "value": { "statement": "The total starts at zero and cannot exceed 6.", "kind": "rule", "facets": ["behavior", "data"], "acceptance": ["add", "limit"], "parameters": { "maximum": 6 } } }, "value": { "statement": "The total starts at zero and cannot exceed 12.", "kind": "rule", "facets": ["behavior", "data"], "acceptance": ["add", "limit"], "parameters": { "maximum": 12 } } }],
+  "requires_layers": [], "read_set": [], "assumptions": [], "acceptance": [], "resolution_proposals": [], "derived_from": null
+}

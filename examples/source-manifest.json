@@ -1,0 +1,9 @@
+{
+  "root": "examples",
+  "files": [
+    {
+      "path": "source-note.txt",
+      "digest": "9b13a30b14030ea311568d030a480546e933342e9ba212dbe06f5b0793322c83"
+    }
+  ]
+}

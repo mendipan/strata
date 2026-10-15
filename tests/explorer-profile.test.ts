@@ -1,0 +1,38 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { Engine } from '../src/core.js';
+import { canonical } from '../src/model.js';
+import { COUNTER_PROFILE } from '../src/profiles/counter-fixture.js';
+import { ExplorerReader } from '../src/explorer/read.js';
+import { TestSource } from './explorer-fixture.js';
+
+test('Explorer reads the separate counter profile without booking assumptions or new evidence claims', async () => {
+  const fixture = async (name:string) => JSON.parse(await readFile('tests/fixtures/counter/' + name + '.json', 'utf8'));
+  const engine = new Engine();
+  engine.init(await fixture('bootstrap'), 'bootstrap');
+  engine.layer(await fixture('extend'), 'author-a');
+  engine.publish('CounterExtension@1', 'author-a');
+  const candidate = engine.compose(await fixture('composition'));
+  const realization = engine.registerRealization(engine.realize(candidate.ref, COUNTER_PROFILE));
+  const source = new TestSource(engine.records), reader = new ExplorerReader(source);
+  const before = canonical(engine.records);
+  await reader.refresh();
+  const query = (route:string, q:Record<string,string>) => reader.query(route, new URLSearchParams({ generation:reader.sourceInfo()!.registry_generation, ...q })) as any;
+  const block = query('block', { at:'CounterBaseline@1', id:'counter' });
+  assert.equal(block.block.requirements.limit.parameters.maximum, 6);
+  assert.equal(block.authority.nearest_scope.block, 'counter');
+  assert.equal(block.authority.guardians[0].principal, 'safety-guardian');
+  const evaluation = query('evaluation', { ref:candidate.ref });
+  assert.equal(evaluation.state, 'eligible_for_validation');
+  assert.deepEqual(evaluation.status.matching_validation, []);
+  assert.deepEqual(evaluation.status.matching_approvals, []);
+  assert.equal(evaluation.status.publication, 'Existing Composition · not a Release');
+  const diff = query('diff', { left:'CounterBaseline@1', right:candidate.ref });
+  assert.equal(diff.total, 1);
+  assert.equal(diff.items[0].after.value.parameters.maximum, 12);
+  const retained = query('record', { type:'realization', ref:realization.ref });
+  assert.equal(retained.profile_id, COUNTER_PROFILE);
+  assert.ok(retained.files.every((f:any) => f.sha256 && !Object.hasOwn(f, 'text')));
+  assert.equal(canonical(engine.records), before);
+});

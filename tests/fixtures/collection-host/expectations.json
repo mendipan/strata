@@ -1,0 +1,28 @@
+{
+  "format": "collection-host-oracle/1",
+  "baseline": { "max_items": 3, "max_title_length": 20, "audit": false },
+  "changed": { "max_items": 5, "max_title_length": 20, "audit": false },
+  "audited": { "max_items": 3, "max_title_length": 20, "audit": true },
+  "audit_events": [
+    { "sequence": 1, "operation": "add", "item": { "id": "a", "title": "a", "completed": false } },
+    { "sequence": 2, "operation": "complete", "item": { "id": "a", "title": "a", "completed": true } },
+    { "sequence": 3, "operation": "remove", "item": { "id": "a", "title": "a", "completed": true } },
+    { "sequence": 4, "operation": "add", "item": { "id": "b", "title": "a", "completed": false } },
+    { "sequence": 5, "operation": "complete", "item": { "id": "b", "title": "a", "completed": true } },
+    { "sequence": 6, "operation": "remove", "item": { "id": "b", "title": "a", "completed": true } }
+  ],
+  "criteria": [
+    { "check": "collection.lifecycle", "version": "1", "fixture": "operations", "method": "mechanical" },
+    { "check": "collection.detached", "version": "1", "fixture": "copies", "method": "mechanical" },
+    { "check": "collection.invalid", "version": "1", "fixture": "inputs", "method": "mechanical" },
+    { "check": "collection.limits", "version": "1", "fixture": "bounds", "method": "mechanical" },
+    { "check": "collection.atomic", "version": "1", "fixture": "rejections", "method": "mechanical" },
+    { "check": "intent.review", "version": "1", "fixture": "collection", "method": "review" },
+    { "check": "intent.review", "version": "1", "fixture": "items", "method": "review" },
+    { "check": "intent.review", "version": "1", "fixture": "policy", "method": "review" }
+  ],
+  "audit_criteria": [
+    { "check": "collection.audit", "version": "1", "fixture": "events", "method": "mechanical" },
+    { "check": "intent.review", "version": "1", "fixture": "audit", "method": "review" }
+  ]
+}

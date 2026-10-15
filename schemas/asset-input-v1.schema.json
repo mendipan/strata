@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "revision": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+    },
+    "previous": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^asset@[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "access": {
+      "type": "string",
+      "const": "project-private"
+    },
+    "acknowledge_project_visibility": {
+      "type": "boolean",
+      "const": true
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "local-created",
+            "local-provided"
+          ]
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attribution": {
+          "type": "string"
+        },
+        "permitted_uses": {
+          "minItems": 2,
+          "maxItems": 2,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "internal-retention",
+              "backup"
+            ]
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "provider",
+        "attribution",
+        "permitted_uses"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "id",
+    "revision",
+    "previous",
+    "title",
+    "access",
+    "acknowledge_project_visibility",
+    "source"
+  ],
+  "additionalProperties": false
+}

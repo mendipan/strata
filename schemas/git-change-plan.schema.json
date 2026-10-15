@@ -1,0 +1,698 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "const": "git-change-plan/1"
+        },
+        "project_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "repo_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "binding_ref": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "base_source_ref": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "base_source_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "target": {
+          "type": "object",
+          "properties": {
+            "ref": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "record_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "candidate_fingerprint": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "snapshot_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "ref",
+            "record_sha256",
+            "candidate_fingerprint",
+            "snapshot_sha256"
+          ],
+          "additionalProperties": false
+        },
+        "write_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "criterion_ref": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "check": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "fixture": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "method": {
+                "type": "string",
+                "enum": [
+                  "mechanical",
+                  "review"
+                ]
+              }
+            },
+            "required": [
+              "criterion_ref",
+              "check",
+              "version",
+              "fixture",
+              "method"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "checker": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "fixture_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "oracle_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "sha256",
+            "fixture_sha256",
+            "oracle_sha256"
+          ],
+          "additionalProperties": false
+        },
+        "oracle": {},
+        "regressions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "acceptance_contract_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "format",
+        "project_id",
+        "repo_id",
+        "binding_ref",
+        "base_source_ref",
+        "base_source_sha256",
+        "target",
+        "write_paths",
+        "criteria",
+        "checker",
+        "oracle",
+        "regressions",
+        "acceptance_contract_sha256",
+        "owner"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "const": "git-change-plan/2"
+        },
+        "project_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "repo_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "binding_ref": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "base_source_ref": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "base_source_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "target": {
+          "type": "object",
+          "properties": {
+            "ref": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "record_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "candidate_fingerprint": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "snapshot_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "ref",
+            "record_sha256",
+            "candidate_fingerprint",
+            "snapshot_sha256"
+          ],
+          "additionalProperties": false
+        },
+        "write_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "criterion_ref": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "check": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "fixture": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "method": {
+                "type": "string",
+                "enum": [
+                  "mechanical",
+                  "review"
+                ]
+              }
+            },
+            "required": [
+              "criterion_ref",
+              "check",
+              "version",
+              "fixture",
+              "method"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "checker": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "fixture_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "oracle_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "id",
+            "version",
+            "sha256",
+            "fixture_sha256",
+            "oracle_sha256"
+          ],
+          "additionalProperties": false
+        },
+        "oracle": {},
+        "regressions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "acceptance_contract_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "adoption_bridge": {
+          "type": "object",
+          "properties": {
+            "format": {
+              "type": "string",
+              "const": "git-adoption-bridge/1"
+            },
+            "model_version": {
+              "type": "string",
+              "const": "strata/0.1-facets-experimental"
+            },
+            "lane": {
+              "type": "string",
+              "const": "selected_git_patch"
+            },
+            "plan_contract_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "inventory_record": {
+              "type": "object",
+              "properties": {
+                "ref": {
+                  "type": "string",
+                  "maxLength": 256,
+                  "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "ref",
+                "sha256"
+              ],
+              "additionalProperties": false
+            },
+            "inventory_document_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "proposal_record": {
+              "type": "object",
+              "properties": {
+                "ref": {
+                  "type": "string",
+                  "maxLength": 256,
+                  "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "ref",
+                "sha256"
+              ],
+              "additionalProperties": false
+            },
+            "proposal_document_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "interpretation_review": {
+              "type": "object",
+              "properties": {
+                "ref": {
+                  "type": "string",
+                  "maxLength": 256,
+                  "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "ref",
+                "sha256"
+              ],
+              "additionalProperties": false
+            },
+            "publication": {
+              "type": "object",
+              "properties": {
+                "ref": {
+                  "type": "string",
+                  "maxLength": 256,
+                  "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "ref",
+                "sha256"
+              ],
+              "additionalProperties": false
+            },
+            "published_layer": {
+              "type": "object",
+              "properties": {
+                "ref": {
+                  "type": "string",
+                  "maxLength": 256,
+                  "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "ref",
+                "sha256"
+              ],
+              "additionalProperties": false
+            },
+            "inventory_source": {
+              "type": "object",
+              "properties": {
+                "ref": {
+                  "type": "string",
+                  "maxLength": 256,
+                  "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "ref",
+                "sha256"
+              ],
+              "additionalProperties": false
+            },
+            "binding_source": {
+              "type": "object",
+              "properties": {
+                "ref": {
+                  "type": "string",
+                  "maxLength": 256,
+                  "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "ref",
+                "sha256"
+              ],
+              "additionalProperties": false
+            },
+            "source_relation": {
+              "type": "object",
+              "properties": {
+                "project_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "repo_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "object_format": {
+                  "type": "string",
+                  "enum": [
+                    "sha1",
+                    "sha256"
+                  ]
+                },
+                "head_commit": {
+                  "type": "string",
+                  "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$"
+                },
+                "head_tree": {
+                  "type": "string",
+                  "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$"
+                },
+                "inventory_scope_sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "binding_scope_sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "mapping": {
+                  "minItems": 1,
+                  "maxItems": 256,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "item": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4096
+                      },
+                      "unit_ids": {
+                        "minItems": 1,
+                        "maxItems": 256,
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 4096
+                        }
+                      },
+                      "paths": {
+                        "minItems": 1,
+                        "maxItems": 256,
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 4096
+                        }
+                      },
+                      "criteria": {
+                        "minItems": 1,
+                        "maxItems": 256,
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 4096
+                        }
+                      }
+                    },
+                    "required": [
+                      "item",
+                      "unit_ids",
+                      "paths",
+                      "criteria"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "preserved_paths": {
+                  "maxItems": 256,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  }
+                }
+              },
+              "required": [
+                "project_id",
+                "repo_id",
+                "object_format",
+                "head_commit",
+                "head_tree",
+                "inventory_scope_sha256",
+                "binding_scope_sha256",
+                "mapping",
+                "preserved_paths"
+              ],
+              "additionalProperties": false
+            },
+            "disclosure": {
+              "type": "object",
+              "properties": {
+                "principal": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "grant_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "policy_version": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "authority_sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "visibility": {
+                  "type": "string",
+                  "const": "project-visible-linkage"
+                },
+                "trust": {
+                  "type": "string",
+                  "const": "local-fixture"
+                }
+              },
+              "required": [
+                "principal",
+                "grant_id",
+                "policy_version",
+                "authority_sha256",
+                "visibility",
+                "trust"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "format",
+            "model_version",
+            "lane",
+            "plan_contract_sha256",
+            "inventory_record",
+            "inventory_document_sha256",
+            "proposal_record",
+            "proposal_document_sha256",
+            "interpretation_review",
+            "publication",
+            "published_layer",
+            "inventory_source",
+            "binding_source",
+            "source_relation",
+            "disclosure"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "format",
+        "project_id",
+        "repo_id",
+        "binding_ref",
+        "base_source_ref",
+        "base_source_sha256",
+        "target",
+        "write_paths",
+        "criteria",
+        "checker",
+        "oracle",
+        "regressions",
+        "acceptance_contract_sha256",
+        "owner",
+        "adoption_bridge"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

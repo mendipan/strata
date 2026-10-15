@@ -1,0 +1,52 @@
+{
+  "id": "L-alternative",
+  "revision": 1,
+  "owner": "author-c",
+  "model_version": "strata/0.1-facets-experimental",
+  "baseline": "R0@1",
+  "intent": "L-alternative",
+  "changes": [
+    {
+      "op": "set_item",
+      "block": "booking.hold",
+      "path": "requirements.expiry",
+      "expected": {
+        "kind": "value",
+        "value": {
+          "statement": "A hold expires exactly 600 seconds after it starts.",
+          "kind": "rule",
+          "facets": [
+            "behavior",
+            "data"
+          ],
+          "acceptance": [
+            "expiry"
+          ],
+          "parameters": {
+            "seconds": 600
+          }
+        }
+      },
+      "value": {
+        "statement": "A hold expires exactly 1200 seconds after it starts.",
+        "kind": "rule",
+        "facets": [
+          "behavior",
+          "data"
+        ],
+        "acceptance": [
+          "expiry"
+        ],
+        "parameters": {
+          "seconds": 1200
+        }
+      }
+    }
+  ],
+  "requires_layers": [],
+  "read_set": [],
+  "assumptions": [],
+  "acceptance": [],
+  "resolution_proposals": [],
+  "derived_from": null
+}

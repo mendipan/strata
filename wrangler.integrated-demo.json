@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "strata-integrated-demo-disabled",
+  "main": "src/integrated-demo-worker-entry.ts",
+  "compatibility_date": "2026-10-03",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": false,
+  "preview_urls": false,
+  "send_metrics": false,
+  "observability": { "enabled": false },
+  "limits": { "cpu_ms": 1000, "subrequests": 100 },
+  "workflows": [{ "binding": "STRATA_DEMO_WORKFLOW", "name": "strata-integrated-flow-disabled", "class_name": "StrataIntegratedDemoWorkflow", "limits": { "steps": 128 }, "concurrency": { "limit": 1 }, "default_retention": { "success_retention": 3600000, "error_retention": 3600000 } }]
+}

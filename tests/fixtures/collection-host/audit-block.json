@@ -1,0 +1,19 @@
+{
+  "id": "audit", "parent": "collection", "purpose": "Record successful collection mutations in deterministic sequence order.",
+  "description": { "format": "plain-text/1", "text": "Synthetic deterministic audit child; no storage or external logging." }, "asset_refs": {},
+  "requirements": {
+    "copies": { "statement": "Audit events and their items are detached copies; history is per instance and starts empty.", "kind": "rule", "facets": ["data"], "acceptance": ["events"], "parameters": {} },
+    "sequence": { "statement": "Successful state changes append exactly one event with consecutive sequence numbers starting at one.", "kind": "rule", "facets": ["behavior"], "acceptance": ["events"], "parameters": {} },
+    "successful": { "statement": "Record successful add, first completion and removal; rejected operations and repeated completion append no event.", "kind": "rule", "facets": ["behavior"], "acceptance": ["events"], "parameters": {} }
+  },
+  "relationships": {},
+  "contract": {
+    "inputs": { "mutations": { "statement": "Observe add, complete and remove state changes.", "acceptance": ["events"] } },
+    "outputs": { "events": { "statement": "audit() returns events containing exactly sequence, operation and a detached item.", "acceptance": ["events"] } },
+    "failures": { "excluded": { "statement": "Reads, rejected operations and already-complete no-ops leave audit history unchanged.", "acceptance": ["events"] } }
+  },
+  "acceptance": {
+    "events": { "statement": "Verify collection.audit for events.", "method": "mechanical", "check": "collection.audit", "version": "1", "fixture": "events", "subjects": ["audit/contract.failures.excluded", "audit/contract.inputs.mutations", "audit/contract.outputs.events", "audit/requirements.copies", "audit/requirements.sequence", "audit/requirements.successful"] },
+    "review": { "statement": "Verify intent.review for audit.", "method": "review", "check": "intent.review", "version": "1", "fixture": "audit", "subjects": ["audit/purpose"] }
+  }
+}

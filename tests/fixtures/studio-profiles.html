@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Strata Studio fixture — Profiles</title>
+<link rel="stylesheet" href="../../explorer/style.css">
+</head>
+<body>
+<header id="header">
+  <div class="brand">Strata Studio <small>fixture preview</small></div>
+  <div class="project-label">Synthetic in-memory fixture served by the test harness on loopback. Not a live Studio host.</div>
+  <div class="header-actions">
+    <label class="muted" for="harness-repository">Fixture repository</label>
+    <select id="harness-repository">
+      <option value="demo-repo">demo-repo</option>
+      <option value="strict-repo">strict-repo</option>
+      <option value="open-repo">open-repo</option>
+      <option value="no-contract-repo">no-contract-repo</option>
+    </select>
+  </div>
+</header>
+<div class="shell">
+  <main id="content" class="page workflow-page" tabindex="-1"></main>
+</div>
+<p id="live-region" class="sr-only" role="status" aria-live="polite"></p>
+<script type="module">
+// Test-harness shell. It imitates only the public conventions the real shell
+// passes to views (ctx signal/check/state/announce/sessionRecovery) and mounts
+// explorer/profiles.js. The repository selector stands in for shell-owned
+// repository navigation and honors the view's dirty-navigation contract.
+import {profilesView} from '/explorer/profiles.js';
+
+const FIXTURE_NOTE = 'Fixture preview: this page reads a synthetic in-memory fixture served by the test harness. It is not Studio persistence, not a live API grant, and not an end-to-end build demonstration.';
+const PAGE_SIZE = 2;
+const content = document.getElementById('content');
+const liveRegion = document.getElementById('live-region');
+const selector = document.getElementById('harness-repository');
+let current = null;   // {view, controller, repositoryId}
+let generation = 0;
+
+function opError(code, message, status) {
+  const error = new Error(message);
+  error.code = code;
+  error.status = status;
+  return error;
+}
+async function send(command, input, signal) {
+  const response = await fetch('/fixture-api', {method: 'POST', headers: {'content-type': 'application/json'},
+    body: JSON.stringify({command, input}), signal});
+  let body;
+  try { body = await response.json(); }
+  catch { throw opError('OPERATION_UNKNOWN', 'Fixture transport returned no JSON (HTTP ' + response.status + ').', 502); }
+  if (!response.ok) {
+    const error = opError(body?.error?.code || 'OPERATION_UNKNOWN', body?.error?.message || 'Fixture request failed.', response.status);
+    error.outcome_unknown = body?.error?.outcome_unknown === true;
+    throw error;
+  }
+  return body.data;
+}
+// The injected profileApi seam: S0/S1 command names and exact shapes. This is
+// the fake port; S3 later adapts the same seam to real reads/mutations.
+const profileApi = {
+  fixtureNote: FIXTURE_NOTE,
+  compatibility: (input = {}, options = {}) => send('repository.compatibility', input, options.signal),
+  listProfiles: (input = {}, options = {}) => send('profile.list', {limit: PAGE_SIZE, ...input}, options.signal),
+  inspectProfile: (input = {}, options = {}) => send('profile.inspect', input, options.signal),
+  validateProfile: (input = {}, options = {}) => send('profile.validate', input, options.signal),
+  createProfile: (input = {}, options = {}) => send('profile.create', input, options.signal),
+  reviseProfile: (input = {}, options = {}) => send('profile.revise', input, options.signal)
+};
+async function control(action, value) {
+  const response = await fetch('/fixture-control', {method: 'POST', headers: {'content-type': 'application/json'},
+    body: JSON.stringify({action, value})});
+  if (!response.ok) throw new Error('Fixture control failed: ' + action);
+  return response.json();
+}
+function makeContext(repositoryId, unwired) {
+  const controller = new AbortController();
+  const myGeneration = ++generation;
+  const ctx = {
+    signal: controller.signal,
+    check() { if (myGeneration !== generation || controller.signal.aborted) throw new Error('Render generation closed'); },
+    state: {project_id: 'demo-project', repository_id: repositoryId},
+    href: () => '#',
+    announce: text => { liveRegion.textContent = ''; liveRegion.textContent = String(text); },
+    sessionRecovery: async () => (await control('refresh-session')).data === true,
+    ...(unwired ? {} : {profileApi})
+  };
+  return {ctx, controller};
+}
+function disposeCurrent() {
+  if (!current) return;
+  current.view.dispose();
+  current.view.remove();
+  current.controller.abort();
+  current = null;
+}
+async function mount(options = {}) {
+  disposeCurrent();
+  const repositoryId = options.repository ?? selector.value;
+  selector.value = repositoryId;
+  if (!options.keepRepositorySelection) await control('select-repository', repositoryId);
+  const {ctx, controller} = makeContext(repositoryId, options.unwired === true);
+  const view = profilesView(ctx);
+  current = {view, controller, repositoryId};
+  content.append(view);
+  await view.start?.();
+  await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  return 'mounted:' + repositoryId + (options.unwired ? ':unwired' : '');
+}
+async function switchRepository(repositoryId) {
+  if (repositoryId === (current?.repositoryId ?? selector.value)) return 'unchanged';
+  if (current?.view.hasUnsavedChanges?.()) {
+    const leave = await current.view.beforeLeave({to: 'repository:' + repositoryId});
+    if (!leave) { selector.value = current.repositoryId; return 'cancelled'; }
+  }
+  await mount({repository: repositoryId});
+  return 'switched:' + repositoryId;
+}
+selector.addEventListener('change', () => { void switchRepository(selector.value); });
+window.__fixture = {mount, dispose: disposeCurrent, switchRepository, note: FIXTURE_NOTE};
+</script>
+</body>
+</html>

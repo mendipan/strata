@@ -1,0 +1,173 @@
+{
+  "evidence": "Synthetic provider response shape with exact local checkpoint chain. No provider execution or retained operational record.",
+  "running": {
+    "id": "run-0a1b2c3d4e5f6789",
+    "params": {
+      "run_id": "0a1b2c3d4e5f6789"
+    },
+    "status": "running",
+    "step_count": 5,
+    "steps": [
+      {
+        "name": "claim-run-1",
+        "type": "step",
+        "success": true,
+        "output": "{\"format\":\"strata-integrated-demo-checkpoint/1\",\"run_id\":\"0a1b2c3d4e5f6789\",\"project_id\":\"strata-local-demo\",\"mode\":\"controlled-private\",\"started_at\":1791158400000,\"expires_at\":1791160200000,\"phase\":\"new\",\"sequence\":0,\"previous_digest\":null,\"registry\":{\"entries\":{},\"storage\":{\"format\":\"strata-artifacts-registry/1\",\"project_id\":\"strata-local-demo\",\"account\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"namespace\":\"synthetic-namespace\",\"repository\":\"synthetic-repository\",\"mode\":\"remote\"},\"asset_locators\":{}},\"heads\":{},\"management_cleanup\":{\"unsettled_dispatches\":0,\"repo_tokens_issued\":1,\"repo_tokens_revoked\":1,\"handles_open\":0},\"counters\":{\"events\":0,\"commands\":0,\"stage_batches\":0,\"artifact_reserved\":0,\"transfer_reserved\":0,\"original_reserved\":0,\"tools\":{\"a\":0,\"b\":0,\"c\":0}},\"refs\":{\"case_revision\":0},\"pending\":null,\"receipts\":[],\"requests\":{},\"trace\":[]}",
+        "attempts": [
+          {
+            "success": true,
+            "error": null
+          }
+        ]
+      },
+      {
+        "name": "receive-1-1",
+        "type": "waitForEvent",
+        "finished": true,
+        "event_type": "strata-demo-1",
+        "output": "{\"format\":\"strata-integrated-demo-event/1\",\"run_id\":\"0a1b2c3d4e5f6789\",\"project_id\":\"strata-local-demo\",\"sequence\":1,\"request_id\":\"host-1\",\"previous_digest\":\"b7252cff9da6c669a1f968558b154af9d16b62c861233f58617027ed93de7ecc\",\"phase\":\"new\",\"kind\":\"bootstrap\",\"source\":\"host\",\"input\":{},\"input_digest\":\"44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a\"}"
+      },
+      {
+        "name": "reserve-1-1",
+        "type": "step",
+        "success": true,
+        "output": "{\"format\":\"strata-integrated-demo-checkpoint/1\",\"run_id\":\"0a1b2c3d4e5f6789\",\"project_id\":\"strata-local-demo\",\"mode\":\"controlled-private\",\"started_at\":1791158400000,\"expires_at\":1791160200000,\"phase\":\"new\",\"sequence\":0,\"previous_digest\":null,\"registry\":{\"entries\":{},\"storage\":{\"format\":\"strata-artifacts-registry/1\",\"project_id\":\"strata-local-demo\",\"account\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"namespace\":\"synthetic-namespace\",\"repository\":\"synthetic-repository\",\"mode\":\"remote\"},\"asset_locators\":{}},\"heads\":{},\"management_cleanup\":{\"unsettled_dispatches\":0,\"repo_tokens_issued\":1,\"repo_tokens_revoked\":1,\"handles_open\":0},\"counters\":{\"events\":0,\"commands\":0,\"stage_batches\":0,\"artifact_reserved\":0,\"transfer_reserved\":0,\"original_reserved\":0,\"tools\":{\"a\":0,\"b\":0,\"c\":0}},\"refs\":{\"case_revision\":0},\"pending\":null,\"receipts\":[],\"requests\":{},\"trace\":[]}",
+        "attempts": [
+          {
+            "success": true,
+            "error": null
+          }
+        ]
+      },
+      {
+        "name": "apply-1-1",
+        "type": "step",
+        "success": true,
+        "output": "{\"checkpoint\":{\"format\":\"strata-integrated-demo-checkpoint/1\",\"run_id\":\"0a1b2c3d4e5f6789\",\"project_id\":\"strata-local-demo\",\"mode\":\"controlled-private\",\"started_at\":1791158400000,\"expires_at\":1791160200000,\"phase\":\"authors\",\"sequence\":1,\"previous_digest\":\"b7252cff9da6c669a1f968558b154af9d16b62c861233f58617027ed93de7ecc\",\"registry\":{\"entries\":{\"R0@1\":{\"hash\":\"15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4\",\"type\":\"release\",\"published\":true,\"locator\":{\"ref\":\"0fe1029264512ac8e200d9cf06bfc69ec8e78f87\",\"path\":\"15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4.json\",\"hash\":\"15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4\",\"size_bytes\":4340}},\"mediation-installation@0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c\":{\"hash\":\"0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c\",\"type\":\"mediation-installation\",\"published\":true,\"locator\":{\"ref\":\"0fe1029264512ac8e200d9cf06bfc69ec8e78f87\",\"path\":\"0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c.json\",\"hash\":\"0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c\",\"size_bytes\":495}}},\"storage\":{\"format\":\"strata-artifacts-registry/1\",\"project_id\":\"strata-local-demo\",\"account\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"namespace\":\"synthetic-namespace[truncated output]",
+        "attempts": [
+          {
+            "success": true,
+            "error": null
+          }
+        ]
+      },
+      {
+        "name": "receive-2-1",
+        "type": "waitForEvent",
+        "finished": false,
+        "event_type": "strata-demo-2"
+      }
+    ]
+  },
+  "full_step": {
+    "success": true,
+    "errors": [],
+    "messages": [],
+    "result": {
+      "status": "complete",
+      "error": null,
+      "output": {
+        "checkpoint": {
+          "format": "strata-integrated-demo-checkpoint/1",
+          "run_id": "0a1b2c3d4e5f6789",
+          "project_id": "strata-local-demo",
+          "mode": "controlled-private",
+          "started_at": 1791158400000,
+          "expires_at": 1791160200000,
+          "phase": "authors",
+          "sequence": 1,
+          "previous_digest": "b7252cff9da6c669a1f968558b154af9d16b62c861233f58617027ed93de7ecc",
+          "registry": {
+            "entries": {
+              "R0@1": {
+                "hash": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4",
+                "type": "release",
+                "published": true,
+                "locator": {
+                  "ref": "0fe1029264512ac8e200d9cf06bfc69ec8e78f87",
+                  "path": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4.json",
+                  "hash": "15d810fc54328a7cedf627835c25e49b6cc246b84c66b8b16347386e73ac08a4",
+                  "size_bytes": 4340
+                }
+              },
+              "mediation-installation@0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c": {
+                "hash": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c",
+                "type": "mediation-installation",
+                "published": true,
+                "locator": {
+                  "ref": "0fe1029264512ac8e200d9cf06bfc69ec8e78f87",
+                  "path": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c.json",
+                  "hash": "0896a613651a238a8fdf5a0c4b37f169dc16cee75cdcbe81f7fc79aa7d698d9c",
+                  "size_bytes": 495
+                }
+              }
+            },
+            "storage": {
+              "format": "strata-artifacts-registry/1",
+              "project_id": "strata-local-demo",
+              "account": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "namespace": "synthetic-namespace",
+              "repository": "synthetic-repository",
+              "mode": "remote"
+            },
+            "asset_locators": {}
+          },
+          "heads": {},
+          "management_cleanup": {
+            "unsettled_dispatches": 0,
+            "repo_tokens_issued": 2,
+            "repo_tokens_revoked": 2,
+            "handles_open": 0
+          },
+          "counters": {
+            "events": 1,
+            "commands": 1,
+            "stage_batches": 1,
+            "artifact_reserved": 16,
+            "transfer_reserved": 524288,
+            "original_reserved": 81920,
+            "tools": {
+              "a": 0,
+              "b": 0,
+              "c": 0
+            }
+          },
+          "refs": {
+            "case_revision": 0
+          },
+          "pending": null,
+          "receipts": [],
+          "requests": {
+            "host-1": {
+              "event_digest": "32f36ae8ca12afeed482c3a737f83a4db16eebfcb1ed8d643cf4301d932a9f88",
+              "outcome": {
+                "ok": true,
+                "data": {
+                  "ref": "R0@1",
+                  "reused": false
+                }
+              }
+            }
+          },
+          "trace": [
+            {
+              "sequence": 1,
+              "kind": "bootstrap",
+              "source": "host",
+              "outcome": "accepted",
+              "phase": "authors"
+            }
+          ]
+        },
+        "outcome": {
+          "ok": true,
+          "data": {
+            "ref": "R0@1",
+            "reused": false
+          }
+        },
+        "reused": false
+      }
+    }
+  }
+}

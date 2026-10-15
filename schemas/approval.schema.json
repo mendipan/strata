@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "kind": {
+      "type": "string",
+      "enum": [
+        "resolution",
+        "scope",
+        "guardian",
+        "release"
+      ]
+    },
+    "target": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "evidence_digest": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "kind",
+    "target",
+    "scope",
+    "evidence_digest"
+  ],
+  "additionalProperties": false
+}

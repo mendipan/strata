@@ -1,0 +1,37 @@
+{
+  "id": "C-demo",
+  "revision": 1,
+  "model_version": "strata/0.1-facets-experimental",
+  "baseline": "R0@1",
+  "proposals": [
+    "L-hold@1",
+    "L-reminder@1",
+    "L-alternative@1"
+  ],
+  "selected": [
+    "L-hold@1",
+    "L-reminder@1",
+    "L-alternative@1"
+  ],
+  "alternative_groups": [
+    {
+      "id": "duration",
+      "members": [
+        "L-hold@1",
+        "L-alternative@1"
+      ],
+      "min": 1,
+      "max": 1
+    }
+  ],
+  "scenario": {
+    "id": "booking-demo",
+    "checks": [
+      {
+        "id": "booking.compatibility",
+        "version": "1"
+      }
+    ]
+  },
+  "resolutions": []
+}

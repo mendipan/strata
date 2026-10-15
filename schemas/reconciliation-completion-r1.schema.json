@@ -1,0 +1,494 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "reconciliation-completion-receipt/1"
+    },
+    "model_version": {
+      "type": "string",
+      "const": "strata/0.1-facets-experimental"
+    },
+    "action": {
+      "type": "string",
+      "const": "revalidate"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "repo_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "proposal": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "report": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "binding": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "record_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "candidate_fingerprint": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "snapshot_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "record_sha256",
+        "candidate_fingerprint",
+        "snapshot_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "basis_evidence": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "observation": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "const": "git-observation/1"
+        },
+        "project_id": {
+          "type": "string",
+          "maxLength": 120,
+          "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+        },
+        "repo_id": {
+          "type": "string",
+          "maxLength": 120,
+          "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+        },
+        "object_format": {
+          "type": "string",
+          "enum": [
+            "sha1",
+            "sha256"
+          ]
+        },
+        "head_commit": {
+          "type": "string"
+        },
+        "head_tree": {
+          "type": "string"
+        },
+        "index_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "scope_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "entries": {
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "maxLength": 240
+              },
+              "presence": {
+                "type": "string",
+                "enum": [
+                  "present",
+                  "absent"
+                ]
+              },
+              "kind": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "regular",
+                      "symlink",
+                      "gitlink"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "mode": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "enum": [
+                      "100644",
+                      "100755",
+                      "120000",
+                      "160000"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "byte_length": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 4194304
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "sha256": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "path",
+              "presence",
+              "kind",
+              "mode",
+              "byte_length",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "manifest_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "status": {
+          "maxItems": 5000,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "maxLength": 240
+              },
+              "staged": {
+                "type": "boolean"
+              },
+              "unstaged": {
+                "type": "boolean"
+              },
+              "untracked": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "path",
+              "staged",
+              "unstaged",
+              "untracked"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "outside_scope_dirty": {
+          "type": "boolean"
+        },
+        "ignored_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5000
+        },
+        "excluded_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5000
+        },
+        "unsupported": {
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "maxLength": 240
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              }
+            },
+            "required": [
+              "path",
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "coherence": {
+          "type": "string",
+          "enum": [
+            "stable",
+            "changed-during-read"
+          ]
+        },
+        "trust": {
+          "type": "string",
+          "enum": [
+            "local-measurement",
+            "imported-snapshot"
+          ]
+        }
+      },
+      "required": [
+        "format",
+        "project_id",
+        "repo_id",
+        "object_format",
+        "head_commit",
+        "head_tree",
+        "index_sha256",
+        "scope_sha256",
+        "entries",
+        "manifest_sha256",
+        "status",
+        "outside_scope_dirty",
+        "ignored_count",
+        "excluded_count",
+        "unsupported",
+        "coherence",
+        "trust"
+      ],
+      "additionalProperties": false
+    },
+    "acceptance_contract_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "checker": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "fixture_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "oracle_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "sha256",
+        "fixture_sha256",
+        "oracle_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "producer": {
+      "type": "object",
+      "properties": {
+        "principal": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "trust": {
+          "type": "string",
+          "enum": [
+            "local-fixture-import",
+            "local-fixed-fixture"
+          ]
+        },
+        "execution_authenticated": {
+          "type": "boolean",
+          "const": false
+        }
+      },
+      "required": [
+        "principal",
+        "trust",
+        "execution_authenticated"
+      ],
+      "additionalProperties": false
+    },
+    "outcome": {
+      "type": "string",
+      "const": "revalidated-selected-evidence"
+    },
+    "git_finalization_ref": {
+      "type": "null"
+    },
+    "successor_binding_ref": {
+      "type": "null"
+    }
+  },
+  "required": [
+    "format",
+    "model_version",
+    "action",
+    "project_id",
+    "repo_id",
+    "proposal",
+    "review",
+    "report",
+    "binding",
+    "target",
+    "basis_evidence",
+    "evidence",
+    "observation",
+    "acceptance_contract_sha256",
+    "checker",
+    "producer",
+    "outcome",
+    "git_finalization_ref",
+    "successor_binding_ref"
+  ],
+  "additionalProperties": false
+}

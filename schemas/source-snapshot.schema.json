@@ -1,0 +1,266 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "source-snapshot/1"
+    },
+    "project_id": {
+      "type": "string",
+      "maxLength": 120,
+      "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+    },
+    "repo_id": {
+      "type": "string",
+      "maxLength": 120,
+      "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+    },
+    "object_format": {
+      "type": "string",
+      "enum": [
+        "sha1",
+        "sha256"
+      ]
+    },
+    "head_commit": {
+      "type": "string"
+    },
+    "head_tree": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "const": "source-scope/1"
+        },
+        "coverage": {
+          "type": "string",
+          "const": "selected-scope"
+        },
+        "paths": {
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 240
+          }
+        },
+        "watch_roots": {
+          "maxItems": 64,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 240
+          }
+        },
+        "exclusions": {
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "maxLength": 240
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "file",
+                  "directory"
+                ]
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              }
+            },
+            "required": [
+              "path",
+              "kind",
+              "reason"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "items": {
+          "minItems": 1,
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "mapping": {
+          "minItems": 1,
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "item": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "paths": {
+                "minItems": 1,
+                "maxItems": 256,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 240
+                }
+              },
+              "criteria": {
+                "maxItems": 256,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                }
+              }
+            },
+            "required": [
+              "item",
+              "paths",
+              "criteria"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "limitations": {
+          "maxItems": 256,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        }
+      },
+      "required": [
+        "format",
+        "coverage",
+        "paths",
+        "watch_roots",
+        "exclusions",
+        "items",
+        "mapping",
+        "limitations"
+      ],
+      "additionalProperties": false
+    },
+    "scope_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "entries": {
+      "maxItems": 256,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "maxLength": 240
+          },
+          "presence": {
+            "type": "string",
+            "enum": [
+              "present",
+              "absent"
+            ]
+          },
+          "kind": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "regular",
+                  "symlink",
+                  "gitlink"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "mode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "100644",
+                  "100755",
+                  "120000",
+                  "160000"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "byte_length": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 4194304
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sha256": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "path",
+          "presence",
+          "kind",
+          "mode",
+          "byte_length",
+          "sha256"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "manifest_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "required": [
+    "format",
+    "project_id",
+    "repo_id",
+    "object_format",
+    "head_commit",
+    "head_tree",
+    "scope",
+    "scope_sha256",
+    "entries",
+    "manifest_sha256"
+  ],
+  "additionalProperties": false
+}

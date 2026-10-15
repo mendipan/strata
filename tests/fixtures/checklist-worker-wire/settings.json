@@ -1,0 +1,28 @@
+{
+  "success": true,
+  "errors": [],
+  "messages": [],
+  "result": {
+    "bindings": [
+      {"type": "plain_text", "name": "CHECKLIST_SOURCE_SHA256", "text": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+      {"type": "plain_text", "name": "CHECKLIST_TARGET_SHA256", "text": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+      {"type": "version_metadata", "name": "CHECKLIST_VERSION"}
+    ],
+    "compatibility_date": "2026-10-12",
+    "compatibility_flags": ["nodejs_compat"],
+    "limits": {"cpu_ms": 1000, "subrequests": 1},
+    "logpush": false,
+    "usage_model": "standard",
+    "observability": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "logs": {"enabled": true, "invocation_logs": true, "head_sampling_rate": 1, "persist": true, "destinations": ["cloudflare"]},
+      "traces": {"enabled": true, "head_sampling_rate": 1, "persist": true, "destinations": ["cloudflare"], "propagation_policy": null},
+      "redact_query_string": false,
+      "issues": {"enabled": false}
+    },
+    "tags": [],
+    "tail_consumers": [],
+    "placement": {"mode": "off"}
+  }
+}

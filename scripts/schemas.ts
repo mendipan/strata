@@ -1,0 +1,18 @@
+import {HOST_RECORD_SCHEMAS,hostAuthoringReviewSchema} from '../src/auth/records.js';
+import {HOST_MEDIATION_SCHEMAS} from '../src/mediation.js';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { z } from 'zod';
+import { blockSnapshotSchema, blockLayerSchema, blockCompositionSchema, blockAuthoringReviewSchema, snapshotSchema, layerSchema, compositionSchema, requirementSchema, criterionSchema, approvalSchema, evidenceSchema, boundEvidenceSchema, contentSnapshotSchema, contentBlockSchema, contentLayerSchema, contentCompositionSchema, contentSelectionSchema, contentApprovalSchema, frozenContentApprovalSchema, descriptionSchema, assetReferenceSchema, assetInputSchema, assetDescriptorSchema, authoringReviewSchema } from '../src/model.js';
+import { MEDIATION_SCHEMAS } from '../src/mediation.js';
+import { SOURCE_BINDING_SCHEMAS } from '../src/source-binding.js';
+import { DRIFT_SCHEMAS } from '../src/reconciliation.js';
+import { GIT_ADOPTION_SCHEMAS } from '../src/git-adoption.js';
+import { ADOPTION_RECORD_SCHEMAS } from '../src/adoption/records.js';
+import { REVALIDATION_SCHEMAS,revalidationRequestSchema,revalidationBridgeSchema } from '../src/revalidation.js';
+import { policyStoreV3Schema } from '../src/auth/host-issuer.js';
+const directory = 'schemas';
+await mkdir(directory,{recursive:true});
+for(const [name,schema]of Object.entries({...REVALIDATION_SCHEMAS,'revalidation-request':revalidationRequestSchema,'revalidation-bridge':revalidationBridgeSchema,'host-policy-v3':policyStoreV3Schema}))await writeFile(`${directory}/${name}.schema.json`,JSON.stringify(z.toJSONSchema(schema),null,2)+'\n');
+await mkdir(directory,{recursive:true});for(const [name,schema]of Object.entries({...HOST_MEDIATION_SCHEMAS,...HOST_RECORD_SCHEMAS}))await writeFile(`${directory}/host-${name}.schema.json`,JSON.stringify(z.toJSONSchema(schema),null,2)+'\n'); await mkdir(directory, { recursive: true });
+for (const [name, schema] of Object.entries({ ...SOURCE_BINDING_SCHEMAS, ...DRIFT_SCHEMAS, ...GIT_ADOPTION_SCHEMAS, ...ADOPTION_RECORD_SCHEMAS })) await writeFile(`${directory}/${name}.schema.json`, JSON.stringify(z.toJSONSchema(schema), null, 2) + '\n');
+for (const [name, schema] of Object.entries({ ...MEDIATION_SCHEMAS, 'studio-snapshot-v3':blockSnapshotSchema,'studio-layer-v3':blockLayerSchema,'studio-composition-v3':blockCompositionSchema,'studio-authoring-review-v3':hostAuthoringReviewSchema, 'selection-v2':contentSelectionSchema,'approval-v2':contentApprovalSchema,snapshot: snapshotSchema, layer: layerSchema, composition: compositionSchema, requirement: requirementSchema, criterion: criterionSchema, approval: approvalSchema, evidence: evidenceSchema, 'fixture-evidence-v2':boundEvidenceSchema, 'content-snapshot-v2':contentSnapshotSchema, 'content-block-v2':contentBlockSchema, 'content-layer-v2':contentLayerSchema, 'content-composition-v2':contentCompositionSchema, 'selection-v2-unavailable':contentSelectionSchema, 'approval-v2-unavailable':frozenContentApprovalSchema, 'description-v1':descriptionSchema, 'asset-reference-v1':assetReferenceSchema, 'asset-input-v1':assetInputSchema, 'asset-descriptor-v1':assetDescriptorSchema, 'authoring-review-v1':authoringReviewSchema })) await writeFile(`${directory}/${name}.schema.json`, JSON.stringify(z.toJSONSchema(schema), null, 2) + '\n');

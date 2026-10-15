@@ -1,0 +1,44 @@
+{
+  "name": "strata-local-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "type": "module",
+  "description": "Experimental local intent composition and release prototype",
+  "scripts": {
+    "strata": "node dist/src/cli.js",
+    "broker": "wrangler dev --local --ip 127.0.0.1 --port 8787 --persist-to .strata/state",
+    "broker:node": "node dist/src/local-broker.js",
+    "build": "tsc --noEmit false --outDir dist --rootDir .",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test --test-concurrency=1 dist/tests/*.test.js",
+    "test:agents": "node dist/scripts/check-agents.js",
+    "test:stress": "node dist/scripts/stress-agents.js",
+    "test:onboarding": "node dist/scripts/onboarding.js",
+    "evidence": "node dist/scripts/evidence.js",
+    "demo": "node dist/scripts/demo.js",
+    "demo:replay": "node --import ./tests/no-external-fetch.mjs dist/scripts/integrated-demo-browser.js --replay",
+    "check:links": "node scripts/check-links.mjs",
+    "verify:local": "node scripts/verify-local.mjs",
+    "schemas": "node dist/scripts/schemas.js",
+    "demo:operator": "node dist/scripts/integrated-demo-operator.js",
+    "demo:activation": "node dist/scripts/integrated-demo-activation.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "agents": "0.26.0",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@babel/parser": "8.0.6",
+    "@cloudflare/workers-types": "5.20261003.1",
+    "@types/node": "26.6.4",
+    "cf": "1.0.0-beta.12",
+    "esbuild": "0.28.2",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "wrangler": "4.147.0"
+  }
+}

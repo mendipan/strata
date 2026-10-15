@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "selection-policy/1"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "model_version": {
+      "type": "string",
+      "const": "strata/0.2-content-mediation-experimental"
+    },
+    "baseline": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "baseline_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "authority_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "evaluator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scenario_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "scope": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+    },
+    "impact": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "proposal_sha256": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{64}$"
+      }
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "issued_by": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "format",
+    "project_id",
+    "model_version",
+    "baseline",
+    "baseline_sha256",
+    "authority_sha256",
+    "evaluator",
+    "scenario_sha256",
+    "scope",
+    "impact",
+    "proposal_sha256",
+    "goal",
+    "rationale",
+    "issued_by"
+  ],
+  "additionalProperties": false
+}

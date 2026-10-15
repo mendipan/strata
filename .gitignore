@@ -1,0 +1,20 @@
+node_modules/
+.strata/
+.wrangler/
+dist/
+*.log
+
+# Local browser captures and private workspace output containers.
+.playwright-mcp/
+output/playwright/
+private/
+external-projects/
+local-records/
+
+# Per-host connection/grant files belong under ignored .strata/ or outside Git.
+/strata.local.json
+/wrangler.*.local.json
+/wrangler.artifacts-test.json
+
+# Retained local preview runtime after marketing-source separation.
+/site/.local/

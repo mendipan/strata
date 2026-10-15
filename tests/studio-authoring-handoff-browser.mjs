@@ -1,0 +1,131 @@
+// Real local contributor factories, CLI setup and rendered Studio forms. No route mocks.
+import { openStudioSection } from './studio-navigation.mjs';
+import assert from 'node:assert/strict';
+import {mkdtemp,readFile,writeFile} from 'node:fs/promises';
+import {spawn} from 'node:child_process';
+import os from 'node:os';
+import path from 'node:path';
+import {pathToFileURL} from 'node:url';
+import {prepareContributor,startContributor} from '../dist/scripts/contributor-starter.js';
+import {digest,canonical} from '../dist/src/model.js';
+const {chromium}=await import(pathToFileURL(process.env.STRATA_EXPLORER_PLAYWRIGHT_MODULE).href);
+const output=await mkdtemp(path.join(os.tmpdir(),'strata-authoring-handoff-browser-')),root=path.join(output,'project');
+const checks=[],errors=[],unexpected=[],commands=[];
+const check=(name,ok)=>{assert.ok(ok,name);checks.push(name);console.log('PASS '+name);};
+const decode=async file=>JSON.parse(await readFile(file,'utf8'));
+let host,browser,context,sessions;
+const cli=async(args,input,role='author-a',wanted)=>{
+  const result=await new Promise((resolve,reject)=>{
+    const child=spawn(process.execPath,['dist/src/cli.js',...args,'--project',root,'--json','--offline','--non-interactive'],{cwd:process.cwd(),env:{...process.env,STRATA_SESSION:sessions[role]},stdio:['pipe','pipe','pipe']});
+    let stdout='',stderr='';const timer=setTimeout(()=>child.kill(),30000);
+    child.stdout.on('data',c=>stdout+=c);child.stderr.on('data',c=>stderr+=c);child.once('error',reject);child.once('close',exit=>{clearTimeout(timer);resolve({exit,stdout,stderr});});child.stdin.end(input?JSON.stringify(input):'');
+  });
+  const response=JSON.parse(result.stdout);if(wanted){assert.equal(response.errors[0].code,wanted);assert.notEqual(result.exit,0);}else{assert.equal(response.ok,true,canonical(response.errors));assert.equal(result.exit,0,result.stderr);}return response.data;
+};
+const loaded=async page=>{await page.locator('main[aria-busy]').waitFor({state:'detached'});};
+const reviewInbox=async page=>{await openStudioSection(page, 'Review');await loaded(page);};
+const editLayer=async(page,ref)=>{await reviewInbox(page);await page.locator('article.card').filter({hasText:ref}).getByRole('link').first().click();await loaded(page);};
+const showImport=async page=>{if(!await page.getByLabel('Authoring handoff JSON',{exact:true}).isVisible())await page.locator('dialog details').filter({has:page.getByLabel('Authoring handoff JSON',{exact:true})}).locator('summary').click();};
+const inspect=async(page,packet)=>{await showImport(page);await page.getByLabel('Authoring handoff JSON',{exact:true}).fill(typeof packet==='string'?packet:JSON.stringify(packet));await page.getByRole('button',{name:'Inspect exact supplied draft',exact:true}).click();};
+const reviewCount=async()=>{const ledger=await readFile(path.join(root,'.strata/state/audit.jsonl'),'utf8');return ledger.trim().split('\n').map(JSON.parse).filter(row=>row.action==='content.review'&&row.outcome==='allowed').length;};
+try{
+  await prepareContributor(root);host=await startContributor(root);sessions=(await decode(path.join(root,'sessions.json'))).sessions;
+  const baseline=await cli(['init','--file','-'],await decode(path.join(root,'inputs/bootstrap.json')));
+  const initial=await decode(path.join(root,'inputs/create-audit.json'));initial.baseline=baseline.ref;
+  await cli(['layer','create','--file','-'],initial);
+  const beforeBaseline=canonical(await cli(['inspect','release',baseline.ref],undefined,'reader'));
+  browser=await chromium.launch({channel:process.env.STRATA_EXPLORER_BROWSER_CHANNEL??'msedge',headless:true});
+  context=await browser.newContext({viewport:{width:1440,height:1000},reducedMotion:'reduce',permissions:['clipboard-read','clipboard-write']});
+  const origins=host.views.map(view=>new URL(view.url).origin);
+  await context.route('**/*',route=>origins.includes(new URL(route.request().url()).origin)?route.continue():(unexpected.push(new URL(route.request().url()).origin),route.abort()));
+  const pages={};
+  for(const role of ['author-a','reviewer','reader']){
+    const page=await context.newPage();pages[role]=page;page.on('pageerror',e=>errors.push(e.message));
+    page.on('response',async response=>{if(response.url().endsWith('/studio/v1/operation')){const request=response.request().postDataJSON();const result=await response.json();commands.push({role,command:request.command,status:response.status(),ref:result.data?.data?.ref??null,code:result.error?.code??null});}});
+    await page.goto(host.views.find(view=>view.role===role).url);await loaded(page);
+    await page.getByRole('button',{name:'Refresh',exact:true}).click();await loaded(page);
+  }
+  const author=pages['author-a'],reviewer=pages.reviewer,reader=pages.reader;
+  await editLayer(author,'StarterAudit@1');
+  await author.locator('summary').filter({hasText:/^Owned next revision/}).click();
+  const editor=author.getByLabel('Owned next revision',{exact:true}),next=JSON.parse(await editor.inputValue());
+  next.created_blocks[0].purpose='Record only successful mutations as detached audit events.';
+  next.created_blocks[0].description.text='An explicit ordinary audit edit reviewed through a portable handoff.';
+  await editor.fill(JSON.stringify(next,null,2));await author.getByRole('button',{name:'Save next revision',exact:true}).click();await author.getByText('Saved StarterAudit@2',{exact:true}).waitFor();
+  await author.getByRole('button',{name:'Reload saved view',exact:true}).click();await loaded(author);await editLayer(author,'StarterAudit@2');
+  check('ordinary audit edit persists through real Owned next revision form',(await cli(['inspect','layer','StarterAudit@2'])).created_blocks[0].purpose===next.created_blocks[0].purpose);
+  check('author lacks review authority',await author.getByRole('button',{name:'Review supplied draft',exact:true}).isDisabled());
+  const exportButton=author.getByRole('button',{name:'Prepare reviewer handoff',exact:true});await exportButton.click();
+  const packet=JSON.parse(await author.getByLabel('Exact authoring handoff JSON',{exact:true}).inputValue());
+  check('handoff digest equals actual normalized saved Layer',packet.draft_digest===digest(await cli(['inspect','layer','StarterAudit@2'])));
+  await author.getByRole('button',{name:'Copy exact draft handoff',exact:true}).click();await author.getByText('Exact draft handoff copied. Share it explicitly with your reviewer.',{exact:true}).waitFor();
+  check('explicit copy contains the exact packet',canonical(JSON.parse(await author.evaluate(()=>navigator.clipboard.readText())))===canonical(packet));
+  await author.keyboard.press('Escape');await author.locator('dialog[open]').waitFor({state:'detached'});check('export Escape restores trigger focus',await exportButton.evaluate(n=>n===document.activeElement));
+  await reviewer.getByRole('button',{name:'Refresh',exact:true}).click();await loaded(reviewer);await reviewInbox(reviewer);const open=reviewer.getByRole('button',{name:'Review supplied draft',exact:true});await open.click();
+  check('review import receives keyboard focus',await reviewer.getByLabel('Authoring handoff JSON',{exact:true}).evaluate(n=>n===document.activeElement));
+  await inspect(reviewer,'{');await reviewer.getByRole('alert').filter({hasText:'Paste a valid JSON'}).waitFor();
+  const tampered=structuredClone(packet);tampered.draft.intent+=' wrong';await inspect(reviewer,tampered);await reviewer.getByRole('alert').filter({hasText:'does not match'}).waitFor();
+  const foreign={...packet,project_id:'another-project'};await inspect(reviewer,foreign);await reviewer.getByRole('alert').filter({hasText:'another project'}).waitFor();
+  check('invalid imports dispatch no review',await reviewCount()===0);
+  await inspect(reviewer,packet);await reviewer.getByText('Exact supplied content inspected. Choose a decision and give your rationale.',{exact:true}).waitFor();
+  const content=await reviewer.getByRole('region',{name:'Inspected supplied content'}).innerText();
+  check('audit purpose requirements contract and acceptance readable',content.includes(next.created_blocks[0].purpose)&&content.includes('detached copies')&&content.includes('Observe add, complete and remove')&&content.includes('collection.audit'));
+  check('new Block review criterion is visible without a false empty-acceptance claim',await reviewer.getByRole('region',{name:'Inspected supplied content'}).getByText('Verify intent.review for audit.',{exact:true}).isVisible()&&await reviewer.getByRole('region',{name:'Inspected supplied content'}).getByText('No acceptance linked.',{exact:true}).count()===0);
+  check('exact subject and head distinction displayed',content.includes('StarterAudit@2')&&content.includes(packet.draft_digest)&&content.includes('does not prove'));
+  check('decision needs rationale',await reviewer.getByRole('button',{name:'Record accepted review',exact:true}).isDisabled());
+  await reviewer.getByLabel('Supplied draft review rationale',{exact:true}).fill('Review the exact detached audit contract.');
+  check('inspected decision is enabled',await reviewer.getByRole('button',{name:'Record accepted review',exact:true}).isEnabled());
+  await showImport(reviewer);await reviewer.getByLabel('Authoring handoff JSON',{exact:true}).fill(JSON.stringify(tampered));check('editing invalidates inspected decision',await reviewer.getByRole('button',{name:'Record accepted review',exact:true}).isDisabled());
+  await reviewer.keyboard.press('Escape');await reviewer.locator('dialog[open]').waitFor({state:'detached'});check('review Escape restores trigger and writes nothing',await open.evaluate(n=>n===document.activeElement)&&await reviewCount()===0);
+  await open.click();await inspect(reviewer,packet);await reviewer.getByText('Exact supplied content inspected. Choose a decision and give your rationale.',{exact:true}).waitFor();await reviewer.getByRole('button',{name:'Cancel',exact:true}).click();check('explicit cancel also writes nothing',await reviewCount()===0);
+  await open.click();await inspect(reviewer,packet);await reviewer.getByText('Exact supplied content inspected. Choose a decision and give your rationale.',{exact:true}).waitFor();await reviewer.getByLabel('Supplied draft review rationale',{exact:true}).fill('Rejected because the detached event wording needs clarification.');
+  await reviewer.getByRole('button',{name:'Record rejected review',exact:true}).dblclick();await reviewer.getByText('Rejected authoring review recorded.',{exact:true}).waitFor();check('double click records one explicit rejected review',await reviewCount()===1);
+  const rejectedRef=await reviewer.locator('dialog').locator('.field').filter({has:reviewer.getByText('Review reference',{exact:true})}).locator('dd').innerText();
+  const rejected=await cli(['inspect','authoring-review',rejectedRef]);check('rejected record pins supplied draft digest',!rejected.accepted&&rejected.draft_digest===packet.draft_digest);
+  await cli(['layer','publish',packet.draft_ref,'--authoring-review',rejectedRef],undefined,'author-a','STALE_AUTHORING_REVIEW');
+  await reviewer.getByRole('button',{name:'Close',exact:true}).click();
+  // Retain active identity and all reads while revoking this one operation.
+  await reviewer.getByRole('button',{name:'Refresh',exact:true}).click();await loaded(reviewer);await open.click();await inspect(reviewer,packet);await reviewer.getByText('Exact supplied content inspected. Choose a decision and give your rationale.',{exact:true}).waitFor();
+  const policyPath=path.join(root,'policy.json'),policy=await decode(policyPath),revoked=structuredClone(policy);revoked.generation++;revoked.grants.find(g=>g.principal_id==='reviewer').operations=revoked.grants.find(g=>g.principal_id==='reviewer').operations.filter(o=>o!=='content.review');await writeFile(policyPath,JSON.stringify(revoked));
+  await reviewer.getByLabel('Supplied draft review rationale',{exact:true}).fill('Authority has been revoked after inspection.');await reviewer.getByRole('button',{name:'Record accepted review',exact:true}).click();await reviewer.getByRole('alert').filter({hasText:/OPERATION_FORBIDDEN|STALE_POLICY/}).waitFor();check('real form refuses revoked review grant without mutation',await reviewCount()===1);
+  await reviewer.getByRole('button',{name:'Close',exact:true}).click();policy.generation=revoked.generation+1;await writeFile(policyPath,JSON.stringify(policy));
+  await reviewer.getByRole('button',{name:'Refresh',exact:true}).click();await loaded(reviewer);await open.click();await inspect(reviewer,packet);await reviewer.getByText('Exact supplied content inspected. Choose a decision and give your rationale.',{exact:true}).waitFor();
+  // Private revisions are hidden from this reviewer's visible generation.
+  // Change a visible candidate as well to exercise the real generation guard.
+  const third={...packet.draft,revision:3,intent:'Clarify exact supplied-content review.'};await cli(['layer','revise','StarterAudit@2','--file','-'],third);
+  const candidate=await decode(path.join(root,'inputs/baseline-composition.json'));candidate.id='HandoffVisibleCandidate';candidate.baseline=baseline.ref;await cli(['compose','--file','-'],candidate);
+  await reviewer.getByLabel('Supplied draft review rationale',{exact:true}).fill('This attempt uses a stale captured generation.');await reviewer.getByRole('button',{name:'Record accepted review',exact:true}).click();await reviewer.getByRole('alert').filter({hasText:'STALE_GENERATION'}).waitFor();
+  check('real stale generation refuses without another review',await reviewCount()===1);check('stale feedback invalidates readiness',await reviewer.getByRole('button',{name:'Record accepted review',exact:true}).isDisabled());
+  await reviewer.getByRole('button',{name:'Close',exact:true}).click();
+  const oldReview=await cli(['content','review','--file','-'],{draft:packet.draft,expected_digest:packet.draft_digest,accepted:true,rationale:'Explicitly attest older exact supplied content; this is not a current-head claim.'},'reviewer');
+  await cli(['layer','publish','StarterAudit@3','--authoring-review',oldReview.ref],undefined,'author-a','STALE_AUTHORING_REVIEW');check('older supplied revision may be attested but cannot publish newer content',oldReview.review.draft_ref==='StarterAudit@2'&&await reviewCount()===2);
+  await author.getByRole('button',{name:'Refresh',exact:true}).click();await loaded(author);await editLayer(author,'StarterAudit@3');await author.getByRole('button',{name:'Prepare reviewer handoff',exact:true}).click();
+  const current=JSON.parse(await author.getByLabel('Exact authoring handoff JSON',{exact:true}).inputValue());await author.getByRole('button',{name:'Cancel',exact:true}).click();
+  await reviewer.getByRole('button',{name:'Refresh',exact:true}).click();await loaded(reviewer);await open.click();await inspect(reviewer,current);await reviewer.getByText('Exact supplied content inspected. Choose a decision and give your rationale.',{exact:true}).waitFor();
+  await reviewer.getByLabel('Supplied draft review rationale',{exact:true}).fill('Accepted the exact normalized audit intent, linked requirements, contract and acceptance.');await reviewer.locator('dialog[open]').evaluate(d=>{d.scrollTop=0;});await reviewer.screenshot({path:path.join(output,'supplied-review-desktop.png'),fullPage:true});
+  await reviewer.setViewportSize({width:375,height:812});check('supplied review fits narrow mobile',await reviewer.evaluate(()=>{const d=document.querySelector('dialog[open]');return document.documentElement.scrollWidth<=innerWidth&&d.scrollWidth<=d.clientWidth;}));await reviewer.screenshot({path:path.join(output,'supplied-review-mobile.png'),fullPage:true});
+  await reviewer.getByRole('button',{name:'Record accepted review',exact:true}).press('Enter');await reviewer.getByText('Accepted authoring review recorded.',{exact:true}).waitFor();
+  const acceptedRef=await reviewer.locator('dialog').locator('.field').filter({has:reviewer.getByText('Review reference',{exact:true})}).locator('dd').innerText();
+  const accepted=await cli(['inspect','authoring-review',acceptedRef]);check('accepted review uses actual reviewer and exact content',accepted.accepted&&accepted.reviewer==='reviewer'&&accepted.draft_ref==='StarterAudit@3'&&accepted.draft_digest===current.draft_digest&&await reviewCount()===3);
+  await reviewer.getByRole('button',{name:'Copy authoring-review reference',exact:true}).click();check('exact review reference copied',await reviewer.evaluate(()=>navigator.clipboard.readText())===acceptedRef);await reviewer.getByRole('button',{name:'Close',exact:true}).click();
+  await cli(['inspect','layer','StarterAudit@3'],undefined,'reviewer','REF_NOT_FOUND');check('handoff never grants private draft browsing',true);
+  await reviewInbox(reader);check('reader cannot open supplied review',await reader.getByRole('button',{name:'Review supplied draft',exact:true}).isDisabled());
+  await cli(['content','review','--file','-'],{draft:current.draft,expected_digest:current.draft_digest,accepted:true,rationale:'No reader authority.'},'reader','OPERATION_FORBIDDEN');check('real reader mutation refused',true);
+  await author.getByRole('button',{name:'Refresh',exact:true}).click();await loaded(author);await author.getByLabel('Exact authoring review reference',{exact:true}).fill(acceptedRef);await author.getByRole('button',{name:'Publish proposal',exact:true}).click();await author.getByText('Saved StarterAudit@3',{exact:true}).waitFor();
+  check('author publishes only after exact accepted reviewer handoff',digest(await cli(['inspect','layer','StarterAudit@3'],undefined,'reader'))===current.draft_digest);
+  check('immutable bootstrap baseline stays identical',canonical(await cli(['inspect','release',baseline.ref],undefined,'reader'))===beforeBaseline);
+  check('no validation or approval synthesized',!commands.some(c=>['validate','approve','release'].includes(c.command)));
+  check('draft content and rationale are absent from browser storage',!(await reviewer.evaluate(()=>JSON.stringify([Object.entries(localStorage),Object.entries(sessionStorage)]))).includes(current.draft.intent));
+  // Dispatch to the actual host, then drop its reply: no fake approval/backend.
+  await reviewer.setViewportSize({width:1440,height:1000});await reviewer.getByRole('button',{name:'Refresh',exact:true}).click();await loaded(reviewer);await open.click();await inspect(reviewer,current);await reviewer.getByText('Exact supplied content inspected. Choose a decision and give your rationale.',{exact:true}).waitFor();
+  let dropped=false;const fault=async route=>{if(!dropped&&route.request().postDataJSON()?.command==='content.review'){dropped=true;await route.fetch();await route.abort('failed');}else await route.continue();};
+  const operationURL=new URL('/studio/v1/operation',host.views.find(v=>v.role==='reviewer').url).href;await context.route(operationURL,fault);
+  await reviewer.getByLabel('Supplied draft review rationale',{exact:true}).fill('Explicit rejected decision with a deliberately lost reply.');await reviewer.getByRole('button',{name:'Record rejected review',exact:true}).click();await reviewer.getByRole('alert').filter({hasText:'OPERATION_UNKNOWN'}).waitFor();
+  check('lost real response preserves one committed review and locks resubmission',dropped&&await reviewCount()===4&&await reviewer.getByRole('button',{name:'Record rejected review',exact:true}).isDisabled());await context.unroute(operationURL,fault);
+  await reviewer.getByRole('button',{name:'Close',exact:true}).click();await open.click();check('reopening unresolved review offers recovery instead of another decision',await reviewer.getByRole('button',{name:'Return to receipt recovery',exact:true}).isVisible()&&await reviewer.getByRole('button',{name:'Record accepted review',exact:true}).count()===0);await reviewer.getByRole('button',{name:'Return to receipt recovery',exact:true}).click();await loaded(reviewer);await reviewer.getByRole('button',{name:'Check original request receipt',exact:true}).click();await reviewer.getByText('Original request receipt: committed.',{exact:true}).waitFor();check('original request can be reconciled without redispatch',await reviewCount()===4);
+  const savedReview=canonical(accepted);await context.close();context=null;await host.close();host=await startContributor(root);sessions=(await decode(path.join(root,'sessions.json'))).sessions;
+  check('exact review survives normal process restart',canonical(await cli(['inspect','authoring-review',acceptedRef],undefined,'reviewer'))===savedReview);
+  check('browser has no uncaught errors or outside requests',errors.length===0&&unexpected.length===0);
+  await writeFile(path.join(output,'result.json'),JSON.stringify({source:'real contributor factories + CLI + browser',browser:'Edge desktop/mobile; Browser plugin not available',browser_version:browser.version(),passed:checks.length,checks,commands,errors,unexpected},null,2));console.log(JSON.stringify({passed:checks.length,output}));
+}catch(error){if(context){for(const page of context.pages())if(!page.isClosed()){await writeFile(path.join(output,'failure-'+context.pages().indexOf(page)+'.txt'),await page.locator('main').innerText()).catch(()=>{});await page.screenshot({path:path.join(output,'failure-'+context.pages().indexOf(page)+'.png'),fullPage:true}).catch(()=>{});}}console.error('Evidence: '+output);throw error;}
+finally{await context?.close();await browser?.close();await host?.close();}

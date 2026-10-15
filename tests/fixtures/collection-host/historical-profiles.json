@@ -1,0 +1,12 @@
+{
+  "base": "caf5ee31957e2b4e7bb83a0cc5cc96d9464db4ab",
+  "profiles": {
+    "booking-node/1": "082c69b5420253378ae65ba450aa26be9e791921c50a9f7acca2a9c8345e13e5",
+    "booking-node/2": "1d3733faf4753ad6d7a0d17640715d5479a28a7797909100e0f2aa2b66dfa2ee",
+    "booking-node/3": "6399b1a73c4dac314ea45832436213a4c9506bb858e3c7cc0e3d4122b6e37c7a",
+    "booking-node/4": "fac3dd30e161d78d0f48d18dfdc05432584d63e2aedd8032b378bde6e43b9c8f",
+    "counter-fixture/1": "aa2aedc43a2b8289992087f5a428a73e723c1846a3ffdeefd1d65a23cee55411",
+    "counter-host/1": "bcb64df1ba6cae4c5973b391db4d3e4710ae1c4ed91ee46ca92716bd88a29b70",
+    "collection-node/1": "49b66a242d694a2b10f0e27fdaa20c41b439fc2378240271599b9c6ae5ab226e"
+  }
+}

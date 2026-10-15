@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "strata-local-prototype",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-10-03",
+  "compatibility_flags": ["nodejs_compat"],
+  "durable_objects": { "bindings": [
+    { "name": "PROJECT", "class_name": "ProjectAgent" },
+    { "name": "LAYERS", "class_name": "LayerAgent" },
+    { "name": "LOCAL_ARTIFACTS", "class_name": "LocalArtifactStore" }
+  ] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ProjectAgent", "LayerAgent", "LocalArtifactStore"] }],
+  "vars": { "LOCAL_FIXTURES": "true" },
+  "observability": { "enabled": false }
+}

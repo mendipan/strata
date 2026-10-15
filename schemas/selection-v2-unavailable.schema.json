@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "input_fingerprint": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64
+    },
+    "scope": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+    },
+    "impact": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "const": "select"
+        },
+        "selected": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+          }
+        },
+        "rejected": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+          }
+        }
+      },
+      "required": [
+        "kind",
+        "selected",
+        "rejected"
+      ],
+      "additionalProperties": false
+    },
+    "format": {
+      "type": "string",
+      "const": "selection/2"
+    },
+    "basis_ref": {
+      "type": "string",
+      "pattern": "^mediation-basis@[a-f0-9]{64}$"
+    },
+    "basis_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "input_fingerprint",
+    "scope",
+    "impact",
+    "outcome",
+    "format",
+    "basis_ref",
+    "basis_sha256",
+    "rationale"
+  ],
+  "additionalProperties": false
+}

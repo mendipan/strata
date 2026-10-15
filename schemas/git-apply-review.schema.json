@@ -1,0 +1,286 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "const": "git-apply-review/1"
+        },
+        "target": {
+          "type": "object",
+          "properties": {
+            "project_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "repo_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "stage_ref": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "stage_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "acceptance_ref": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "acceptance_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "plan_ref": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "binding_ref": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "release_ref": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "release_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "candidate": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "snapshot_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "responsible_scope": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "policy_version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            }
+          },
+          "required": [
+            "project_id",
+            "repo_id",
+            "stage_ref",
+            "stage_sha256",
+            "acceptance_ref",
+            "acceptance_sha256",
+            "plan_ref",
+            "binding_ref",
+            "release_ref",
+            "release_sha256",
+            "candidate",
+            "snapshot_sha256",
+            "responsible_scope",
+            "policy_version"
+          ],
+          "additionalProperties": false
+        },
+        "target_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "principal": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "trust": {
+          "type": "string",
+          "const": "local-fixture"
+        },
+        "accepted": {
+          "type": "boolean"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "format",
+        "target",
+        "target_sha256",
+        "principal",
+        "trust",
+        "accepted",
+        "rationale"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "const": "git-apply-review/2"
+        },
+        "target": {
+          "type": "object",
+          "properties": {
+            "project_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "repo_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "stage_ref": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "stage_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "acceptance_ref": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "acceptance_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "plan_ref": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "binding_ref": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "release_ref": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "release_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "candidate": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "snapshot_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "responsible_scope": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "policy_version": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "adoption_bridge_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "reviewer": {
+              "type": "object",
+              "properties": {
+                "principal": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "grant_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "policy_version": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "authority_sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "principal",
+                "grant_id",
+                "policy_version",
+                "authority_sha256"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "project_id",
+            "repo_id",
+            "stage_ref",
+            "stage_sha256",
+            "acceptance_ref",
+            "acceptance_sha256",
+            "plan_ref",
+            "binding_ref",
+            "release_ref",
+            "release_sha256",
+            "candidate",
+            "snapshot_sha256",
+            "responsible_scope",
+            "policy_version",
+            "adoption_bridge_sha256",
+            "reviewer"
+          ],
+          "additionalProperties": false
+        },
+        "target_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "principal": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "trust": {
+          "type": "string",
+          "const": "local-fixture"
+        },
+        "accepted": {
+          "type": "boolean"
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "format",
+        "target",
+        "target_sha256",
+        "principal",
+        "trust",
+        "accepted",
+        "rationale"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

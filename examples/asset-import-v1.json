@@ -1,0 +1,17 @@
+{
+  "id": "background_reference",
+  "revision": 1,
+  "previous": null,
+  "title": "Explicit local background reference",
+  "access": "project-private",
+  "acknowledge_project_visibility": true,
+  "source": {
+    "kind": "local-created",
+    "provider": "host-supplied-author",
+    "attribution": "Host must supply actual attribution and verified rights before import.",
+    "permitted_uses": [
+      "internal-retention",
+      "backup"
+    ]
+  }
+}

@@ -1,0 +1,4478 @@
+{
+  "format": "strata-acp-p1-transcripts/1",
+  "proposalOnly": true,
+  "protocolVersion": 1,
+  "sourceProfile": {
+    "sdk": {
+      "name": "@agentclientprotocol/sdk",
+      "version": "1.5.0",
+      "commit": "f1ba3a935df42efb4455be9b62c76b06610aaf50"
+    },
+    "adapter": {
+      "name": "@agentclientprotocol/codex-acp",
+      "version": "2.2.2",
+      "commit": "202e66e63343ec4f5a5e35ab590251d813d129ca"
+    },
+    "resolvedCodexVersion": "0.160.1",
+    "schemaSubsetSha256": "8d98a3afa1eeb1587dde12c9cf03de20c5a23b26280da2a819abdb4e91383344",
+    "sourcesFileSha256": "868c0567b27ff78d209c7202387f1fb23319b84a98108efa8261750577467455",
+    "note": "Pins documented bytes of the stable ACP v1 schema subset and the codex-acp lockfile resolution only. They are not runtime identity, attestation, signature verification or deployed behavior, and this profile has never been installed or executed."
+  },
+  "stopReasonMapping": [
+    {
+      "stopReason": "end_turn",
+      "proposedOutcome": "succeeded",
+      "requirements": "Only with the retained attributable session/prompt response bytes and digest for the exact task, session and request id. end_turn alone is not native work-stop proof, measured testing or Release qualification."
+    },
+    {
+      "stopReason": "max_tokens",
+      "proposedOutcome": "failed/TASK_LIMIT",
+      "requirements": "Finite native outcome; no fabricated success and no result."
+    },
+    {
+      "stopReason": "max_turn_requests",
+      "proposedOutcome": "failed/TASK_LIMIT",
+      "requirements": "Finite native outcome; no fabricated success and no result."
+    },
+    {
+      "stopReason": "refusal",
+      "proposedOutcome": "failed/TASK_POLICY",
+      "requirements": "Finite native outcome; the refusal is the agent's, never widened into unrestricted native behavior."
+    },
+    {
+      "stopReason": "cancelled",
+      "proposedOutcome": "cancelled",
+      "requirements": "Only the original attributable session/prompt response bearing stopReason cancelled after a client session/cancel notification. Generic $/cancel_request, JSON-RPC -32800 on other requests, EOF or stdin close, process exit, UI tool status and local AbortSignal are not stop proof."
+    }
+  ],
+  "assumptions": [
+    "The host supplies a durable atomic journal: key reservation, native-handle retention, immutable attributable completion retention and generation flips are atomic and survive restart. The in-memory fixture shapes cannot prove that durability.",
+    "A bounded private collector supervised by the host receives session/update notifications and the eventual session/prompt response after submit has returned its snapshot within the ten-second control bound. The native prompt RPC may remain pending in the collector; this does not bound native work or widen authority.",
+    "Task/session identifiers, checkout paths, runtime implementation names/versions and messages are invented public synthetic values authored by hand from the pinned schema and pinned v1 documents. sourceProfile package versions, commits and fingerprints are real public source pins. No wire capture, real repository, account, session or provider is represented.",
+    "Native messages are partial JSON-RPC projections: required fields for the illustrated behavior are present and unrelated required fields are omitted. Journal entries, attribution objects and annotations remain outside the native wire objects."
+  ],
+  "syntheticIdentity": {
+    "connectionId": "acp-p1-conn",
+    "primaryTaskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+    "checkout": "/srv/checkout/acp-p1-synthetic",
+    "clientInfo": {
+      "name": "strata-acp-p1-proposal",
+      "title": "Strata ACP P1 Proposal",
+      "version": "0.1.0"
+    },
+    "agentInfo": {
+      "name": "synthetic-acp-agent",
+      "title": "Synthetic ACP Agent",
+      "version": "0.1.0"
+    }
+  },
+  "scenarios": [
+    {
+      "id": "success",
+      "summary": "Durable reservation, supervised initialize, one session/new, one serialized session/prompt, retained attributable end_turn completion, normalized immutable result.",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "acp-p1-conn",
+        "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+        "binding": {
+          "project_id": "acp-p1-project",
+          "model_version": "strata/acp-p1-synthetic",
+          "repository_id": "acp-p1-repo"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+        "instruction": "Summarize the synthetic fixture slice and propose one bounded diff.",
+        "limits": {
+          "runtime_ms": 600000,
+          "output_bytes": 8192
+        }
+      },
+      "variants": [
+        {
+          "id": "primary",
+          "journal": [
+            {
+              "seq": 1,
+              "kind": "reserve",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": null,
+              "note": "Atomic reservation of (connection_id, task_id) with the complete request digest 19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f before any native call.",
+              "connectionId": "acp-p1-conn",
+              "requestSha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+            },
+            {
+              "seq": 2,
+              "kind": "startup-initialized",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": 0,
+              "note": "Supervised initialize under operator custody; the retained response negotiates protocolVersion 1."
+            },
+            {
+              "seq": 3,
+              "kind": "session-new-sent",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": 1,
+              "note": "cwd is the isolated per-task checkout; mcpServers come from operator configuration, never from task data."
+            },
+            {
+              "seq": 4,
+              "kind": "session-new-retained",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-01",
+              "requestId": 1,
+              "note": "Observed native session id durably bound to the reserved key."
+            },
+            {
+              "seq": 5,
+              "kind": "prompt-sent",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-01",
+              "requestId": 2,
+              "note": "Exactly one serialized session/prompt carrying the task instruction as a text block."
+            },
+            {
+              "seq": 6,
+              "kind": "update-observed",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-01",
+              "requestId": 2,
+              "note": "Bounded private collector records streamed chunks and tool-call updates; submit already returned running."
+            },
+            {
+              "seq": 7,
+              "kind": "completion-retained",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-01",
+              "requestId": 2,
+              "note": "Immutable attributable completion bytes (stopReason end_turn) retained for the exact prompt request before any success snapshot."
+            },
+            {
+              "seq": 8,
+              "kind": "result-frozen",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-01",
+              "requestId": 2,
+              "note": "Normalized summary and diff artifact frozen with digest b5ca305a46adc011ae8a9eb694630cba36a64aba579958fe2001ba00c8f201f8."
+            }
+          ],
+          "messages": [
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "method": "initialize",
+                "params": {
+                  "protocolVersion": 1,
+                  "clientCapabilities": {
+                    "fs": {
+                      "readTextFile": false,
+                      "writeTextFile": false
+                    },
+                    "terminal": false,
+                    "auth": {
+                      "terminal": false
+                    }
+                  },
+                  "clientInfo": {
+                    "name": "strata-acp-p1-proposal",
+                    "title": "Strata ACP P1 Proposal",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "result": {
+                  "protocolVersion": 1,
+                  "agentCapabilities": {
+                    "loadSession": true,
+                    "promptCapabilities": {
+                      "image": false,
+                      "audio": false,
+                      "embeddedContext": false
+                    },
+                    "mcpCapabilities": {
+                      "http": false,
+                      "sse": false
+                    },
+                    "sessionCapabilities": {}
+                  },
+                  "authMethods": [],
+                  "agentInfo": {
+                    "name": "synthetic-acp-agent",
+                    "title": "Synthetic ACP Agent",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 1
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "session/new",
+                "params": {
+                  "cwd": "/srv/checkout/acp-p1-synthetic",
+                  "mcpServers": []
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-01",
+                "requestId": 1
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "result": {
+                  "sessionId": "acp-syn-session-01"
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-01",
+                "requestId": 2
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "method": "session/prompt",
+                "params": {
+                  "sessionId": "acp-syn-session-01",
+                  "prompt": [
+                    {
+                      "type": "text",
+                      "text": "Summarize the synthetic fixture slice and propose one bounded diff."
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-01",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-01",
+                  "update": {
+                    "sessionUpdate": "agent_message_chunk",
+                    "messageId": "syn-msg-01a",
+                    "content": {
+                      "type": "text",
+                      "text": "Reviewing the fixture slice."
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-01",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-01",
+                  "update": {
+                    "sessionUpdate": "tool_call",
+                    "toolCallId": "syn-call-01",
+                    "name": "apply_edit",
+                    "title": "Applying one bounded diff",
+                    "kind": "edit",
+                    "status": "pending"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-01",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-01",
+                  "update": {
+                    "sessionUpdate": "tool_call_update",
+                    "toolCallId": "syn-call-01",
+                    "status": "in_progress"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-01",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-01",
+                  "update": {
+                    "sessionUpdate": "tool_call_update",
+                    "toolCallId": "syn-call-01",
+                    "status": "completed",
+                    "content": [
+                      {
+                        "type": "diff",
+                        "path": "/srv/checkout/acp-p1-synthetic/fixture.txt",
+                        "oldText": "old line\n",
+                        "newText": "new line\n"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-01",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-01",
+                  "update": {
+                    "sessionUpdate": "agent_message_chunk",
+                    "messageId": "syn-msg-01b",
+                    "content": {
+                      "type": "text",
+                      "text": "Synthetic summary: reviewed the fixture slice; one bounded diff proposed."
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-01",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "result": {
+                  "stopReason": "end_turn"
+                }
+              }
+            }
+          ],
+          "nativeCounts": {
+            "initialize": 1,
+            "session/new": 1,
+            "session/prompt": 1,
+            "session/cancel": 0,
+            "session/load": 0,
+            "session/list": 0
+          },
+          "decisions": {
+            "admission": "Admitted: the original (connection_id, task_id) and complete digest were durably reserved before initialize and session/new; one session and one serialized prompt own this task.",
+            "snapshots": [
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 1,
+                "state": "running"
+              },
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 2,
+                "state": "succeeded",
+                "result_sha256": "b5ca305a46adc011ae8a9eb694630cba36a64aba579958fe2001ba00c8f201f8"
+              }
+            ],
+            "result": {
+              "format": "strata-agent-task-result/1",
+              "task": {
+                "connection_id": "acp-p1-conn",
+                "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "binding": {
+                  "project_id": "acp-p1-project",
+                  "model_version": "strata/acp-p1-synthetic",
+                  "repository_id": "acp-p1-repo"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+              },
+              "summary": "Synthetic summary: reviewed the fixture slice; one bounded diff proposed.",
+              "artifacts": [
+                {
+                  "id": "acp-p1-diff-1",
+                  "sha256": "e0ccf62596a6718327a14d4fb06cfde481f498a36184ae13cfafd7ebc192322c",
+                  "bytes": 99,
+                  "media_type": "application/json"
+                }
+              ],
+              "trust": "agent-output"
+            },
+            "errors": [],
+            "notes": [
+              {
+                "id": "prompt-control-bound",
+                "text": "submit returned the running snapshot within the ten-second control bound; the native session/prompt RPC may remain pending in the private collector."
+              },
+              {
+                "id": "end-turn-qualification",
+                "text": "end_turn plus the retained attributable completion bytes justify succeeded here; end_turn alone is not native work-stop proof, measured testing or Release."
+              }
+            ],
+            "completionEligibility": "hypothetical-qualified-profile-and-retained-original-prompt",
+            "artifactBytes": {
+              "acp-p1-diff-1": "{\"newText\":\"new line\\n\",\"oldText\":\"old line\\n\",\"path\":\"/srv/checkout/acp-p1-synthetic/fixture.txt\"}"
+            }
+          },
+          "expectations": {
+            "submitReturns": "running",
+            "promptReturnedPromptly": true,
+            "finalState": "succeeded",
+            "endTurnAloneIsNotQualification": true,
+            "resultDigestBound": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "concurrent-duplicate-admission",
+      "summary": "Two racing submits with the same key and identical digest serialize at the atomic reservation; exactly one session/new and one session/prompt are ever sent.",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "acp-p1-conn",
+        "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+        "binding": {
+          "project_id": "acp-p1-project",
+          "model_version": "strata/acp-p1-synthetic",
+          "repository_id": "acp-p1-repo"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+        "instruction": "Summarize the synthetic fixture slice and propose one bounded diff.",
+        "limits": {
+          "runtime_ms": 600000,
+          "output_bytes": 8192
+        }
+      },
+      "variants": [
+        {
+          "id": "primary",
+          "journal": [
+            {
+              "seq": 1,
+              "kind": "reserve",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": null,
+              "note": "Caller A wins the atomic reservation of (connection_id, task_id) with digest 19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f.",
+              "connectionId": "acp-p1-conn",
+              "requestSha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+            },
+            {
+              "seq": 2,
+              "kind": "duplicate-serialized",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": null,
+              "note": "Caller B carries the same complete request and rejoins the existing admission; no second native start is created."
+            },
+            {
+              "seq": 3,
+              "kind": "startup-initialized",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": 0,
+              "note": "Single supervised startup shared by the admission."
+            },
+            {
+              "seq": 4,
+              "kind": "session-new-sent",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": 1,
+              "note": "Only one session/new is sent for the reserved key."
+            },
+            {
+              "seq": 5,
+              "kind": "session-new-retained",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-02",
+              "requestId": 1,
+              "note": "Native session id retained once."
+            },
+            {
+              "seq": 6,
+              "kind": "prompt-sent",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-02",
+              "requestId": 2,
+              "note": "Exactly one serialized session/prompt."
+            },
+            {
+              "seq": 7,
+              "kind": "completion-retained",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-02",
+              "requestId": 2,
+              "note": "Single attributable end_turn completion retained."
+            },
+            {
+              "seq": 8,
+              "kind": "result-frozen",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-02",
+              "requestId": 2,
+              "note": "Both callers observe the same immutable result digest 49fc02888e95a04fd1cd55cdb7ca99ef1a3e8387f6305bd50f43e2037e23d9c2."
+            }
+          ],
+          "messages": [
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "method": "initialize",
+                "params": {
+                  "protocolVersion": 1,
+                  "clientCapabilities": {
+                    "fs": {
+                      "readTextFile": false,
+                      "writeTextFile": false
+                    },
+                    "terminal": false,
+                    "auth": {
+                      "terminal": false
+                    }
+                  },
+                  "clientInfo": {
+                    "name": "strata-acp-p1-proposal",
+                    "title": "Strata ACP P1 Proposal",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "result": {
+                  "protocolVersion": 1,
+                  "agentCapabilities": {
+                    "loadSession": true,
+                    "promptCapabilities": {
+                      "image": false,
+                      "audio": false,
+                      "embeddedContext": false
+                    },
+                    "mcpCapabilities": {
+                      "http": false,
+                      "sse": false
+                    },
+                    "sessionCapabilities": {}
+                  },
+                  "authMethods": [],
+                  "agentInfo": {
+                    "name": "synthetic-acp-agent",
+                    "title": "Synthetic ACP Agent",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 1
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "session/new",
+                "params": {
+                  "cwd": "/srv/checkout/acp-p1-synthetic",
+                  "mcpServers": []
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-02",
+                "requestId": 1
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "result": {
+                  "sessionId": "acp-syn-session-02"
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-02",
+                "requestId": 2
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "method": "session/prompt",
+                "params": {
+                  "sessionId": "acp-syn-session-02",
+                  "prompt": [
+                    {
+                      "type": "text",
+                      "text": "Summarize the synthetic fixture slice and propose one bounded diff."
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-02",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-02",
+                  "update": {
+                    "sessionUpdate": "agent_message_chunk",
+                    "messageId": "syn-msg-02a",
+                    "content": {
+                      "type": "text",
+                      "text": "Synthetic summary: reviewed the fixture slice; one bounded diff proposed."
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-02",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "result": {
+                  "stopReason": "end_turn"
+                }
+              }
+            }
+          ],
+          "nativeCounts": {
+            "initialize": 1,
+            "session/new": 1,
+            "session/prompt": 1,
+            "session/cancel": 0,
+            "session/load": 0,
+            "session/list": 0
+          },
+          "decisions": {
+            "admission": "Concurrent duplicates serialize at the reserved key; the second submit rejoins the same admission and starts no native work.",
+            "snapshots": [
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 1,
+                "state": "running"
+              },
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 2,
+                "state": "succeeded",
+                "result_sha256": "49fc02888e95a04fd1cd55cdb7ca99ef1a3e8387f6305bd50f43e2037e23d9c2"
+              }
+            ],
+            "result": {
+              "format": "strata-agent-task-result/1",
+              "task": {
+                "connection_id": "acp-p1-conn",
+                "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "binding": {
+                  "project_id": "acp-p1-project",
+                  "model_version": "strata/acp-p1-synthetic",
+                  "repository_id": "acp-p1-repo"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+              },
+              "summary": "Synthetic summary: reviewed the fixture slice; one bounded diff proposed.",
+              "artifacts": [],
+              "trust": "agent-output"
+            },
+            "errors": [],
+            "notes": [
+              {
+                "id": "second-submit",
+                "text": "Caller B's submit returns the current snapshot for the identical request; it is one task, not two."
+              }
+            ],
+            "completionEligibility": "hypothetical-qualified-profile-and-retained-original-prompt"
+          },
+          "expectations": {
+            "duplicatesSerializeAtReservation": true,
+            "secondSubmitStartsNoNativeWork": true,
+            "singleAdmission": true,
+            "sessionNewCount": 1,
+            "sessionPromptCount": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "changed-digest",
+      "summary": "The same (connection_id, task_id) with a changed complete digest is EXECUTION_CONFLICT even after the original task reached a terminal state; no replacement task is created.",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "acp-p1-conn",
+        "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+        "binding": {
+          "project_id": "acp-p1-project",
+          "model_version": "strata/acp-p1-synthetic",
+          "repository_id": "acp-p1-repo"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+        "instruction": "Summarize the synthetic fixture slice and propose one bounded diff.",
+        "limits": {
+          "runtime_ms": 600000,
+          "output_bytes": 8192
+        }
+      },
+      "changedTask": {
+        "format": "strata-agent-task/1",
+        "connection_id": "acp-p1-conn",
+        "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+        "binding": {
+          "project_id": "acp-p1-project",
+          "model_version": "strata/acp-p1-synthetic",
+          "repository_id": "acp-p1-repo"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+        "instruction": "Different instruction with a changed complete digest.",
+        "limits": {
+          "runtime_ms": 600000,
+          "output_bytes": 8192
+        }
+      },
+      "variants": [
+        {
+          "id": "primary",
+          "journal": [
+            {
+              "seq": 1,
+              "kind": "reserve",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": null,
+              "note": "Original admission reserved with digest 19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f.",
+              "connectionId": "acp-p1-conn",
+              "requestSha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+            },
+            {
+              "seq": 2,
+              "kind": "startup-initialized",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": 0,
+              "note": "Supervised startup completed."
+            },
+            {
+              "seq": 3,
+              "kind": "session-new-retained",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-03",
+              "requestId": 1,
+              "note": "Session retained for the original digest."
+            },
+            {
+              "seq": 4,
+              "kind": "prompt-sent",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-03",
+              "requestId": 2,
+              "note": "One prompt for the original digest."
+            },
+            {
+              "seq": 5,
+              "kind": "completion-retained",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-03",
+              "requestId": 2,
+              "note": "Terminal succeeded reached with immutable result digest 49fc02888e95a04fd1cd55cdb7ca99ef1a3e8387f6305bd50f43e2037e23d9c2."
+            },
+            {
+              "seq": 6,
+              "kind": "result-frozen",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-03",
+              "requestId": 2,
+              "note": "Retained immutable result frozen with digest 49fc02888e95a04fd1cd55cdb7ca99ef1a3e8387f6305bd50f43e2037e23d9c2 before emitting success."
+            },
+            {
+              "seq": 7,
+              "kind": "conflict-recorded",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": null,
+              "note": "Later submit with changed digest 521af6213852648bfa2a1a9d487c5a6256d6aa1001aa1746bf990cf0975a52fd on the same key conflicts after the terminal state; no new UUID, retry or fallback.",
+              "changedRequestSha256": "521af6213852648bfa2a1a9d487c5a6256d6aa1001aa1746bf990cf0975a52fd"
+            }
+          ],
+          "messages": [
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "method": "initialize",
+                "params": {
+                  "protocolVersion": 1,
+                  "clientCapabilities": {
+                    "fs": {
+                      "readTextFile": false,
+                      "writeTextFile": false
+                    },
+                    "terminal": false,
+                    "auth": {
+                      "terminal": false
+                    }
+                  },
+                  "clientInfo": {
+                    "name": "strata-acp-p1-proposal",
+                    "title": "Strata ACP P1 Proposal",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "result": {
+                  "protocolVersion": 1,
+                  "agentCapabilities": {
+                    "loadSession": true,
+                    "promptCapabilities": {
+                      "image": false,
+                      "audio": false,
+                      "embeddedContext": false
+                    },
+                    "mcpCapabilities": {
+                      "http": false,
+                      "sse": false
+                    },
+                    "sessionCapabilities": {}
+                  },
+                  "authMethods": [],
+                  "agentInfo": {
+                    "name": "synthetic-acp-agent",
+                    "title": "Synthetic ACP Agent",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 1
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "session/new",
+                "params": {
+                  "cwd": "/srv/checkout/acp-p1-synthetic",
+                  "mcpServers": []
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-03",
+                "requestId": 1
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "result": {
+                  "sessionId": "acp-syn-session-03"
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-03",
+                "requestId": 2
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "method": "session/prompt",
+                "params": {
+                  "sessionId": "acp-syn-session-03",
+                  "prompt": [
+                    {
+                      "type": "text",
+                      "text": "Summarize the synthetic fixture slice and propose one bounded diff."
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-03",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "result": {
+                  "stopReason": "end_turn"
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": null
+              },
+              "direction": "annotation",
+              "note": "A later submit with the changed instruction never reaches the wire; the conflict is recorded at the journal key."
+            }
+          ],
+          "nativeCounts": {
+            "initialize": 1,
+            "session/new": 1,
+            "session/prompt": 1,
+            "session/cancel": 0,
+            "session/load": 0,
+            "session/list": 0
+          },
+          "decisions": {
+            "admission": "The original key is permanent; a changed complete digest on the same key is refused even after the terminal state, without allocating a replacement task.",
+            "snapshots": [
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 1,
+                "state": "running"
+              },
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 2,
+                "state": "succeeded",
+                "result_sha256": "49fc02888e95a04fd1cd55cdb7ca99ef1a3e8387f6305bd50f43e2037e23d9c2"
+              }
+            ],
+            "result": {
+              "format": "strata-agent-task-result/1",
+              "task": {
+                "connection_id": "acp-p1-conn",
+                "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "binding": {
+                  "project_id": "acp-p1-project",
+                  "model_version": "strata/acp-p1-synthetic",
+                  "repository_id": "acp-p1-repo"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+              },
+              "summary": "Synthetic summary: reviewed the fixture slice; one bounded diff proposed.",
+              "artifacts": [],
+              "trust": "agent-output"
+            },
+            "errors": [
+              {
+                "operation": "submit",
+                "code": "EXECUTION_CONFLICT",
+                "dispatch": "unknown",
+                "note": "The changed-digest submit was invoked, so dispatch certainty is conservatively unknown; the refusal creates no replacement task.",
+                "message": "Agent execution could not complete the requested operation."
+              }
+            ],
+            "notes": [
+              {
+                "id": "terminal-conflict",
+                "text": "The conflict holds even though the original task already reached succeeded; terminal snapshots never change and the key is never reused."
+              }
+            ],
+            "completionEligibility": "hypothetical-qualified-profile-and-retained-original-prompt"
+          },
+          "expectations": {
+            "conflictEvenAfterTerminal": true,
+            "noReplacementTaskId": true,
+            "nativeCountsUnchanged": true,
+            "errorCode": "EXECUTION_CONFLICT",
+            "errorDispatch": "unknown"
+          }
+        }
+      ]
+    },
+    {
+      "id": "lost-session-new-response",
+      "summary": "The session/new reply never arrives; without a retained exact native identity the admission stays uncertain, blocks a second session/new or session/prompt, and a same-digest resubmit only returns the retained queued snapshot.",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "acp-p1-conn",
+        "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+        "binding": {
+          "project_id": "acp-p1-project",
+          "model_version": "strata/acp-p1-synthetic",
+          "repository_id": "acp-p1-repo"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+        "instruction": "Summarize the synthetic fixture slice and propose one bounded diff.",
+        "limits": {
+          "runtime_ms": 600000,
+          "output_bytes": 8192
+        }
+      },
+      "variants": [
+        {
+          "id": "primary",
+          "journal": [
+            {
+              "seq": 1,
+              "kind": "reserve",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": null,
+              "note": "Reservation with digest 19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f precedes native work.",
+              "connectionId": "acp-p1-conn",
+              "requestSha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+            },
+            {
+              "seq": 2,
+              "kind": "startup-initialized",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": 0,
+              "note": "Supervised startup completed."
+            },
+            {
+              "seq": 3,
+              "kind": "session-new-sent",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": 1,
+              "note": "session/new dispatched; the reply is pending."
+            },
+            {
+              "seq": 4,
+              "kind": "session-new-response-lost",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": 1,
+              "note": "No sessionId was retained; a native session may or may not exist."
+            },
+            {
+              "seq": 5,
+              "kind": "admission-uncertain",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": null,
+              "note": "Uncertainty is kept in the journal; a second session/new or any session/prompt is blocked. ACP has no lookup by the original Strata task id."
+            }
+          ],
+          "messages": [
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "method": "initialize",
+                "params": {
+                  "protocolVersion": 1,
+                  "clientCapabilities": {
+                    "fs": {
+                      "readTextFile": false,
+                      "writeTextFile": false
+                    },
+                    "terminal": false,
+                    "auth": {
+                      "terminal": false
+                    }
+                  },
+                  "clientInfo": {
+                    "name": "strata-acp-p1-proposal",
+                    "title": "Strata ACP P1 Proposal",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "result": {
+                  "protocolVersion": 1,
+                  "agentCapabilities": {
+                    "loadSession": true,
+                    "promptCapabilities": {
+                      "image": false,
+                      "audio": false,
+                      "embeddedContext": false
+                    },
+                    "mcpCapabilities": {
+                      "http": false,
+                      "sse": false
+                    },
+                    "sessionCapabilities": {}
+                  },
+                  "authMethods": [],
+                  "agentInfo": {
+                    "name": "synthetic-acp-agent",
+                    "title": "Synthetic ACP Agent",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 1
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "session/new",
+                "params": {
+                  "cwd": "/srv/checkout/acp-p1-synthetic",
+                  "mcpServers": []
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 1
+              },
+              "direction": "annotation",
+              "note": "The session/new response never arrives (transport loss). No sessionId exists to retain, so no session/prompt can be attributable and no second session/new is sent."
+            }
+          ],
+          "nativeCounts": {
+            "initialize": 1,
+            "session/new": 1,
+            "session/prompt": 0,
+            "session/cancel": 0,
+            "session/load": 0,
+            "session/list": 0
+          },
+          "decisions": {
+            "admission": "The reservation survives, but the missing native identity leaves the admission uncertain; recovery is blocked rather than retried.",
+            "snapshots": [
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 1,
+                "state": "queued"
+              }
+            ],
+            "result": null,
+            "errors": [
+              {
+                "operation": "submit",
+                "code": "EXECUTION_UNAVAILABLE",
+                "dispatch": "unknown",
+                "note": "session/new was dispatched, so the failed call is conservatively unknown; the queued snapshot is the retained admission state, not an invented unknown terminal state.",
+                "message": "Agent execution could not complete the requested operation."
+              }
+            ],
+            "notes": [
+              {
+                "id": "resubmit",
+                "text": "A same-digest resubmit returns the retained queued snapshot and performs no native call; the uncertainty lives in this journal, outside the common status DTO."
+              }
+            ]
+          },
+          "expectations": {
+            "uncertainAdmissionRetained": true,
+            "secondSessionNewBlocked": true,
+            "resubmitReturnsRetainedQueuedSnapshot": true,
+            "uncertaintyOutsideStatusDto": true,
+            "sessionNewCount": 1,
+            "sessionPromptCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "lost-prompt-completion",
+      "summary": "The session/prompt response is lost after updates were observed; a later session/load replay, replayed assistant text, and session title/time updates are not completion receipts, so the task stays non-terminal and the result stays unavailable.",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "acp-p1-conn",
+        "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+        "binding": {
+          "project_id": "acp-p1-project",
+          "model_version": "strata/acp-p1-synthetic",
+          "repository_id": "acp-p1-repo"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+        "instruction": "Summarize the synthetic fixture slice and propose one bounded diff.",
+        "limits": {
+          "runtime_ms": 600000,
+          "output_bytes": 8192
+        }
+      },
+      "variants": [
+        {
+          "id": "primary",
+          "journal": [
+            {
+              "seq": 1,
+              "kind": "reserve",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": null,
+              "note": "Reservation with digest 19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f.",
+              "connectionId": "acp-p1-conn",
+              "requestSha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+            },
+            {
+              "seq": 2,
+              "kind": "startup-initialized",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": 0,
+              "note": "Retained initialize response advertises loadSession true, so an explicit recovery observation via session/load is permitted."
+            },
+            {
+              "seq": 3,
+              "kind": "session-new-retained",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-05",
+              "requestId": 1,
+              "note": "Native session identity retained."
+            },
+            {
+              "seq": 4,
+              "kind": "prompt-sent",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-05",
+              "requestId": 2,
+              "note": "The exact prompt request id is retained with the session identity."
+            },
+            {
+              "seq": 5,
+              "kind": "update-observed",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-05",
+              "requestId": 2,
+              "note": "Partial streamed chunks observed; no completion."
+            },
+            {
+              "seq": 6,
+              "kind": "completion-lost",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-05",
+              "requestId": 2,
+              "note": "The session/prompt response for request 2 never arrives. Even a retained sessionId does not prove the original prompt completed."
+            },
+            {
+              "seq": 7,
+              "kind": "replay-observed",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-05",
+              "requestId": 3,
+              "note": "session/load replays history and session_info_update reports a title and updatedAt; none of these is a terminal task receipt, so the observation is not converted into success."
+            },
+            {
+              "seq": 8,
+              "kind": "recovery-blocked",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-05",
+              "requestId": null,
+              "note": "No second session/prompt; the result stays unavailable and the running snapshot is the last observed state."
+            }
+          ],
+          "messages": [
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "method": "initialize",
+                "params": {
+                  "protocolVersion": 1,
+                  "clientCapabilities": {
+                    "fs": {
+                      "readTextFile": false,
+                      "writeTextFile": false
+                    },
+                    "terminal": false,
+                    "auth": {
+                      "terminal": false
+                    }
+                  },
+                  "clientInfo": {
+                    "name": "strata-acp-p1-proposal",
+                    "title": "Strata ACP P1 Proposal",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "result": {
+                  "protocolVersion": 1,
+                  "agentCapabilities": {
+                    "loadSession": true,
+                    "promptCapabilities": {
+                      "image": false,
+                      "audio": false,
+                      "embeddedContext": false
+                    },
+                    "mcpCapabilities": {
+                      "http": false,
+                      "sse": false
+                    },
+                    "sessionCapabilities": {}
+                  },
+                  "authMethods": [],
+                  "agentInfo": {
+                    "name": "synthetic-acp-agent",
+                    "title": "Synthetic ACP Agent",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 1
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "session/new",
+                "params": {
+                  "cwd": "/srv/checkout/acp-p1-synthetic",
+                  "mcpServers": []
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-05",
+                "requestId": 1
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "result": {
+                  "sessionId": "acp-syn-session-05"
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-05",
+                "requestId": 2
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "method": "session/prompt",
+                "params": {
+                  "sessionId": "acp-syn-session-05",
+                  "prompt": [
+                    {
+                      "type": "text",
+                      "text": "Summarize the synthetic fixture slice and propose one bounded diff."
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-05",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-05",
+                  "update": {
+                    "sessionUpdate": "agent_message_chunk",
+                    "messageId": "syn-msg-05a",
+                    "content": {
+                      "type": "text",
+                      "text": "Drafting the summary."
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-05",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-05",
+                  "update": {
+                    "sessionUpdate": "tool_call",
+                    "toolCallId": "syn-call-05",
+                    "title": "Reading the fixture",
+                    "kind": "read",
+                    "status": "pending"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-05",
+                "requestId": 2
+              },
+              "direction": "annotation",
+              "note": "The response to request 2 never arrives; the attributable completion is missing."
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-05",
+                "requestId": 3
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 3,
+                "method": "session/load",
+                "params": {
+                  "sessionId": "acp-syn-session-05",
+                  "cwd": "/srv/checkout/acp-p1-synthetic",
+                  "mcpServers": []
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-05",
+                "requestId": 3
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-05",
+                  "update": {
+                    "sessionUpdate": "user_message_chunk",
+                    "messageId": "syn-msg-05u",
+                    "content": {
+                      "type": "text",
+                      "text": "Summarize the synthetic fixture slice and propose one bounded diff."
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-05",
+                "requestId": 3
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-05",
+                  "update": {
+                    "sessionUpdate": "agent_message_chunk",
+                    "messageId": "syn-msg-05b",
+                    "content": {
+                      "type": "text",
+                      "text": "Drafting the summary."
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-05",
+                "requestId": 3
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-05",
+                  "update": {
+                    "sessionUpdate": "session_info_update",
+                    "title": "Synthetic recovery replay",
+                    "updatedAt": "2026-10-12T21:00:00Z"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-05",
+                "requestId": 3
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 3,
+                "result": {}
+              }
+            }
+          ],
+          "nativeCounts": {
+            "initialize": 1,
+            "session/new": 1,
+            "session/prompt": 1,
+            "session/cancel": 0,
+            "session/load": 1,
+            "session/list": 0
+          },
+          "decisions": {
+            "admission": "Identity is fully retained, but the attributable completion is missing; replayed history is an observation, never a task receipt.",
+            "snapshots": [
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 1,
+                "state": "running"
+              }
+            ],
+            "result": null,
+            "errors": [
+              {
+                "operation": "result",
+                "code": "EXECUTION_RESULT_UNAVAILABLE",
+                "dispatch": "not_dispatched",
+                "note": "The guarded client refuses result before dispatch because no succeeded snapshot exists for the exact request; replayed assistant text, title and updatedAt are not receipts.",
+                "message": "Agent execution could not complete the requested operation."
+              }
+            ],
+            "notes": [
+              {
+                "id": "replay-not-receipt",
+                "text": "Even with the sessionId retained, the missing completion keeps the result unavailable; the uncertainty stays in this journal outside the common status DTO."
+              }
+            ]
+          },
+          "expectations": {
+            "historyReplayIsNotACompletionReceipt": true,
+            "assistantTextIsNotAReceipt": true,
+            "titleAndTimeAreNotReceipts": true,
+            "noSecondPrompt": true,
+            "resultUnavailable": "EXECUTION_RESULT_UNAVAILABLE",
+            "statusRemainsRunning": true,
+            "sessionPromptCount": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "restart-with-and-without-native-identity",
+      "summary": "After a host restart, a durably committed completion with retained native identity is retrieved immutably with zero new native calls, while a lost session/new identity blocks recovery: no session/load, no session/list substitution, no second start.",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "acp-p1-conn",
+        "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+        "binding": {
+          "project_id": "acp-p1-project",
+          "model_version": "strata/acp-p1-synthetic",
+          "repository_id": "acp-p1-repo"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+        "instruction": "Summarize the synthetic fixture slice and propose one bounded diff.",
+        "limits": {
+          "runtime_ms": 600000,
+          "output_bytes": 8192
+        }
+      },
+      "variants": [
+        {
+          "id": "with-native-identity",
+          "journal": [
+            {
+              "seq": 1,
+              "kind": "reserve",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": null,
+              "note": "Reservation with digest 19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f before the restart.",
+              "connectionId": "acp-p1-conn",
+              "requestSha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+            },
+            {
+              "seq": 2,
+              "kind": "session-new-retained",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-06",
+              "requestId": 1,
+              "note": "Native identity retained before the restart."
+            },
+            {
+              "seq": 3,
+              "kind": "prompt-sent",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-06",
+              "requestId": 2,
+              "note": "Prompt request id retained."
+            },
+            {
+              "seq": 4,
+              "kind": "completion-retained",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-06",
+              "requestId": 2,
+              "note": "Immutable attributable completion committed before the restart."
+            },
+            {
+              "seq": 5,
+              "kind": "result-frozen",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-06",
+              "requestId": 2,
+              "note": "Result digest 49fc02888e95a04fd1cd55cdb7ca99ef1a3e8387f6305bd50f43e2037e23d9c2 frozen before the restart."
+            },
+            {
+              "seq": 6,
+              "kind": "restart-reconstructed",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-06",
+              "requestId": null,
+              "note": "Host restart; the journal is reconstructed under current authorization. status returns the identical succeeded snapshot and result returns the frozen bytes; no native call is made."
+            }
+          ],
+          "messages": [
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "method": "initialize",
+                "params": {
+                  "protocolVersion": 1,
+                  "clientCapabilities": {
+                    "fs": {
+                      "readTextFile": false,
+                      "writeTextFile": false
+                    },
+                    "terminal": false,
+                    "auth": {
+                      "terminal": false
+                    }
+                  },
+                  "clientInfo": {
+                    "name": "strata-acp-p1-proposal",
+                    "title": "Strata ACP P1 Proposal",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "result": {
+                  "protocolVersion": 1,
+                  "agentCapabilities": {
+                    "loadSession": true,
+                    "promptCapabilities": {
+                      "image": false,
+                      "audio": false,
+                      "embeddedContext": false
+                    },
+                    "mcpCapabilities": {
+                      "http": false,
+                      "sse": false
+                    },
+                    "sessionCapabilities": {}
+                  },
+                  "authMethods": [],
+                  "agentInfo": {
+                    "name": "synthetic-acp-agent",
+                    "title": "Synthetic ACP Agent",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 1
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "session/new",
+                "params": {
+                  "cwd": "/srv/checkout/acp-p1-synthetic",
+                  "mcpServers": []
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-06",
+                "requestId": 1
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "result": {
+                  "sessionId": "acp-syn-session-06"
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-06",
+                "requestId": 2
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "method": "session/prompt",
+                "params": {
+                  "sessionId": "acp-syn-session-06",
+                  "prompt": [
+                    {
+                      "type": "text",
+                      "text": "Summarize the synthetic fixture slice and propose one bounded diff."
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-06",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "result": {
+                  "stopReason": "end_turn"
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-06",
+                "requestId": null
+              },
+              "direction": "annotation",
+              "note": "Host restart. Post-restart status and result are served from the retained journal; no native message follows this annotation."
+            }
+          ],
+          "nativeCounts": {
+            "initialize": 1,
+            "session/new": 1,
+            "session/prompt": 1,
+            "session/cancel": 0,
+            "session/load": 0,
+            "session/list": 0
+          },
+          "decisions": {
+            "admission": "The committed completion is immutable: restart retrieval returns the retained result without a second native start.",
+            "snapshots": [
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 1,
+                "state": "running"
+              },
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 2,
+                "state": "succeeded",
+                "result_sha256": "49fc02888e95a04fd1cd55cdb7ca99ef1a3e8387f6305bd50f43e2037e23d9c2"
+              }
+            ],
+            "result": {
+              "format": "strata-agent-task-result/1",
+              "task": {
+                "connection_id": "acp-p1-conn",
+                "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "binding": {
+                  "project_id": "acp-p1-project",
+                  "model_version": "strata/acp-p1-synthetic",
+                  "repository_id": "acp-p1-repo"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+              },
+              "summary": "Synthetic summary: reviewed the fixture slice; one bounded diff proposed.",
+              "artifacts": [],
+              "trust": "agent-output"
+            },
+            "errors": [],
+            "notes": [
+              {
+                "id": "immutable-retrieval",
+                "text": "The terminal snapshot and frozen result are returned unchanged after restart; terminal immutability holds with no native call."
+              }
+            ],
+            "completionEligibility": "hypothetical-qualified-profile-and-retained-original-prompt"
+          },
+          "expectations": {
+            "committedImmutableResultRetrieved": true,
+            "postRestartNativeCalls": 0,
+            "terminalSnapshotUnchanged": true,
+            "resultDigestMatches": true
+          }
+        },
+        {
+          "id": "without-native-identity",
+          "journal": [
+            {
+              "seq": 1,
+              "kind": "reserve",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": null,
+              "note": "Reservation with digest 19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f before the restart.",
+              "connectionId": "acp-p1-conn",
+              "requestSha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+            },
+            {
+              "seq": 2,
+              "kind": "startup-initialized",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": 0,
+              "note": "Startup completed before the loss."
+            },
+            {
+              "seq": 3,
+              "kind": "session-new-sent",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": 1,
+              "note": "session/new dispatched before the restart."
+            },
+            {
+              "seq": 4,
+              "kind": "session-new-response-lost",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": 1,
+              "note": "The reply was lost before retention; no sessionId exists in the journal."
+            },
+            {
+              "seq": 5,
+              "kind": "restart-reconstructed",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": null,
+              "note": "Host restart reconstructs the reservation only."
+            },
+            {
+              "seq": 6,
+              "kind": "recovery-blocked",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": null,
+              "note": "No identity to load: session/load needs a sessionId, session/list cannot map the Strata task id (title/time matching would be a substitution), and a second session/new or session/prompt is blocked. The missing completion stays result-unavailable and uncertain."
+            }
+          ],
+          "messages": [
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "method": "initialize",
+                "params": {
+                  "protocolVersion": 1,
+                  "clientCapabilities": {
+                    "fs": {
+                      "readTextFile": false,
+                      "writeTextFile": false
+                    },
+                    "terminal": false,
+                    "auth": {
+                      "terminal": false
+                    }
+                  },
+                  "clientInfo": {
+                    "name": "strata-acp-p1-proposal",
+                    "title": "Strata ACP P1 Proposal",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "result": {
+                  "protocolVersion": 1,
+                  "agentCapabilities": {
+                    "loadSession": true,
+                    "promptCapabilities": {
+                      "image": false,
+                      "audio": false,
+                      "embeddedContext": false
+                    },
+                    "mcpCapabilities": {
+                      "http": false,
+                      "sse": false
+                    },
+                    "sessionCapabilities": {}
+                  },
+                  "authMethods": [],
+                  "agentInfo": {
+                    "name": "synthetic-acp-agent",
+                    "title": "Synthetic ACP Agent",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 1
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "session/new",
+                "params": {
+                  "cwd": "/srv/checkout/acp-p1-synthetic",
+                  "mcpServers": []
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 1
+              },
+              "direction": "annotation",
+              "note": "Response lost before the restart; no sessionId was ever retained."
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": null
+              },
+              "direction": "annotation",
+              "note": "Host restart. No session/load, no session/list and no second session/new or session/prompt follows this annotation."
+            }
+          ],
+          "nativeCounts": {
+            "initialize": 1,
+            "session/new": 1,
+            "session/prompt": 0,
+            "session/cancel": 0,
+            "session/load": 0,
+            "session/list": 0
+          },
+          "decisions": {
+            "admission": "Without retained exact native identity, recovery is unsupported and uncertain; no substitution is attempted.",
+            "snapshots": [
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 1,
+                "state": "queued"
+              }
+            ],
+            "result": null,
+            "errors": [
+              {
+                "operation": "result",
+                "code": "EXECUTION_RESULT_UNAVAILABLE",
+                "dispatch": "not_dispatched",
+                "note": "The missing completion remains result unavailable; the uncertainty is represented here, not as an invented terminal status DTO state.",
+                "message": "Agent execution could not complete the requested operation."
+              }
+            ],
+            "notes": [
+              {
+                "id": "no-substitution",
+                "text": "Restart cannot prove the original prompt completed; session/list title/time matching and history reconstruction are refused as substitutions."
+              }
+            ]
+          },
+          "expectations": {
+            "noSessionLoadWithoutIdentity": true,
+            "noSessionListSubstitution": true,
+            "noSecondStart": true,
+            "missingCompletionUncertain": true,
+            "sessionLoadCount": 0,
+            "sessionListCount": 0,
+            "sessionPromptCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "cancellation-completion-race",
+      "summary": "session/cancel only emits cancel_requested; the race is decided by the original attributable session/prompt response: end_turn wins to succeeded, while stopReason cancelled confirms a successful abort.",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "acp-p1-conn",
+        "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+        "binding": {
+          "project_id": "acp-p1-project",
+          "model_version": "strata/acp-p1-synthetic",
+          "repository_id": "acp-p1-repo"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+        "instruction": "Summarize the synthetic fixture slice and propose one bounded diff.",
+        "limits": {
+          "runtime_ms": 600000,
+          "output_bytes": 8192
+        }
+      },
+      "variants": [
+        {
+          "id": "completion-wins",
+          "journal": [
+            {
+              "seq": 1,
+              "kind": "reserve",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": null,
+              "note": "Reservation with digest 19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f.",
+              "connectionId": "acp-p1-conn",
+              "requestSha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+            },
+            {
+              "seq": 2,
+              "kind": "session-new-retained",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-07a",
+              "requestId": 1,
+              "note": "Session identity retained."
+            },
+            {
+              "seq": 3,
+              "kind": "prompt-sent",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-07a",
+              "requestId": 2,
+              "note": "Prompt request id 2 in flight."
+            },
+            {
+              "seq": 4,
+              "kind": "cancel-notified",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-07a",
+              "requestId": null,
+              "note": "session/cancel notification sent; only cancel_requested is claimed at this point."
+            },
+            {
+              "seq": 5,
+              "kind": "completion-retained",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-07a",
+              "requestId": 2,
+              "note": "Completion had already won: the attributable response is end_turn, not cancelled. A terminal success cannot be restarted by cancel."
+            },
+            {
+              "seq": 6,
+              "kind": "result-frozen",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-07a",
+              "requestId": 2,
+              "note": "Result digest 7a5e541a297f026527e66dfb031d2edfa1751f004058b8bbfbb6f0d7887d1309 frozen."
+            }
+          ],
+          "messages": [
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "method": "initialize",
+                "params": {
+                  "protocolVersion": 1,
+                  "clientCapabilities": {
+                    "fs": {
+                      "readTextFile": false,
+                      "writeTextFile": false
+                    },
+                    "terminal": false,
+                    "auth": {
+                      "terminal": false
+                    }
+                  },
+                  "clientInfo": {
+                    "name": "strata-acp-p1-proposal",
+                    "title": "Strata ACP P1 Proposal",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "result": {
+                  "protocolVersion": 1,
+                  "agentCapabilities": {
+                    "loadSession": true,
+                    "promptCapabilities": {
+                      "image": false,
+                      "audio": false,
+                      "embeddedContext": false
+                    },
+                    "mcpCapabilities": {
+                      "http": false,
+                      "sse": false
+                    },
+                    "sessionCapabilities": {}
+                  },
+                  "authMethods": [],
+                  "agentInfo": {
+                    "name": "synthetic-acp-agent",
+                    "title": "Synthetic ACP Agent",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 1
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "session/new",
+                "params": {
+                  "cwd": "/srv/checkout/acp-p1-synthetic",
+                  "mcpServers": []
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-07a",
+                "requestId": 1
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "result": {
+                  "sessionId": "acp-syn-session-07a"
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-07a",
+                "requestId": 2
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "method": "session/prompt",
+                "params": {
+                  "sessionId": "acp-syn-session-07a",
+                  "prompt": [
+                    {
+                      "type": "text",
+                      "text": "Summarize the synthetic fixture slice and propose one bounded diff."
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-07a",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-07a",
+                  "update": {
+                    "sessionUpdate": "agent_message_chunk",
+                    "messageId": "syn-msg-07a",
+                    "content": {
+                      "type": "text",
+                      "text": "Turn finished before cancellation acted; the retained attributable completion confirms end_turn."
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "direction": "annotation",
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-07a",
+                "requestId": 2
+              },
+              "note": "Assumed agent ordering: the original prompt completion and end_turn reply were committed before the agent received the later cancellation notification. The client sends cancel before reading that already-written reply; this is not end_turn after acting on cancellation."
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-07a",
+                "requestId": null
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/cancel",
+                "params": {
+                  "sessionId": "acp-syn-session-07a"
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-07a",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "result": {
+                  "stopReason": "end_turn"
+                }
+              }
+            }
+          ],
+          "nativeCounts": {
+            "initialize": 1,
+            "session/new": 1,
+            "session/prompt": 1,
+            "session/cancel": 1,
+            "session/load": 0,
+            "session/list": 0
+          },
+          "decisions": {
+            "admission": "cancel is cooperative: cancel_requested is emitted, and the already-won completion decides the terminal state.",
+            "snapshots": [
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 1,
+                "state": "running"
+              },
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 2,
+                "state": "cancel_requested"
+              },
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 3,
+                "state": "succeeded",
+                "result_sha256": "7a5e541a297f026527e66dfb031d2edfa1751f004058b8bbfbb6f0d7887d1309"
+              }
+            ],
+            "result": {
+              "format": "strata-agent-task-result/1",
+              "task": {
+                "connection_id": "acp-p1-conn",
+                "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "binding": {
+                  "project_id": "acp-p1-project",
+                  "model_version": "strata/acp-p1-synthetic",
+                  "repository_id": "acp-p1-repo"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+              },
+              "summary": "Turn finished before cancellation acted; the retained attributable completion confirms end_turn.",
+              "artifacts": [],
+              "trust": "agent-output"
+            },
+            "errors": [],
+            "notes": [
+              {
+                "id": "race-outcome",
+                "text": "This synthetic race assumes the agent committed completion before receiving cancellation. The client subsequently reads that delayed original reply; no rule allows ignoring cancellation while a prompt remains active."
+              }
+            ],
+            "completionEligibility": "hypothetical-qualified-profile-and-retained-original-prompt",
+            "raceOrdering": {
+              "agentCommittedBeforeReceivingCancel": true,
+              "clientReadsReplyAfterSendingCancel": true
+            }
+          },
+          "expectations": {
+            "cancelRequestedEmitted": true,
+            "completionAlreadyWon": true,
+            "terminalStateAfterCancelRequest": "succeeded",
+            "cancelledConfirmationAbsent": true,
+            "resultAvailable": true
+          }
+        },
+        {
+          "id": "abort-confirmed",
+          "journal": [
+            {
+              "seq": 1,
+              "kind": "reserve",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": null,
+              "note": "Reservation with digest 19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f.",
+              "connectionId": "acp-p1-conn",
+              "requestSha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+            },
+            {
+              "seq": 2,
+              "kind": "session-new-retained",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-07b",
+              "requestId": 1,
+              "note": "Session identity retained."
+            },
+            {
+              "seq": 3,
+              "kind": "prompt-sent",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-07b",
+              "requestId": 2,
+              "note": "Prompt request id 2 in flight."
+            },
+            {
+              "seq": 4,
+              "kind": "cancel-notified",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-07b",
+              "requestId": null,
+              "note": "session/cancel notification sent; the pending session/request_permission is answered with the cancelled outcome as v1 requires."
+            },
+            {
+              "seq": 5,
+              "kind": "completion-retained",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-07b",
+              "requestId": 2,
+              "note": "The original attributable session/prompt response carries stopReason cancelled, confirming the successful abort per v1."
+            }
+          ],
+          "messages": [
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "method": "initialize",
+                "params": {
+                  "protocolVersion": 1,
+                  "clientCapabilities": {
+                    "fs": {
+                      "readTextFile": false,
+                      "writeTextFile": false
+                    },
+                    "terminal": false,
+                    "auth": {
+                      "terminal": false
+                    }
+                  },
+                  "clientInfo": {
+                    "name": "strata-acp-p1-proposal",
+                    "title": "Strata ACP P1 Proposal",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "result": {
+                  "protocolVersion": 1,
+                  "agentCapabilities": {
+                    "loadSession": true,
+                    "promptCapabilities": {
+                      "image": false,
+                      "audio": false,
+                      "embeddedContext": false
+                    },
+                    "mcpCapabilities": {
+                      "http": false,
+                      "sse": false
+                    },
+                    "sessionCapabilities": {}
+                  },
+                  "authMethods": [],
+                  "agentInfo": {
+                    "name": "synthetic-acp-agent",
+                    "title": "Synthetic ACP Agent",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 1
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "session/new",
+                "params": {
+                  "cwd": "/srv/checkout/acp-p1-synthetic",
+                  "mcpServers": []
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-07b",
+                "requestId": 1
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "result": {
+                  "sessionId": "acp-syn-session-07b"
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-07b",
+                "requestId": 2
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "method": "session/prompt",
+                "params": {
+                  "sessionId": "acp-syn-session-07b",
+                  "prompt": [
+                    {
+                      "type": "text",
+                      "text": "Summarize the synthetic fixture slice and propose one bounded diff."
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-07b",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-07b",
+                  "update": {
+                    "sessionUpdate": "tool_call",
+                    "toolCallId": "syn-call-07",
+                    "title": "Running the synthetic sweep",
+                    "kind": "execute",
+                    "status": "pending"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-07b",
+                "requestId": 5
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 5,
+                "method": "session/request_permission",
+                "params": {
+                  "sessionId": "acp-syn-session-07b",
+                  "toolCall": {
+                    "toolCallId": "syn-call-07",
+                    "title": "Running the synthetic sweep",
+                    "kind": "execute",
+                    "status": "pending"
+                  },
+                  "options": [
+                    {
+                      "optionId": "allow-once",
+                      "name": "Allow once",
+                      "kind": "allow_once"
+                    },
+                    {
+                      "optionId": "reject-once",
+                      "name": "Reject",
+                      "kind": "reject_once"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-07b",
+                "requestId": null
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/cancel",
+                "params": {
+                  "sessionId": "acp-syn-session-07b"
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-07b",
+                "requestId": 5
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 5,
+                "result": {
+                  "outcome": {
+                    "outcome": "cancelled"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-07b",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "result": {
+                  "stopReason": "cancelled"
+                }
+              }
+            }
+          ],
+          "nativeCounts": {
+            "initialize": 1,
+            "session/new": 1,
+            "session/prompt": 1,
+            "session/cancel": 1,
+            "session/load": 0,
+            "session/list": 0
+          },
+          "decisions": {
+            "admission": "cancelled requires the attributable prompt response with stopReason cancelled after the session/cancel notification.",
+            "snapshots": [
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 1,
+                "state": "running"
+              },
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 2,
+                "state": "cancel_requested"
+              },
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 3,
+                "state": "cancelled"
+              }
+            ],
+            "result": null,
+            "errors": [
+              {
+                "operation": "result",
+                "code": "EXECUTION_RESULT_UNAVAILABLE",
+                "dispatch": "not_dispatched",
+                "note": "A cancelled task has no success result.",
+                "message": "Agent execution could not complete the requested operation."
+              }
+            ],
+            "notes": [
+              {
+                "id": "non-proof-signals",
+                "text": "Generic $/cancel_request, a -32800 error on another request, EOF or stdin close, process exit, UI tool status and a local AbortSignal do not prove this task stopped; only the attributable cancelled reply does."
+              }
+            ]
+          },
+          "expectations": {
+            "promptCancelledReplyConfirmsAbort": true,
+            "pendingPermissionAnsweredCancelled": true,
+            "terminalState": "cancelled",
+            "genericSignalsAreNotStopProof": true,
+            "resultUnavailable": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "denied-permission",
+      "summary": "A fail-closed permission callback selects an actually offered reject_once option; the tool denial alone does not fail or stop the task, and the turn completes end_turn.",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "acp-p1-conn",
+        "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+        "binding": {
+          "project_id": "acp-p1-project",
+          "model_version": "strata/acp-p1-synthetic",
+          "repository_id": "acp-p1-repo"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+        "instruction": "Summarize the synthetic fixture slice and propose one bounded diff.",
+        "limits": {
+          "runtime_ms": 600000,
+          "output_bytes": 8192
+        }
+      },
+      "variants": [
+        {
+          "id": "primary",
+          "journal": [
+            {
+              "seq": 1,
+              "kind": "reserve",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": null,
+              "note": "Reservation with digest 19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f.",
+              "connectionId": "acp-p1-conn",
+              "requestSha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+            },
+            {
+              "seq": 2,
+              "kind": "session-new-retained",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-08",
+              "requestId": 1,
+              "note": "Session retained; fs and terminal client capabilities stay false, so those protocol callbacks are not advertised. This does not establish native isolation or absence of bypasses."
+            },
+            {
+              "seq": 3,
+              "kind": "prompt-sent",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-08",
+              "requestId": 2,
+              "note": "Prompt in flight."
+            },
+            {
+              "seq": 4,
+              "kind": "update-observed",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-08",
+              "requestId": 5,
+              "note": "Permission request observed for tool call syn-call-08; the host policy denies it."
+            },
+            {
+              "seq": 5,
+              "kind": "completion-retained",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-08",
+              "requestId": 2,
+              "note": "After the reject_once selection the agent continues and returns end_turn; the denial alone never becomes task failure or stop."
+            },
+            {
+              "seq": 6,
+              "kind": "result-frozen",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-08",
+              "requestId": 2,
+              "note": "Result digest 06851b9a141cfe05e352e93a5738e119f13002da0c754e1107ae4b3c2927a4fd frozen."
+            }
+          ],
+          "messages": [
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "method": "initialize",
+                "params": {
+                  "protocolVersion": 1,
+                  "clientCapabilities": {
+                    "fs": {
+                      "readTextFile": false,
+                      "writeTextFile": false
+                    },
+                    "terminal": false,
+                    "auth": {
+                      "terminal": false
+                    }
+                  },
+                  "clientInfo": {
+                    "name": "strata-acp-p1-proposal",
+                    "title": "Strata ACP P1 Proposal",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "result": {
+                  "protocolVersion": 1,
+                  "agentCapabilities": {
+                    "loadSession": true,
+                    "promptCapabilities": {
+                      "image": false,
+                      "audio": false,
+                      "embeddedContext": false
+                    },
+                    "mcpCapabilities": {
+                      "http": false,
+                      "sse": false
+                    },
+                    "sessionCapabilities": {}
+                  },
+                  "authMethods": [],
+                  "agentInfo": {
+                    "name": "synthetic-acp-agent",
+                    "title": "Synthetic ACP Agent",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 1
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "session/new",
+                "params": {
+                  "cwd": "/srv/checkout/acp-p1-synthetic",
+                  "mcpServers": []
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-08",
+                "requestId": 1
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "result": {
+                  "sessionId": "acp-syn-session-08"
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-08",
+                "requestId": 2
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "method": "session/prompt",
+                "params": {
+                  "sessionId": "acp-syn-session-08",
+                  "prompt": [
+                    {
+                      "type": "text",
+                      "text": "Summarize the synthetic fixture slice and propose one bounded diff."
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-08",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-08",
+                  "update": {
+                    "sessionUpdate": "tool_call",
+                    "toolCallId": "syn-call-08",
+                    "name": "run_sweep",
+                    "title": "Running the synthetic integration sweep",
+                    "kind": "execute",
+                    "status": "pending"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-08",
+                "requestId": 5
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 5,
+                "method": "session/request_permission",
+                "params": {
+                  "sessionId": "acp-syn-session-08",
+                  "toolCall": {
+                    "toolCallId": "syn-call-08",
+                    "title": "Running the synthetic integration sweep",
+                    "kind": "execute",
+                    "status": "pending"
+                  },
+                  "options": [
+                    {
+                      "optionId": "allow-once",
+                      "name": "Allow once",
+                      "kind": "allow_once"
+                    },
+                    {
+                      "optionId": "always-allow",
+                      "name": "Always allow",
+                      "kind": "allow_always"
+                    },
+                    {
+                      "optionId": "reject-once",
+                      "name": "Reject",
+                      "kind": "reject_once"
+                    },
+                    {
+                      "optionId": "always-reject",
+                      "name": "Always reject",
+                      "kind": "reject_always"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-08",
+                "requestId": 5
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 5,
+                "result": {
+                  "outcome": {
+                    "outcome": "selected",
+                    "optionId": "reject-once"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-08",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-08",
+                  "update": {
+                    "sessionUpdate": "tool_call_update",
+                    "toolCallId": "syn-call-08",
+                    "status": "failed"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-08",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-08",
+                  "update": {
+                    "sessionUpdate": "agent_message_chunk",
+                    "messageId": "syn-msg-08",
+                    "content": {
+                      "type": "text",
+                      "text": "Tool request denied with the offered reject_once option; the turn completed without it."
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-08",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "result": {
+                  "stopReason": "end_turn"
+                }
+              }
+            }
+          ],
+          "nativeCounts": {
+            "initialize": 1,
+            "session/new": 1,
+            "session/prompt": 1,
+            "session/cancel": 0,
+            "session/load": 0,
+            "session/list": 0
+          },
+          "decisions": {
+            "admission": "The permission callback is fail-closed: it selects an offered reject option and never widens to allow_always/allow_once or native unrestricted behavior.",
+            "snapshots": [
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 1,
+                "state": "running"
+              },
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 2,
+                "state": "succeeded",
+                "result_sha256": "06851b9a141cfe05e352e93a5738e119f13002da0c754e1107ae4b3c2927a4fd"
+              }
+            ],
+            "result": {
+              "format": "strata-agent-task-result/1",
+              "task": {
+                "connection_id": "acp-p1-conn",
+                "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "binding": {
+                  "project_id": "acp-p1-project",
+                  "model_version": "strata/acp-p1-synthetic",
+                  "repository_id": "acp-p1-repo"
+                },
+                "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+              },
+              "summary": "Tool request denied with the offered reject_once option; the turn completed without it.",
+              "artifacts": [],
+              "trust": "agent-output"
+            },
+            "errors": [],
+            "notes": [
+              {
+                "id": "local-failure-policy",
+                "text": "Local failure policy: the denied tool is a finite local outcome and this projection lets the turn complete. An operator policy may instead refuse continuation, but that refusal is explicit and separately represented."
+              },
+              {
+                "id": "later-prompt-refusal",
+                "text": "If a later prompt is refused, that refusal is its own finite outcome (for example stopReason refusal mapped to failed/TASK_POLICY); it is never inferred from this tool denial."
+              },
+              {
+                "id": "tool-level-failure",
+                "text": "The agent-reported failed status belongs to the tool call only; total task failure or stop is not inferred solely from the denial."
+              }
+            ],
+            "completionEligibility": "hypothetical-qualified-profile-and-retained-original-prompt"
+          },
+          "expectations": {
+            "selectedOptionWasOffered": true,
+            "selectedOptionKind": "reject_once",
+            "permissionWideningRefused": true,
+            "toolDenialAloneIsNotTaskFailure": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "revocation-late-output",
+      "summary": "Approval is revoked while the prompt is in flight; the late end_turn output is discarded without claiming rollback or cleanup, no success is emitted and no cleanup cancel is issued under the revoked grant.",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "acp-p1-conn",
+        "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+        "binding": {
+          "project_id": "acp-p1-project",
+          "model_version": "strata/acp-p1-synthetic",
+          "repository_id": "acp-p1-repo"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+        "instruction": "Summarize the synthetic fixture slice and propose one bounded diff.",
+        "limits": {
+          "runtime_ms": 600000,
+          "output_bytes": 8192
+        }
+      },
+      "variants": [
+        {
+          "id": "primary",
+          "journal": [
+            {
+              "seq": 1,
+              "kind": "reserve",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": null,
+              "note": "Reservation with digest 19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f.",
+              "connectionId": "acp-p1-conn",
+              "requestSha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+            },
+            {
+              "seq": 2,
+              "kind": "session-new-retained",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-09",
+              "requestId": 1,
+              "note": "Session retained under the then-current grant."
+            },
+            {
+              "seq": 3,
+              "kind": "prompt-sent",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-09",
+              "requestId": 2,
+              "note": "Prompt in flight when authority changes."
+            },
+            {
+              "seq": 4,
+              "kind": "approval-revoked",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-09",
+              "requestId": null,
+              "note": "The host revokes execution approval and bumps the generation; local waits abort and old task/result replay is denied."
+            },
+            {
+              "seq": 5,
+              "kind": "completion-discarded",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-09",
+              "requestId": 2,
+              "note": "The late end_turn response and final chunk arrive after the flip and are discarded. No succeeded snapshot, no rollback or cleanup claim, and no cleanup session/cancel under the revoked grant."
+            }
+          ],
+          "messages": [
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "method": "initialize",
+                "params": {
+                  "protocolVersion": 1,
+                  "clientCapabilities": {
+                    "fs": {
+                      "readTextFile": false,
+                      "writeTextFile": false
+                    },
+                    "terminal": false,
+                    "auth": {
+                      "terminal": false
+                    }
+                  },
+                  "clientInfo": {
+                    "name": "strata-acp-p1-proposal",
+                    "title": "Strata ACP P1 Proposal",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "result": {
+                  "protocolVersion": 1,
+                  "agentCapabilities": {
+                    "loadSession": true,
+                    "promptCapabilities": {
+                      "image": false,
+                      "audio": false,
+                      "embeddedContext": false
+                    },
+                    "mcpCapabilities": {
+                      "http": false,
+                      "sse": false
+                    },
+                    "sessionCapabilities": {}
+                  },
+                  "authMethods": [],
+                  "agentInfo": {
+                    "name": "synthetic-acp-agent",
+                    "title": "Synthetic ACP Agent",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 1
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "session/new",
+                "params": {
+                  "cwd": "/srv/checkout/acp-p1-synthetic",
+                  "mcpServers": []
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-09",
+                "requestId": 1
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "result": {
+                  "sessionId": "acp-syn-session-09"
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-09",
+                "requestId": 2
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "method": "session/prompt",
+                "params": {
+                  "sessionId": "acp-syn-session-09",
+                  "prompt": [
+                    {
+                      "type": "text",
+                      "text": "Summarize the synthetic fixture slice and propose one bounded diff."
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-09",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-09",
+                  "update": {
+                    "sessionUpdate": "agent_message_chunk",
+                    "messageId": "syn-msg-09a",
+                    "content": {
+                      "type": "text",
+                      "text": "Working on the summary."
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-09",
+                "requestId": null
+              },
+              "direction": "annotation",
+              "note": "Approval revoked and generation bumped here; late output below is discarded."
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-09",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-09",
+                  "update": {
+                    "sessionUpdate": "agent_message_chunk",
+                    "messageId": "syn-msg-09b",
+                    "content": {
+                      "type": "text",
+                      "text": "Synthetic summary: reviewed the fixture slice; one bounded diff proposed."
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-09",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "result": {
+                  "stopReason": "end_turn"
+                }
+              }
+            }
+          ],
+          "nativeCounts": {
+            "initialize": 1,
+            "session/new": 1,
+            "session/prompt": 1,
+            "session/cancel": 0,
+            "session/load": 0,
+            "session/list": 0
+          },
+          "decisions": {
+            "admission": "Late output under changed authority is rejected without claiming the remote work stopped, rolled back or was cleaned up.",
+            "snapshots": [
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 1,
+                "state": "running"
+              }
+            ],
+            "result": null,
+            "errors": [
+              {
+                "operation": "submit",
+                "code": "EXECUTION_STALE",
+                "dispatch": "unknown",
+                "note": "The generation flip discards the late completion of the already-dispatched submit; no success is emitted.",
+                "message": "Agent execution could not complete the requested operation."
+              },
+              {
+                "operation": "status",
+                "code": "EXECUTION_AUTH",
+                "dispatch": "not_dispatched",
+                "note": "Under the revoked grant the trusted local port refuses before any further dispatch; no cleanup session/cancel is issued under the revoked grant.",
+                "message": "Agent execution could not complete the requested operation."
+              }
+            ],
+            "notes": [
+              {
+                "id": "no-rollback-claim",
+                "text": "Revocation does not claim to stop already admitted native work, erase outputs or refund charges; the running snapshot stays as last observed and the late output is simply not accepted."
+              }
+            ]
+          },
+          "expectations": {
+            "lateOutputDiscarded": true,
+            "noSuccessAfterRevoke": true,
+            "noCleanupCancelUnderRevokedGrant": true,
+            "rollbackNotClaimed": true,
+            "sessionCancelCount": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "output-overflow",
+      "summary": "The attributable end_turn output exceeds the task's output budget; success is refused, the retained running snapshot records unknown ongoing work, and no native hard stop or TASK_LIMIT is claimed.",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "acp-p1-conn",
+        "task_id": "3c9d2e51-7a4b-4f80-b1c3-2d5e7f9a1b0d",
+        "binding": {
+          "project_id": "acp-p1-project",
+          "model_version": "strata/acp-p1-synthetic",
+          "repository_id": "acp-p1-repo"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+        "instruction": "Produce the long synthetic report.",
+        "limits": {
+          "runtime_ms": 600000,
+          "output_bytes": 512
+        }
+      },
+      "variants": [
+        {
+          "id": "primary",
+          "journal": [
+            {
+              "seq": 1,
+              "kind": "reserve",
+              "taskId": "3c9d2e51-7a4b-4f80-b1c3-2d5e7f9a1b0d",
+              "sessionId": null,
+              "requestId": null,
+              "note": "Reservation with digest e025c83db36b0f90f2fd0ff5f491a3ec6b8b31d4cdca4b69d1220f362a26dd71 and a 512-byte output budget.",
+              "connectionId": "acp-p1-conn",
+              "requestSha256": "e025c83db36b0f90f2fd0ff5f491a3ec6b8b31d4cdca4b69d1220f362a26dd71"
+            },
+            {
+              "seq": 2,
+              "kind": "session-new-retained",
+              "taskId": "3c9d2e51-7a4b-4f80-b1c3-2d5e7f9a1b0d",
+              "sessionId": "acp-syn-session-10",
+              "requestId": 1,
+              "note": "Session retained."
+            },
+            {
+              "seq": 3,
+              "kind": "prompt-sent",
+              "taskId": "3c9d2e51-7a4b-4f80-b1c3-2d5e7f9a1b0d",
+              "sessionId": "acp-syn-session-10",
+              "requestId": 2,
+              "note": "Prompt in flight."
+            },
+            {
+              "seq": 4,
+              "kind": "update-observed",
+              "taskId": "3c9d2e51-7a4b-4f80-b1c3-2d5e7f9a1b0d",
+              "sessionId": "acp-syn-session-10",
+              "requestId": 2,
+              "note": "The collector observes a 651-byte agent message against the 512-byte budget."
+            },
+            {
+              "seq": 5,
+              "kind": "completion-retained",
+              "taskId": "3c9d2e51-7a4b-4f80-b1c3-2d5e7f9a1b0d",
+              "sessionId": "acp-syn-session-10",
+              "requestId": 2,
+              "note": "The attributable end_turn completion is retained, but normalization would exceed the budget."
+            },
+            {
+              "seq": 6,
+              "kind": "result-refused",
+              "taskId": "3c9d2e51-7a4b-4f80-b1c3-2d5e7f9a1b0d",
+              "sessionId": "acp-syn-session-10",
+              "requestId": 2,
+              "note": "Success is refused; the retained running snapshot records unknown ongoing work rather than claiming a native hard stop, and no TASK_LIMIT failure is fabricated."
+            }
+          ],
+          "messages": [
+            {
+              "attribution": {
+                "taskId": "3c9d2e51-7a4b-4f80-b1c3-2d5e7f9a1b0d",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "method": "initialize",
+                "params": {
+                  "protocolVersion": 1,
+                  "clientCapabilities": {
+                    "fs": {
+                      "readTextFile": false,
+                      "writeTextFile": false
+                    },
+                    "terminal": false,
+                    "auth": {
+                      "terminal": false
+                    }
+                  },
+                  "clientInfo": {
+                    "name": "strata-acp-p1-proposal",
+                    "title": "Strata ACP P1 Proposal",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "3c9d2e51-7a4b-4f80-b1c3-2d5e7f9a1b0d",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "result": {
+                  "protocolVersion": 1,
+                  "agentCapabilities": {
+                    "loadSession": true,
+                    "promptCapabilities": {
+                      "image": false,
+                      "audio": false,
+                      "embeddedContext": false
+                    },
+                    "mcpCapabilities": {
+                      "http": false,
+                      "sse": false
+                    },
+                    "sessionCapabilities": {}
+                  },
+                  "authMethods": [],
+                  "agentInfo": {
+                    "name": "synthetic-acp-agent",
+                    "title": "Synthetic ACP Agent",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "3c9d2e51-7a4b-4f80-b1c3-2d5e7f9a1b0d",
+                "sessionId": null,
+                "requestId": 1
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "session/new",
+                "params": {
+                  "cwd": "/srv/checkout/acp-p1-synthetic",
+                  "mcpServers": []
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "3c9d2e51-7a4b-4f80-b1c3-2d5e7f9a1b0d",
+                "sessionId": "acp-syn-session-10",
+                "requestId": 1
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "result": {
+                  "sessionId": "acp-syn-session-10"
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "3c9d2e51-7a4b-4f80-b1c3-2d5e7f9a1b0d",
+                "sessionId": "acp-syn-session-10",
+                "requestId": 2
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "method": "session/prompt",
+                "params": {
+                  "sessionId": "acp-syn-session-10",
+                  "prompt": [
+                    {
+                      "type": "text",
+                      "text": "Produce the long synthetic report."
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "3c9d2e51-7a4b-4f80-b1c3-2d5e7f9a1b0d",
+                "sessionId": "acp-syn-session-10",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-10",
+                  "update": {
+                    "sessionUpdate": "agent_message_chunk",
+                    "messageId": "syn-msg-10",
+                    "content": {
+                      "type": "text",
+                      "text": "Synthetic long report paragraph. Synthetic long report paragraph. Synthetic long report paragraph. Synthetic long report paragraph. Synthetic long report paragraph. Synthetic long report paragraph. Synthetic long report paragraph. Synthetic long report paragraph. Synthetic long report paragraph. Synthetic long report paragraph. Synthetic long report paragraph. Synthetic long report paragraph. Synthetic long report paragraph. Synthetic long report paragraph. Synthetic long report paragraph. Synthetic long report paragraph. Synthetic long report paragraph. Synthetic long report paragraph. Synthetic long report paragraph. End of synthetic report."
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "3c9d2e51-7a4b-4f80-b1c3-2d5e7f9a1b0d",
+                "sessionId": "acp-syn-session-10",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "result": {
+                  "stopReason": "end_turn"
+                }
+              }
+            }
+          ],
+          "nativeCounts": {
+            "initialize": 1,
+            "session/new": 1,
+            "session/prompt": 1,
+            "session/cancel": 0,
+            "session/load": 0,
+            "session/list": 0
+          },
+          "decisions": {
+            "admission": "The observation is attributable, but the bounded result contract refuses to accept over-budget output as success.",
+            "snapshots": [
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "3c9d2e51-7a4b-4f80-b1c3-2d5e7f9a1b0d",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "e025c83db36b0f90f2fd0ff5f491a3ec6b8b31d4cdca4b69d1220f362a26dd71"
+                },
+                "sequence": 1,
+                "state": "running"
+              }
+            ],
+            "result": null,
+            "errors": [
+              {
+                "operation": "status",
+                "code": "EXECUTION_LIMIT",
+                "dispatch": "unknown",
+                "note": "The invoked status operation observes a collector overflow and refuses success with EXECUTION_LIMIT; the last running snapshot is retained without claiming that native work stopped.",
+                "message": "Agent execution could not complete the requested operation."
+              }
+            ],
+            "notes": [
+              {
+                "id": "overflow-uncertainty",
+                "text": "Refusing the over-budget result does not establish that native work, memory, storage or billing stopped; the retained running snapshot keeps that uncertainty outside the common status DTO."
+              }
+            ]
+          },
+          "expectations": {
+            "successRefused": true,
+            "unknownOngoingWorkRetained": true,
+            "nativeHardStopNotClaimed": true,
+            "observedOutputBytesExceedBudget": true,
+            "noFabricatedTaskLimit": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "unsupported-version-capability",
+      "summary": "Pre-dispatch refusals: an agent answering protocolVersion 2 disconnects with EXECUTION_VERSION, and an agent that never advertised loadSession makes recovery unsupported (EXECUTION_UNSUPPORTED) without any session/load call.",
+      "task": {
+        "format": "strata-agent-task/1",
+        "connection_id": "acp-p1-conn",
+        "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+        "binding": {
+          "project_id": "acp-p1-project",
+          "model_version": "strata/acp-p1-synthetic",
+          "repository_id": "acp-p1-repo"
+        },
+        "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+        "instruction": "Summarize the synthetic fixture slice and propose one bounded diff.",
+        "limits": {
+          "runtime_ms": 600000,
+          "output_bytes": 8192
+        }
+      },
+      "variants": [
+        {
+          "id": "unsupported-protocol-version",
+          "journal": [
+            {
+              "seq": 1,
+              "kind": "reserve",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": null,
+              "note": "Reservation with digest 19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f.",
+              "connectionId": "acp-p1-conn",
+              "requestSha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+            },
+            {
+              "seq": 2,
+              "kind": "startup-version-refused",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": 0,
+              "note": "The agent answered protocolVersion 2, its latest; the client supports only stable v1 and disconnects. No session work is dispatched."
+            }
+          ],
+          "messages": [
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "method": "initialize",
+                "params": {
+                  "protocolVersion": 1,
+                  "clientCapabilities": {
+                    "fs": {
+                      "readTextFile": false,
+                      "writeTextFile": false
+                    },
+                    "terminal": false,
+                    "auth": {
+                      "terminal": false
+                    }
+                  },
+                  "clientInfo": {
+                    "name": "strata-acp-p1-proposal",
+                    "title": "Strata ACP P1 Proposal",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "result": {
+                  "protocolVersion": 2,
+                  "agentCapabilities": {
+                    "loadSession": true,
+                    "promptCapabilities": {
+                      "image": false,
+                      "audio": false,
+                      "embeddedContext": false
+                    },
+                    "mcpCapabilities": {
+                      "http": false,
+                      "sse": false
+                    },
+                    "sessionCapabilities": {}
+                  },
+                  "authMethods": [],
+                  "agentInfo": {
+                    "name": "synthetic-acp-agent",
+                    "title": "Synthetic ACP Agent",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": null
+              },
+              "direction": "annotation",
+              "note": "The client does not support protocolVersion 2 and disconnects per v1; no session/new follows."
+            }
+          ],
+          "nativeCounts": {
+            "initialize": 1,
+            "session/new": 0,
+            "session/prompt": 0,
+            "session/cancel": 0,
+            "session/load": 0,
+            "session/list": 0
+          },
+          "decisions": {
+            "admission": "Refused before dispatch: a v2 answer is not treated as compatible with the pinned v1 profile, and no v2 draft or unstable extension becomes an implied v1 guarantee.",
+            "snapshots": [],
+            "result": null,
+            "errors": [
+              {
+                "operation": "submit",
+                "code": "EXECUTION_VERSION",
+                "dispatch": "unknown",
+                "note": "Adapter submit was invoked and supervised initialize returned an unsupported version; no session work follows, but the control-operation certainty remains unknown.",
+                "message": "Agent execution could not complete the requested operation."
+              }
+            ],
+            "notes": [
+              {
+                "id": "version-negotiation",
+                "text": "Per v1 the agent responds with its latest supported version when it cannot match the request; the client should disconnect rather than downgrade."
+              }
+            ]
+          },
+          "expectations": {
+            "agentReturnedProtocolVersion": 2,
+            "clientDisconnected": true,
+            "errorCode": "EXECUTION_VERSION",
+            "errorDispatch": "unknown",
+            "nativeSessionCalls": 0
+          }
+        },
+        {
+          "id": "unsupported-capability",
+          "journal": [
+            {
+              "seq": 1,
+              "kind": "reserve",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": null,
+              "note": "Reservation with digest 19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f.",
+              "connectionId": "acp-p1-conn",
+              "requestSha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+            },
+            {
+              "seq": 2,
+              "kind": "startup-initialized",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": null,
+              "requestId": 0,
+              "note": "The retained initialize response advertises loadSession false and no sessionCapabilities; omitted capabilities are unsupported."
+            },
+            {
+              "seq": 3,
+              "kind": "session-new-retained",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-11",
+              "requestId": 1,
+              "note": "Session retained."
+            },
+            {
+              "seq": 4,
+              "kind": "prompt-sent",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-11",
+              "requestId": 2,
+              "note": "Prompt request id 2 in flight."
+            },
+            {
+              "seq": 5,
+              "kind": "completion-lost",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-11",
+              "requestId": 2,
+              "note": "The session/prompt response is lost; recovery would need session/load."
+            },
+            {
+              "seq": 6,
+              "kind": "recovery-blocked",
+              "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+              "sessionId": "acp-syn-session-11",
+              "requestId": null,
+              "note": "The agent never advertised loadSession, so session/load MUST NOT be called; recovery is unsupported, the admission stays uncertain and a second session/prompt is blocked."
+            }
+          ],
+          "messages": [
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "method": "initialize",
+                "params": {
+                  "protocolVersion": 1,
+                  "clientCapabilities": {
+                    "fs": {
+                      "readTextFile": false,
+                      "writeTextFile": false
+                    },
+                    "terminal": false,
+                    "auth": {
+                      "terminal": false
+                    }
+                  },
+                  "clientInfo": {
+                    "name": "strata-acp-p1-proposal",
+                    "title": "Strata ACP P1 Proposal",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 0
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 0,
+                "result": {
+                  "protocolVersion": 1,
+                  "agentCapabilities": {
+                    "loadSession": false,
+                    "promptCapabilities": {
+                      "image": false,
+                      "audio": false,
+                      "embeddedContext": false
+                    },
+                    "mcpCapabilities": {
+                      "http": false,
+                      "sse": false
+                    }
+                  },
+                  "authMethods": [],
+                  "agentInfo": {
+                    "name": "synthetic-acp-agent",
+                    "title": "Synthetic ACP Agent",
+                    "version": "0.1.0"
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": null,
+                "requestId": 1
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "session/new",
+                "params": {
+                  "cwd": "/srv/checkout/acp-p1-synthetic",
+                  "mcpServers": []
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-11",
+                "requestId": 1
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "result": {
+                  "sessionId": "acp-syn-session-11"
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-11",
+                "requestId": 2
+              },
+              "direction": "client>agent",
+              "wire": {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "method": "session/prompt",
+                "params": {
+                  "sessionId": "acp-syn-session-11",
+                  "prompt": [
+                    {
+                      "type": "text",
+                      "text": "Summarize the synthetic fixture slice and propose one bounded diff."
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-11",
+                "requestId": 2
+              },
+              "direction": "agent>client",
+              "wire": {
+                "jsonrpc": "2.0",
+                "method": "session/update",
+                "params": {
+                  "sessionId": "acp-syn-session-11",
+                  "update": {
+                    "sessionUpdate": "agent_message_chunk",
+                    "messageId": "syn-msg-11",
+                    "content": {
+                      "type": "text",
+                      "text": "Drafting the summary."
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "attribution": {
+                "taskId": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                "sessionId": "acp-syn-session-11",
+                "requestId": 2
+              },
+              "direction": "annotation",
+              "note": "The response to request 2 never arrives. Because the retained initialize response advertises loadSession false, no session/load is ever sent."
+            }
+          ],
+          "nativeCounts": {
+            "initialize": 1,
+            "session/new": 1,
+            "session/prompt": 1,
+            "session/cancel": 0,
+            "session/load": 0,
+            "session/list": 0
+          },
+          "decisions": {
+            "admission": "Recovery is refused before dispatch: calling session/load without the advertised capability would violate v1, so the uncertain admission is retained.",
+            "snapshots": [
+              {
+                "format": "strata-agent-task-status/1",
+                "task": {
+                  "connection_id": "acp-p1-conn",
+                  "task_id": "7e1c9a42-5b36-4c0d-8f2a-9d4b6e8a0c1f",
+                  "binding": {
+                    "project_id": "acp-p1-project",
+                    "model_version": "strata/acp-p1-synthetic",
+                    "repository_id": "acp-p1-repo"
+                  },
+                  "repository_revision": "a1b2c3d4e5f60718293a4b5c6d7e8f90aabbccdd",
+                  "request_sha256": "19336c1401f766b98004399a823dec13a58b1957ddd88f2c0166fe5b41e73c9f"
+                },
+                "sequence": 1,
+                "state": "running"
+              }
+            ],
+            "result": null,
+            "errors": [
+              {
+                "operation": "status",
+                "code": "EXECUTION_UNSUPPORTED",
+                "dispatch": "unknown",
+                "note": "Adapter status was invoked to inspect recovery; loadSession is unsupported, no native load or second start follows, and control-operation certainty remains unknown.",
+                "message": "Agent execution could not complete the requested operation."
+              }
+            ],
+            "notes": [
+              {
+                "id": "omitted-capability",
+                "text": "Omitted or false capabilities mean unsupported in v1; the adapter must not call session/load and must not substitute session/list matching for the missing completion."
+              }
+            ]
+          },
+          "expectations": {
+            "loadSessionAdvertised": false,
+            "sessionLoadNeverSent": true,
+            "errorCode": "EXECUTION_UNSUPPORTED",
+            "errorDispatch": "unknown",
+            "uncertaintyRetained": true,
+            "sessionLoadCount": 0
+          }
+        }
+      ]
+    }
+  ]
+}

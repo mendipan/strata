@@ -1,0 +1,98 @@
+{
+  "id": "L-reminder",
+  "revision": 1,
+  "owner": "author-b",
+  "model_version": "strata/0.1-facets-experimental",
+  "baseline": "R0@1",
+  "intent": "L-reminder",
+  "changes": [
+    {
+      "op": "set_item",
+      "block": "booking.reminder",
+      "path": "requirements.timing",
+      "expected": {
+        "kind": "value",
+        "value": {
+          "statement": "Reminders are disabled.",
+          "kind": "rule",
+          "facets": [
+            "behavior"
+          ],
+          "acceptance": [
+            "timing",
+            "once"
+          ],
+          "parameters": {
+            "enabled": false,
+            "lead_seconds": 60
+          }
+        }
+      },
+      "value": {
+        "statement": "Send one reminder 60 seconds before hold expiry.",
+        "kind": "rule",
+        "facets": [
+          "behavior"
+        ],
+        "acceptance": [
+          "timing",
+          "once"
+        ],
+        "parameters": {
+          "enabled": true,
+          "lead_seconds": 60
+        }
+      }
+    }
+  ],
+  "requires_layers": [
+    "L-hold@1"
+  ],
+  "read_set": [
+    {
+      "layer": "L-hold@1",
+      "mode": "required"
+    }
+  ],
+  "assumptions": [
+    {
+      "block": "booking.hold",
+      "path": "requirements.expiry",
+      "expected": {
+        "kind": "value",
+        "value": {
+          "statement": "A hold expires exactly 900 seconds after it starts.",
+          "kind": "rule",
+          "facets": [
+            "behavior",
+            "data"
+          ],
+          "acceptance": [
+            "expiry"
+          ],
+          "parameters": {
+            "seconds": 900
+          }
+        }
+      }
+    }
+  ],
+  "acceptance": [
+    {
+      "block": "booking.reminder",
+      "id": "layer-reminder",
+      "criterion": {
+        "statement": "Verify booking.reminder for layer-reminder.",
+        "method": "mechanical",
+        "check": "booking.reminder",
+        "version": "1",
+        "fixture": "layer-reminder",
+        "subjects": [
+          "booking.reminder/requirements.timing"
+        ]
+      }
+    }
+  ],
+  "resolution_proposals": [],
+  "derived_from": null
+}

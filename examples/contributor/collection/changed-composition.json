@@ -1,0 +1,25 @@
+{
+  "id": "StarterChangedCandidate",
+  "revision": 1,
+  "model_version": "strata/0.3-block-lifecycle-experimental",
+  "baseline": "StarterCollection@1",
+  "proposals": [
+    "StarterAudit@1",
+    "StarterLimit@1"
+  ],
+  "selected": [
+    "StarterAudit@1",
+    "StarterLimit@1"
+  ],
+  "alternative_groups": [],
+  "scenario": {
+    "id": "bounded-collection",
+    "checks": [
+      {
+        "id": "collection.compatibility",
+        "version": "1"
+      }
+    ]
+  },
+  "resolutions": []
+}

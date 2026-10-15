@@ -1,0 +1,282 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "strata-host-policy/4"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{1,128}$"
+    },
+    "generation": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+    },
+    "grants": {
+      "maxItems": 100,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "grant_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,128}$"
+          },
+          "principal_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]{1,128}$"
+          },
+          "operations": {
+            "maxItems": 64,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "capabilities",
+                "review.inbox",
+                "review.state",
+                "layer.preview",
+                "studio.snapshot",
+                "operation.inspect",
+                "evidence.assemble",
+                "inspect",
+                "status",
+                "diff",
+                "conflicts",
+                "context.show",
+                "context.use",
+                "init",
+                "layer.create",
+                "layer.revise",
+                "layer.restore",
+                "layer.publish",
+                "content.review",
+                "compose",
+                "mediation.install",
+                "mediation.prepare",
+                "mediation.respond",
+                "reports.dispose",
+                "conflicts.report",
+                "resolve",
+                "approve",
+                "materialize",
+                "realization.register",
+                "evidence.run",
+                "criterion.review",
+                "validate",
+                "release",
+                "drift.revalidate",
+                "revalidation.run",
+                "revalidation.criterion-review",
+                "repository.compatibility",
+                "profile.list",
+                "profile.inspect",
+                "profile.validate",
+                "repository.contract.import",
+                "repository.contract.attach",
+                "profile.create",
+                "profile.revise",
+                "profile.archive",
+                "build.context",
+                "build.prepare",
+                "build.inspect",
+                "build.outputs",
+                "build.start",
+                "build.reconcile"
+              ]
+            }
+          },
+          "layer_ids": {
+            "anyOf": [
+              {
+                "maxItems": 500,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]{1,128}$"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "write_block_ids": {
+            "maxItems": 500,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,128}$"
+            }
+          },
+          "create_under_block_ids": {
+            "maxItems": 500,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,128}$"
+            }
+          },
+          "approvals": {
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "resolution",
+                "scope",
+                "guardian",
+                "release"
+              ]
+            }
+          },
+          "profiles": {
+            "maxItems": 8,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "lifetime": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "const": "until-revoked"
+                  },
+                  "expires_at": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "mode",
+                  "expires_at"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "const": "until"
+                  },
+                  "expires_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                  }
+                },
+                "required": [
+                  "mode",
+                  "expires_at"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "revalidation": {
+            "type": "object",
+            "properties": {
+              "repository_ids": {
+                "maxItems": 500,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]{1,128}$"
+                }
+              },
+              "read_roots": {
+                "maxItems": 64,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                }
+              },
+              "inventory_roots": {
+                "maxItems": 64,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 240
+                }
+              },
+              "checker_ids": {
+                "maxItems": 16,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                }
+              },
+              "block_ids": {
+                "maxItems": 500,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9_-]{1,128}$"
+                }
+              },
+              "review_criterion_refs": {
+                "maxItems": 256,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                }
+              }
+            },
+            "required": [
+              "repository_ids",
+              "read_roots",
+              "inventory_roots",
+              "checker_ids",
+              "block_ids",
+              "review_criterion_refs"
+            ],
+            "additionalProperties": false
+          },
+          "build_repository_ids": {
+            "maxItems": 500,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{1,128}$"
+            }
+          }
+        },
+        "required": [
+          "grant_id",
+          "principal_id",
+          "operations",
+          "layer_ids",
+          "write_block_ids",
+          "create_under_block_ids",
+          "approvals",
+          "profiles",
+          "lifetime"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "format",
+    "project_id",
+    "generation",
+    "grants"
+  ],
+  "additionalProperties": false
+}

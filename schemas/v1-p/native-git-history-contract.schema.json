@@ -1,0 +1,300 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "native-git-history-contract/1"
+    },
+    "model_version": {
+      "type": "string",
+      "enum": [
+        "strata/0.1-facets-experimental",
+        "strata/0.2-content-mediation-experimental",
+        "strata/0.3-block-lifecycle-experimental"
+      ]
+    },
+    "target_model_version": {
+      "type": "string",
+      "enum": [
+        "strata/0.1-facets-experimental",
+        "strata/0.2-content-mediation-experimental",
+        "strata/0.3-block-lifecycle-experimental"
+      ]
+    },
+    "purpose": {
+      "type": "string",
+      "enum": [
+        "historical-inspection",
+        "native-dispatch",
+        "migration",
+        "reinterpretation"
+      ]
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "repo_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "history_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "binding": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "ref",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "intent": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "maxLength": 256,
+          "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "snapshot_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "model_version": {
+          "type": "string",
+          "enum": [
+            "strata/0.1-facets-experimental",
+            "strata/0.2-content-mediation-experimental",
+            "strata/0.3-block-lifecycle-experimental"
+          ]
+        }
+      },
+      "required": [
+        "ref",
+        "sha256",
+        "snapshot_sha256",
+        "model_version"
+      ],
+      "additionalProperties": false
+    },
+    "authority": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "trust": {
+              "type": "string",
+              "const": "local-fixture"
+            },
+            "principal": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "responsible_scope": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "authority_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "trust",
+            "principal",
+            "responsible_scope",
+            "authority_sha256"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "trust": {
+              "type": "string",
+              "const": "host-authenticated"
+            },
+            "principal": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "responsible_scope": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "authority_sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "auth_receipt": {
+              "type": "object",
+              "properties": {
+                "ref": {
+                  "type": "string",
+                  "maxLength": 256,
+                  "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "ref",
+                "sha256"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "trust",
+            "principal",
+            "responsible_scope",
+            "authority_sha256",
+            "auth_receipt"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "evidence": {
+      "maxItems": 256,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ref": {
+            "type": "string",
+            "maxLength": 256,
+            "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "git-acceptance/1",
+              "git-acceptance/2",
+              "git-application-observation/1",
+              "strata-host-evidence/1"
+            ]
+          },
+          "principal": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "trust": {
+            "type": "string",
+            "enum": [
+              "local-fixture-import",
+              "local-fixed-fixture",
+              "host-measured"
+            ]
+          },
+          "execution_authenticated": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "ref",
+          "sha256",
+          "format",
+          "principal",
+          "trust",
+          "execution_authenticated"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "finalization": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "ref": {
+              "type": "string",
+              "maxLength": 256,
+              "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "ref",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "format",
+    "model_version",
+    "target_model_version",
+    "purpose",
+    "project_id",
+    "repo_id",
+    "history_sha256",
+    "binding",
+    "source",
+    "intent",
+    "authority",
+    "evidence",
+    "finalization"
+  ],
+  "additionalProperties": false,
+  "title": "native-git-history-contract/1",
+  "description": "Preparation-only history pins. Shape validity grants no authority; inspectNativeGitHistory enforces version, trust and retained closure. No native dispatch or migration."
+}

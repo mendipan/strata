@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": "string",
+      "const": "authoring-review/1"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]*$"
+    },
+    "model_version": {
+      "type": "string",
+      "const": "strata/0.2-content-mediation-experimental"
+    },
+    "draft_ref": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+@[A-Za-z0-9_-]+$"
+    },
+    "draft_digest": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "checklist": {
+      "type": "string",
+      "const": "intent-authoring/1"
+    },
+    "accepted": {
+      "type": "boolean"
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reviewer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trust": {
+      "type": "string",
+      "const": "local-fixture"
+    }
+  },
+  "required": [
+    "format",
+    "project_id",
+    "model_version",
+    "draft_ref",
+    "draft_digest",
+    "checklist",
+    "accepted",
+    "rationale",
+    "reviewer",
+    "trust"
+  ],
+  "additionalProperties": false
+}

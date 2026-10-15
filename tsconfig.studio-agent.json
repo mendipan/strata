@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/studio-agents/worker.ts", "src/studio-agents/worker-env.d.ts"],
+  "exclude": []
+}

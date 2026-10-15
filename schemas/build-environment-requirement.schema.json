@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "stage": {
+      "type": "string",
+      "enum": [
+        "build",
+        "verify",
+        "run"
+      ]
+    },
+    "subject": {
+      "type": "string",
+      "enum": [
+        "host",
+        "target"
+      ]
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "os",
+        "architecture",
+        "runtime",
+        "toolchain",
+        "system-feature"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-][A-Za-z0-9_.-]{0,255}$"
+    },
+    "version": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "min_major": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "min_major"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "exact": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                }
+              },
+              "required": [
+                "exact"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "allowed_values": {
+      "anyOf": [
+        {
+          "maxItems": 128,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source_ref": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    }
+  },
+  "required": [
+    "stage",
+    "subject",
+    "kind",
+    "id",
+    "version",
+    "allowed_values",
+    "source_ref"
+  ],
+  "additionalProperties": false
+}

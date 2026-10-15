@@ -1,0 +1,51 @@
+{
+  "id": "StarterAlternative",
+  "revision": 1,
+  "owner": "author-b",
+  "model_version": "strata/0.3-block-lifecycle-experimental",
+  "baseline": "StarterCollection@1",
+  "intent": "Propose an alternative supported collection capacity of four.",
+  "changes": [
+    {
+      "op": "set_item",
+      "block": "policy",
+      "path": "requirements.count",
+      "expected": {
+        "kind": "value",
+        "value": {
+          "statement": "At most 3 items exist per collection instance.",
+          "kind": "rule",
+          "facets": [
+            "data"
+          ],
+          "acceptance": [
+            "limits"
+          ],
+          "parameters": {
+            "max_items": 3
+          }
+        }
+      },
+      "value": {
+        "statement": "At most 4 items exist per collection instance.",
+        "kind": "rule",
+        "facets": [
+          "data"
+        ],
+        "acceptance": [
+          "limits"
+        ],
+        "parameters": {
+          "max_items": 4
+        }
+      }
+    }
+  ],
+  "requires_layers": [],
+  "read_set": [],
+  "assumptions": [],
+  "acceptance": [],
+  "resolution_proposals": [],
+  "derived_from": null,
+  "created_blocks": []
+}
